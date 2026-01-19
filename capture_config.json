@@ -1,0 +1,8 @@
+{
+  "target_domains": [],
+  "exclude_selectors": [
+    "input[type='password']"
+  ],
+  "debounce_ms": 300,
+  "output_file": "captured_forms.json"
+}

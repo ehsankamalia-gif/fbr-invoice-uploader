@@ -1,0 +1,57 @@
+Clicked non-draggable item tags: ('amount', 'draggable', 'current') at 486.0, 458.0
+Clicked non-draggable item tags: ('sale_tax', 'draggable', 'current') at 475.0, 491.0
+Clicked non-draggable item tags: ('sale_tax', 'draggable', 'current') at 475.0, 491.0
+Clicked non-draggable item tags: ('sale_tax', 'draggable', 'current') at 476.0, 491.0
+Clicked non-draggable item tags: ('sale_tax', 'draggable', 'current') at 476.0, 491.0
+Clicked non-draggable item tags: ('amount', 'draggable', 'current') at 493.0, 458.0
+Started dragging: item_total at 627.0, 412.0
+Started dragging: item_total at 634.0, 407.0
+Clicked non-draggable item tags: ('amount', 'draggable', 'current') at 491.0, 454.0
+Started dragging: desc at 113.0, 417.0
+Clicked non-draggable item tags: ('amount', 'draggable', 'current') at 470.0, 460.0
+Started dragging: address at 154.0, 278.0
+Started dragging: name at 142.0, 231.0
+Started dragging: inv_no at 128.0, 181.0
+Started dragging: date at 132.0, 146.0
+Clicked non-draggable item tags: ('amount', 'draggable', 'current') at 497.0, 453.0
+Started dragging: amount at 475.0, 457.0
+Started dragging: sale_tax at 479.0, 490.0
+Started dragging: other_tax at 485.0, 526.0
+Started dragging: reg_letter at 460.0, 593.0
+Started dragging: item_total at 644.0, 411.0
+Started dragging: desc at 144.0, 402.0
+Started dragging: engine at 136.0, 425.0
+Started dragging: engine at 142.0, 454.0
+Started dragging: model at 145.0, 495.0
+Started dragging: color at 157.0, 535.0
+Started dragging: name at 162.0, 228.0
+Started dragging: address at 187.0, 264.0
+Started dragging: inv_no at 160.0, 174.0
+Started dragging: date at 158.0, 151.0
+Started dragging: engine at 245.0, 521.0
+Started dragging: amount at 424.0, 419.0
+Started dragging: grand_total at 627.0, 685.0
+Started dragging: grand_total at 639.0, 518.0
+Started dragging: item_total at 561.0, 422.0
+Started dragging: item_total at 481.0, 609.0
+Started dragging: other_tax at 450.0, 523.0
+Started dragging: amount at 533.0, 317.0
+Started dragging: sale_tax at 411.0, 500.0
+Started dragging: engine at 294.0, 451.0
+Started dragging: model at 190.0, 533.0
+Started dragging: chassis at 164.0, 470.0
+Started dragging: color at 146.0, 559.0
+Started dragging: item_total at 214.0, 628.0
+Started dragging: name at 351.0, 248.0
+Started dragging: desc at 209.0, 408.0
+Started dragging: model at 218.0, 429.0
+Started dragging: chassis at 206.0, 442.0
+Started dragging: color at 223.0, 499.0
+Started dragging: chassis at 175.0, 439.0
+Started dragging: engine at 423.0, 399.0
+Started dragging: amount at 404.0, 377.0
+Started dragging: sale_tax at 459.0, 384.0
+Started dragging: other_tax at 560.0, 394.0
+Started dragging: sale_tax at 465.0, 389.0
+Started dragging: other_tax at 656.0, 385.0
+Started dragging: item_total at 219.0, 533.0
