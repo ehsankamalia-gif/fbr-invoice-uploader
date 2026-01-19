@@ -118,7 +118,13 @@ class App(ctk.CTk):
         self.sub_label = ctk.CTkLabel(self.brand_frame, text="FBR INTEGRATION", 
                                      font=ctk.CTkFont(size=11, weight="bold"),
                                      text_color=("gray40", "gray60"))
-        self.sub_label.pack(anchor="w", padx=27, pady=(0, 8))
+        self.sub_label.pack(anchor="w", padx=27, pady=(0, 2))
+
+        # Dealer Name
+        self.dealer_name_label = ctk.CTkLabel(self.brand_frame, text="Ehsan Traders", 
+                                     font=ctk.CTkFont(size=12, weight="bold"),
+                                     text_color=("gray40", "gray60"))
+        self.dealer_name_label.pack(anchor="w", padx=27, pady=(0, 8))
 
         # Environment badge (Styled)
         self.env_badge = ctk.CTkLabel(self.brand_frame, text="",
