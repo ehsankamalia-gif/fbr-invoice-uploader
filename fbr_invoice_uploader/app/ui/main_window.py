@@ -353,7 +353,7 @@ class App(ctk.CTk):
         header_frame = ctk.CTkFrame(self.home_frame, fg_color="transparent")
         header_frame.grid(row=0, column=0, padx=20, pady=(20, 10), sticky="ew")
         
-        self.label_home = ctk.CTkLabel(header_frame, text="Dashboard Overview", 
+        self.label_home = ctk.CTkLabel(header_frame, text="Dashboard Overview Here", 
                                      font=ctk.CTkFont(family="Arial", size=28, weight="bold"),
                                      text_color=("gray10", "gray90"))
         self.label_home.pack(side="left")
