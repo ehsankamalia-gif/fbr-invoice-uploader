@@ -163,7 +163,8 @@ class ReportsFrame(ctk.CTkFrame):
             
         db = SessionLocal()
         try:
-            query = db.query(Invoice).join(Customer).options(
+            # Use outerjoin to include invoices even if customer is missing (e.g. after migration)
+            query = db.query(Invoice).outerjoin(Customer).options(
                 joinedload(Invoice.items).joinedload(InvoiceItem.motorcycle)
             ).order_by(Invoice.datetime.desc())
             

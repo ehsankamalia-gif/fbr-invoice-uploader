@@ -12,6 +12,8 @@ connect_args = {}
 if "sqlite" in settings.DB_URL:
     connect_args["check_same_thread"] = False
 
+logger.info(f"Initializing Database with URL: {settings.DB_URL}")
+
 engine = create_engine(
     settings.DB_URL, 
     connect_args=connect_args,
@@ -82,6 +84,63 @@ def run_migrations():
                  logger.info("Migrating: Adding further_tax to invoice_items table.")
                  conn.execute(text("ALTER TABLE invoice_items ADD COLUMN further_tax FLOAT DEFAULT 0.0"))
                  conn.commit()
+                 
+            # Check for product_model_id in motorcycles
+            try:
+                conn.execute(text("SELECT product_model_id FROM motorcycles LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding product_model_id to motorcycles table.")
+                
+                # Add the column as nullable first
+                conn.execute(text("ALTER TABLE motorcycles ADD COLUMN product_model_id INTEGER"))
+                conn.commit()
+                
+                # Populate ProductModels from existing Motorcycles data
+                # Find unique models in motorcycles
+                try:
+                    rows = conn.execute(text("SELECT DISTINCT model, make, engine_capacity FROM motorcycles WHERE model IS NOT NULL")).fetchall()
+                    
+                    for row in rows:
+                        model_name = row[0]
+                        make = row[1] or "Honda"
+                        capacity = row[2]
+                        
+                        # Check if exists in product_models
+                        pm_check = conn.execute(text("SELECT id FROM product_models WHERE model_name = :m"), {"m": model_name}).fetchone()
+                        
+                        if pm_check:
+                            pm_id = pm_check[0]
+                        else:
+                            # Insert
+                            conn.execute(text("INSERT INTO product_models (model_name, make, engine_capacity) VALUES (:m, :mk, :ec)"), 
+                                         {"m": model_name, "mk": make, "ec": capacity})
+                            conn.commit()
+                            pm_id_row = conn.execute(text("SELECT id FROM product_models WHERE model_name = :m"), {"m": model_name}).fetchone()
+                            pm_id = pm_id_row[0]
+                        
+                        # Update motorcycles
+                        conn.execute(text("UPDATE motorcycles SET product_model_id = :pid WHERE model = :m"), {"pid": pm_id, "m": model_name})
+                        conn.commit()
+                except Exception as ex:
+                    logger.error(f"Error migrating motorcycle data: {ex}")
+                    # Continue anyway, as the column is added
+
+            # Check for customer_id in invoices
+            try:
+                conn.execute(text("SELECT customer_id FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding customer_id to invoices table.")
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN customer_id INTEGER"))
+                conn.commit()
+
+            # Check for fbr_full_response in invoices
+            try:
+                conn.execute(text("SELECT fbr_full_response FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding fbr_full_response to invoices table.")
+                # SQLite stores JSON as TEXT
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN fbr_full_response TEXT"))
+                conn.commit()
 
     except Exception as e:
         logger.error(f"Migration check failed: {e}")

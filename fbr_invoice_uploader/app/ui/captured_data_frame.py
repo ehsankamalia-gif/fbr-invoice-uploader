@@ -6,23 +6,23 @@ import os
 from datetime import datetime
 from pathlib import Path
 from app.services.form_capture_service import form_capture_service
+from app.db.session import SessionLocal
+from app.db.models import CapturedData
 
 class CapturedDataFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(3, weight=1)
         
-        self.json_file = Path("captured_forms.json")
-        print(f"CapturedDataFrame looking for file at: {self.json_file.absolute()}")
         self.auto_refresh = True
         
         # Header
         self.header_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.header_frame.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
         
-        self.title_label = ctk.CTkLabel(self.header_frame, text="Captured Form Data", 
+        self.title_label = ctk.CTkLabel(self.header_frame, text="Captured Form Data (Database)", 
                                       font=ctk.CTkFont(size=24, weight="bold"))
         self.title_label.pack(side="left")
         
@@ -64,7 +64,7 @@ class CapturedDataFrame(ctk.CTkFrame):
         
         self.search_var = ctk.StringVar()
         self.search_var.trace("w", lambda *args: self.filter_data())
-        self.search_entry = ctk.CTkEntry(self.filter_frame, placeholder_text="Search url, field or value...", 
+        self.search_entry = ctk.CTkEntry(self.filter_frame, placeholder_text="Search Name, CNIC, Chassis...", 
                                        textvariable=self.search_var, width=300)
         self.search_entry.pack(side="left", padx=10, pady=10)
         
@@ -75,10 +75,10 @@ class CapturedDataFrame(ctk.CTkFrame):
         # Table Frame
         self.table_frame = ctk.CTkFrame(self)
         self.table_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
-        self.grid_rowconfigure(3, weight=1) # Give table space
         
         # Treeview
-        columns = ("timestamp", "url", "type", "selector", "value")
+        # New Columns based on CapturedData model
+        columns = ("created_at", "name", "father", "cnic", "cell", "address", "chassis", "engine", "model", "color")
         self.tree = ttk.Treeview(self.table_frame, columns=columns, show="headings")
         
         # Scrollbars
@@ -95,23 +95,33 @@ class CapturedDataFrame(ctk.CTkFrame):
         self.table_frame.grid_rowconfigure(0, weight=1)
         
         # Column Headings
-        self.tree.heading("timestamp", text="Time")
-        self.tree.heading("url", text="Page URL")
-        self.tree.heading("type", text="Type")
-        self.tree.heading("selector", text="Field Selector")
-        self.tree.heading("value", text="Captured Value")
+        self.tree.heading("created_at", text="Date/Time")
+        self.tree.heading("name", text="Name")
+        self.tree.heading("father", text="Father Name")
+        self.tree.heading("cnic", text="CNIC")
+        self.tree.heading("cell", text="Mobile")
+        self.tree.heading("address", text="Address")
+        self.tree.heading("chassis", text="Chassis No")
+        self.tree.heading("engine", text="Engine No")
+        self.tree.heading("model", text="Model")
+        self.tree.heading("color", text="Color")
         
         # Column Widths
-        self.tree.column("timestamp", width=150, stretch=False)
-        self.tree.column("url", width=300, stretch=True)
-        self.tree.column("type", width=100, stretch=False)
-        self.tree.column("selector", width=200, stretch=True)
-        self.tree.column("value", width=250, stretch=True)
+        self.tree.column("created_at", width=140, stretch=False)
+        self.tree.column("name", width=150, stretch=True)
+        self.tree.column("father", width=150, stretch=True)
+        self.tree.column("cnic", width=120, stretch=False)
+        self.tree.column("cell", width=100, stretch=False)
+        self.tree.column("address", width=200, stretch=True)
+        self.tree.column("chassis", width=120, stretch=False)
+        self.tree.column("engine", width=100, stretch=False)
+        self.tree.column("model", width=80, stretch=False)
+        self.tree.column("color", width=80, stretch=False)
         
         # Styling
         style = ttk.Style()
-        style.configure("Treeview", rowheight=30, font=("Arial", 11))
-        style.configure("Treeview.Heading", font=("Arial", 11, "bold"))
+        style.configure("Treeview", rowheight=30, font=("Arial", 10))
+        style.configure("Treeview.Heading", font=("Arial", 10, "bold"))
         
         # Load initial data
         self.all_items = []
@@ -134,61 +144,42 @@ class CapturedDataFrame(ctk.CTkFrame):
     def start_auto_refresh(self):
         if self.auto_refresh and self.winfo_exists():
             self.load_data()
-            self.after(2000, self.start_auto_refresh)
+            self.after(5000, self.start_auto_refresh) # 5 seconds refresh for DB
 
     def load_data(self):
-        # Store current selection to restore it (optional, skipped for simplicity)
+        # Clear existing tree view items (visual only)
+        # We will re-populate self.all_items and then filter
         
-        # Clear existing
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-        self.all_items = []
-        
-        if not self.json_file.exists():
-             # Silent return for auto-refresh
-            return
-
         try:
-            with open(self.json_file, 'r') as f:
-                try:
-                    data = json.load(f)
-                except json.JSONDecodeError:
-                    return # File might be writing, skip this cycle
+            db = SessionLocal()
+            records = db.query(CapturedData).order_by(CapturedData.created_at.desc()).all()
+            
+            self.all_items = []
+            
+            for r in records:
+                # Format datetime
+                dt_str = r.created_at.strftime("%Y-%m-%d %H:%M:%S") if r.created_at else ""
                 
-            pages = data.get("pages", {})
+                item = (
+                    dt_str,
+                    r.name or "",
+                    r.father or "",
+                    r.cnic or "",
+                    r.cell or "",
+                    r.address or "",
+                    r.chassis_number or "",
+                    r.engine_number or "",
+                    r.model or "",
+                    r.color or ""
+                )
+                self.all_items.append(item)
             
-            if not pages:
-                 # File exists but empty content
-                 return
-            
-            for url, page_data in pages.items():
-                fields = page_data.get("fields", {})
-                for selector, field_data in fields.items():
-                    try:
-                        if not isinstance(field_data, dict):
-                            continue
-                            
-                        ts = field_data.get("timestamp", 0)
-                        dt_str = datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
-                        
-                        item = (
-                            dt_str,
-                            url,
-                            field_data.get("type", "unknown"),
-                            selector,
-                            str(field_data.get("value", ""))
-                        )
-                        self.all_items.append(item)
-                    except Exception as e:
-                        print(f"Skipping malformed item {selector}: {e}")
-            
-            # Sort by timestamp desc
-            self.all_items.sort(key=lambda x: x[0], reverse=True)
+            db.close()
             
             self.filter_data()
             
         except Exception as e:
-            print(f"Error loading captured data: {e}")
+            print(f"Error loading captured data from DB: {e}")
 
     def filter_data(self):
         query = self.search_var.get().lower()
@@ -198,27 +189,40 @@ class CapturedDataFrame(ctk.CTkFrame):
             self.tree.delete(item)
             
         for item in self.all_items:
-            # item is tuple: (time, url, type, selector, value)
+            # item is tuple
             match = False
-            for col in item:
-                if query in str(col).lower():
-                    match = True
-                    break
+            if not query:
+                match = True
+            else:
+                for col in item:
+                    if query in str(col).lower():
+                        match = True
+                        break
             
             if match:
                 self.tree.insert("", "end", values=item)
 
     def clear_data(self):
-        if not messagebox.askyesno("Confirm", "Are you sure you want to clear all captured data?"):
+        if not messagebox.askyesno("Confirm", "Are you sure you want to delete ALL captured data from the database? This cannot be undone."):
             return
             
         try:
-            # Use service to clear data (handles both memory and file)
-            form_capture_service.clear_session_data()
+            db = SessionLocal()
+            num_deleted = db.query(CapturedData).delete()
+            db.commit()
+            db.close()
+            
+            # Also clear legacy file if exists
+            try:
+                form_capture_service.clear_session_data()
+            except:
+                pass
+                
             self.load_data()
-            messagebox.showinfo("Success", "Data cleared.")
+            messagebox.showinfo("Success", f"Deleted {num_deleted} records.")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to clear data: {e}")
+
 
     def load_credentials(self):
         try:

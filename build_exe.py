@@ -42,6 +42,7 @@ def build():
         "--hidden-import=requests",
         "--hidden-import=tenacity",
         "--hidden-import=playwright",
+        "--hidden-import=qrcode",
         "--hidden-import=app.services.form_capture_service", # Dynamic import sometimes
     ]
 
@@ -50,10 +51,11 @@ def build():
         "fbr_invoice_uploader/app/main.py",  # Entry point
         "--paths=fbr_invoice_uploader",      # Add inner repo to path
         "--name=Honda_FBR_Uploader",         # EXE name
-        "--onefile",                       # Single EXE file
+        "--onedir",                        # Directory mode (Faster launch)
         "--windowed",                      # No console window
         "--clean",                         # Clean cache
         "--noconfirm",                     # Overwrite output
+        "--splash=assets/splash.png",      # Splash screen
         # "--icon=assets/icon.ico",       # Icon (if available)
     ] + add_data_args + hidden_imports
 

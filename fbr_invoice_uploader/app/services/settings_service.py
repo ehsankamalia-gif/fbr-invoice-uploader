@@ -13,9 +13,10 @@ ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
 class SettingsService:
     def __init__(self):
         self.env_path = ENV_FILE
-        self._initialize_defaults()
+        # Do not initialize defaults here to avoid race condition with table creation
+        # self.initialize_defaults() 
 
-    def _initialize_defaults(self):
+    def initialize_defaults(self):
         """Initialize default configurations in DB if they don't exist."""
         db = SessionLocal()
         try:

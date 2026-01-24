@@ -45,6 +45,12 @@ class App(ctk.CTk):
         # Initialize DB
         init_db()
         
+        # Initialize Settings (must happen after DB init)
+        try:
+            settings_service.initialize_defaults()
+        except Exception as e:
+            print(f"Settings initialization warning: {e}")
+        
         # Migrate prices if needed
         self.migrate_prices()
 
@@ -318,24 +324,92 @@ class App(ctk.CTk):
                 return
 
     def check_updates(self):
-        """Checks for software updates from git."""
+        """Checks for software updates."""
         try:
             updater = UpdateService()
-            available, msg = updater.check_for_updates()
+            available, msg, download_url = updater.check_for_updates()
             
             if available:
-                if messagebox.askyesno("Update Available", f"{msg}\n\nDo you want to update now?"):
-                    success, update_msg = updater.perform_update()
-                    if success:
-                        messagebox.showinfo("Update Successful", "Application updated successfully.\nPlease restart the application.")
-                        self.on_closing() # Close app
-                    else:
-                        messagebox.showerror("Update Failed", update_msg)
+                if download_url and updater.is_frozen:
+                    # EXE Update available
+                    if messagebox.askyesno("Update Available", f"{msg}\n\nDo you want to download and install the update now?"):
+                        self.show_download_progress(updater, download_url)
+                else:
+                    # Script update or manual link
+                    if messagebox.askyesno("Update Available", f"{msg}\n\nDo you want to update now?"):
+                        if updater.is_frozen:
+                            # Fallback for frozen if no download URL but update available
+                            import webbrowser
+                            webbrowser.open(download_url if download_url else "https://github.com/ehsankamalia-gif/fbr-invoice-uploader/releases")
+                        else:
+                            success, update_msg = updater.perform_update()
+                            if success:
+                                messagebox.showinfo("Update Successful", "Application updated successfully.\nPlease restart the application.")
+                                self.on_closing()
+                            else:
+                                messagebox.showerror("Update Failed", update_msg)
             else:
-                messagebox.showinfo("Software Update", msg)
+                messagebox.showinfo("Software Update", "Application is already updated.")
                 
         except Exception as e:
             messagebox.showerror("Update Error", f"Failed to check for updates:\n{str(e)}")
+
+    def show_download_progress(self, updater, url):
+        """Shows a progress dialog and handles the download in a thread."""
+        progress_window = ctk.CTkToplevel(self)
+        progress_window.title("Downloading Update")
+        progress_window.geometry("400x150")
+        progress_window.transient(self)
+        progress_window.grab_set()
+        
+        # Center the window
+        progress_window.update_idletasks()
+        try:
+            x = self.winfo_x() + (self.winfo_width() // 2) - (progress_window.winfo_width() // 2)
+            y = self.winfo_y() + (self.winfo_height() // 2) - (progress_window.winfo_height() // 2)
+            progress_window.geometry(f"+{x}+{y}")
+        except:
+            pass
+        
+        lbl = ctk.CTkLabel(progress_window, text="Downloading update...", font=("Arial", 14))
+        lbl.pack(pady=(20, 10))
+        
+        progress_bar = ctk.CTkProgressBar(progress_window, width=300)
+        progress_bar.pack(pady=10)
+        progress_bar.set(0)
+        
+        status_lbl = ctk.CTkLabel(progress_window, text="0%")
+        status_lbl.pack(pady=5)
+        
+        def progress_callback(current, total):
+            if total > 0:
+                progress = current / total
+                # Update UI in main thread
+                self.after(0, lambda: progress_bar.set(progress))
+                self.after(0, lambda: status_lbl.configure(text=f"{int(progress * 100)}%"))
+
+        def run_download():
+            try:
+                # Download
+                exe_path = updater.download_update(url, progress_callback)
+                
+                # Close progress window
+                self.after(0, progress_window.destroy)
+                
+                # Apply Update
+                def confirm_install():
+                     if messagebox.askyesno("Download Complete", "Update downloaded successfully.\nThe application will now restart to apply changes."):
+                        updater.apply_update(exe_path)
+                
+                self.after(0, confirm_install)
+                    
+            except Exception as e:
+                self.after(0, progress_window.destroy)
+                def show_error():
+                    messagebox.showerror("Download Failed", str(e))
+                self.after(0, show_error)
+
+        threading.Thread(target=run_download, daemon=True).start()
 
     def create_spare_ledger_frame(self):
         self.spare_ledger_frame = SpareLedgerFrame(self)
@@ -474,6 +548,7 @@ class App(ctk.CTk):
             self.card_dealers.configure(text=f"{dealer_count}")
             
         except Exception as e:
+            logger.error(f"Error refreshing stats: {e}", exc_info=True)
             print(f"Error refreshing stats: {e}")
         finally:
             db.close()

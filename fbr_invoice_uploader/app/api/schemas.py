@@ -5,27 +5,27 @@ from datetime import datetime as dt
 class InvoiceItemCreate(BaseModel):
     item_code: str
     item_name: str
-    pct_code: Optional[str] = Field(default=None)
+    pct_code: Optional[str] = None
     quantity: float
     tax_rate: float
     sale_value: float
     tax_charged: float # Explicitly passed
     further_tax: float = 0.0 # Added Further Tax
     discount: float = 0.0
-    chassis_number: Optional[str] = Field(default=None)
-    engine_number: Optional[str] = Field(default=None)
-    model_name: Optional[str] = Field(default=None)
-    color: Optional[str] = Field(default=None)
+    chassis_number: Optional[str] = None
+    engine_number: Optional[str] = None
+    model_name: Optional[str] = None
+    color: Optional[str] = None
 
 class InvoiceCreate(BaseModel):
     invoice_number: str
     datetime: dt = Field(default_factory=dt.utcnow)
-    buyer_name: Optional[str] = Field(default=None)
-    buyer_father_name: Optional[str] = Field(default=None)
-    buyer_ntn: Optional[str] = Field(default=None)
-    buyer_cnic: Optional[str] = Field(default=None)
-    buyer_phone: Optional[str] = Field(default=None)
-    buyer_address: Optional[str] = Field(default=None)
+    buyer_name: Optional[str] = None
+    buyer_father_name: Optional[str] = None
+    buyer_ntn: Optional[str] = None
+    buyer_cnic: Optional[str] = None
+    buyer_phone: Optional[str] = None
+    buyer_address: Optional[str] = None
     payment_mode: str = "Cash"
     discount: float = 0.0
     items: List[InvoiceItemCreate]

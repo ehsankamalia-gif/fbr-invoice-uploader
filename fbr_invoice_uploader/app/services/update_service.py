@@ -53,12 +53,13 @@ class UpdateService:
         Checks if updates are available.
         - If frozen (EXE), checks GitHub Releases.
         - If script, checks Git remote.
-        :return: (bool, str) - (Update Available, Message)
+        :return: (bool, str, str) - (Update Available, Message, Download URL or None)
         """
         if self.is_frozen:
             return self._check_github_updates()
         else:
-            return self._check_git_updates()
+            is_avail, msg = self._check_git_updates()
+            return is_avail, msg, None
 
     def _check_github_updates(self):
         """Check for updates via GitHub API."""
@@ -68,17 +69,90 @@ class UpdateService:
                 data = response.json()
                 latest_tag = data.get("tag_name", "v0.0.0").lstrip("v")
                 
+                # Get download URL for the EXE asset
+                download_url = None
+                for asset in data.get("assets", []):
+                    if asset["name"].endswith(".exe"):
+                        download_url = asset["browser_download_url"]
+                        break
+                
                 # Compare versions
                 if version.parse(latest_tag) > version.parse(current_version):
-                    return True, f"New version {latest_tag} is available!\nCurrent version: {current_version}"
+                    if download_url:
+                        return True, f"New version {latest_tag} is available!\nCurrent version: {current_version}", download_url
+                    else:
+                        return True, f"New version {latest_tag} is available, but no EXE found.", data.get("html_url")
                 else:
-                    return False, f"You are using the latest version ({current_version})."
+                    return False, f"You are using the latest version ({current_version}).", None
             elif response.status_code == 404:
-                return False, "No public releases found for this application."
+                return False, "Repository not found or is Private.\nPlease make the repository Public on GitHub for updates to work.", None
             else:
-                return False, f"Failed to check updates (GitHub API: {response.status_code})"
+                return False, f"Failed to check updates (GitHub API: {response.status_code})", None
         except Exception as e:
-            return False, f"Update check failed: {str(e)}"
+            return False, f"Update check failed: {str(e)}", None
+
+    def download_update(self, url, progress_callback=None):
+        """
+        Downloads the update from the given URL.
+        :param url: The URL to download the file from.
+        :param progress_callback: A function that takes (current_bytes, total_bytes)
+        :return: Path to the downloaded file
+        """
+        try:
+            response = requests.get(url, stream=True)
+            response.raise_for_status()
+            
+            total_size = int(response.headers.get('content-length', 0))
+            block_size = 1024 # 1 KB
+            
+            # Save as a temporary file
+            new_exe_path = "update_temp.exe"
+            
+            downloaded = 0
+            with open(new_exe_path, 'wb') as f:
+                for data in response.iter_content(block_size):
+                    downloaded += len(data)
+                    f.write(data)
+                    if progress_callback:
+                        progress_callback(downloaded, total_size)
+                        
+            return new_exe_path
+        except Exception as e:
+            logger.error(f"Download failed: {e}")
+            raise e
+
+    def apply_update(self, new_exe_path):
+        """
+        Replaces the current executable with the new one using a batch script.
+        """
+        if not self.is_frozen:
+            logger.error("Cannot apply update: Not running as an executable.")
+            return False
+
+        current_exe = sys.executable
+        updater_script = "updater.bat"
+        
+        # Create a batch script to replace the EXE
+        # 1. Wait for current app to close
+        # 2. Delete current EXE
+        # 3. Rename new EXE to current EXE name
+        # 4. Start the new EXE
+        
+        script_content = f"""
+@echo off
+timeout /t 2 /nobreak >nul
+del "{current_exe}"
+move "{new_exe_path}" "{current_exe}"
+start "" "{current_exe}"
+del "%~f0"
+"""
+        with open(updater_script, "w") as f:
+            f.write(script_content)
+            
+        # Run the script and exit
+        subprocess.Popen(updater_script, shell=True)
+        sys.exit(0)
+
 
     def _check_git_updates(self):
         """Check for updates via Git."""

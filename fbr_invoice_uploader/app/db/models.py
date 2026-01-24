@@ -129,7 +129,7 @@ class Motorcycle(Base):
     cost_price = Column(Float, nullable=False)
     sale_price = Column(Float, nullable=False)
     
-    status = Column(String(20), default="IN_STOCK")
+    status = Column(String(20), default="IN_STOCK", index=True)
     purchase_date = Column(DateTime, default=datetime.utcnow)
     
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True)
