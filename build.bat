@@ -1,4 +1,12 @@
 @echo off
+setlocal enabledelayedexpansion
+for /f "tokens=*" %%b in ('git branch --show-current') do set CUR_BRANCH=%%b
+if /i not "!CUR_BRANCH!"=="master" (
+    echo Current branch is "!CUR_BRANCH!". Please switch to "master" before building.
+    pause
+    exit /b 1
+)
+
 echo Building Honda FBR Uploader (Fast Launch Mode)...
 echo This will create a folder 'dist\Honda_FBR_Uploader' containing the executable.
 echo.
