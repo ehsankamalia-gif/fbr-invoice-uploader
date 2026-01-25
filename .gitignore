@@ -16,3 +16,5 @@ honda_fbr_backup.sql
 fbr.db
 captured_forms.json
 user_settings.json
+build/
+dist/

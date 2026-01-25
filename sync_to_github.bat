@@ -1,38 +1,33 @@
 @echo off
-setlocal enabledelayedexpansion
-
 echo ==========================================
-echo      Auto-Syncing Changes to GitHub
+echo      FBR Invoice Uploader - Auto Sync
 echo ==========================================
 echo.
 
-for /f "tokens=*" %%b in ('git branch --show-current') do set CUR_BRANCH=%%b
-if /i not "!CUR_BRANCH!"=="master" (
-  echo Current branch is "!CUR_BRANCH!". Please switch to "master".
-  echo Aborting sync to avoid pushing to the wrong branch.
-  pause
-  exit /b 1
+echo 1. Downloading latest changes (Git Pull)...
+git pull origin main
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Pull failed! You might have conflicts.
+    echo Please resolve conflicts manually.
+    pause
+    exit /b
 )
 
-echo 1. Adding all changes...
+echo.
+echo 2. Adding all local changes...
 git add .
 
-echo 2. Committing changes...
-git commit -m "Auto-update: %date% %time% - Sync on master"
-if errorlevel 1 (
-  echo No changes to commit or commit failed.
-)
+echo.
+echo 3. Committing changes...
+:: If there are no changes, git commit will exit with non-zero, but we continue to push anyway to be safe
+git commit -m "Auto-sync: %date% %time%"
 
-echo 3. Pulling latest from origin/master with rebase...
-git pull --rebase origin master
-if errorlevel 1 (
-  echo Pull/rebase failed. Resolve conflicts and rerun.
-  pause
-  exit /b 1
-)
+:: The post-commit hook at .git/hooks/post-commit might have triggered a push already
+:: but we run it again to ensure synchronization even if commit was empty.
 
-echo 4. Pushing to remote repository (origin/master)...
-git push origin master
+echo.
+echo 4. Pushing to remote repository...
+git push origin main
 
 echo.
 echo ==========================================
