@@ -1,0 +1,282 @@
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Boolean, JSON, Index, Enum
+from sqlalchemy.orm import relationship, declarative_base
+from datetime import datetime
+import enum
+
+Base = declarative_base()
+
+class CustomerType(str, enum.Enum):
+    INDIVIDUAL = "INDIVIDUAL"
+    DEALER = "DEALER"
+
+class Customer(Base):
+    __tablename__ = "customers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cnic = Column(String(20), unique=True, nullable=True) 
+    name = Column(String(100), nullable=False)
+    father_name = Column(String(100), nullable=True)
+    business_name = Column(String(100), nullable=True)
+    ntn = Column(String(20), nullable=True)
+    phone = Column(String(20), nullable=True)
+    address = Column(String(255), nullable=True)
+    type = Column(String(20), default=CustomerType.INDIVIDUAL)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    invoices = relationship("Invoice", back_populates="customer")
+
+class ProductModel(Base):
+    __tablename__ = "product_models"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    model_name = Column(String(50), unique=True, index=True, nullable=False)
+    make = Column(String(50), default="Honda")
+    engine_capacity = Column(String(20), nullable=True)
+    
+    pct_code = Column(String(20), nullable=True)
+    item_code = Column(String(50), nullable=True)
+    
+    motorcycles = relationship("Motorcycle", back_populates="product_model")
+    prices = relationship("Price", back_populates="product_model")
+    purchase_order_items = relationship("PurchaseOrderItem", back_populates="product_model")
+
+class Invoice(Base):
+    __tablename__ = "invoices"
+
+    id = Column(Integer, primary_key=True, index=True)
+    invoice_number = Column(String(50), unique=True, index=True, nullable=False)
+    pos_id = Column(String(20), nullable=False)
+    usin = Column(String(50), nullable=False) # Updated to be Unique in context, but FBR allows multiple? USIN is unique POS ID basically.
+    datetime = Column(DateTime, default=datetime.utcnow)
+    
+    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=True)
+    customer = relationship("Customer", back_populates="invoices")
+    
+    total_sale_value = Column(Float, nullable=False)
+    total_tax_charged = Column(Float, nullable=False)
+    total_further_tax = Column(Float, default=0.0)
+    total_quantity = Column(Float, nullable=False)
+    total_amount = Column(Float, nullable=False)
+    discount = Column(Float, default=0.0)
+    
+    payment_mode = Column(String(20), default="Cash")
+    
+    fbr_invoice_number = Column(String(50), nullable=True)
+    is_fiscalized = Column(Boolean, default=False)
+    sync_status = Column(String(20), default="PENDING")
+    fbr_response_code = Column(String(10), nullable=True)
+    fbr_response_message = Column(String(255), nullable=True)
+    fbr_full_response = Column(JSON, nullable=True)
+    
+    items = relationship("InvoiceItem", back_populates="invoice", cascade="all, delete-orphan")
+
+class InvoiceItem(Base):
+    __tablename__ = "invoice_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=False)
+    
+    motorcycle_id = Column(Integer, ForeignKey("motorcycles.id"), nullable=True)
+    motorcycle = relationship("Motorcycle")
+    
+    item_code = Column(String(50), nullable=False)
+    item_name = Column(String(100), nullable=False)
+    pct_code = Column(String(20), nullable=True)
+    
+    quantity = Column(Float, nullable=False)
+    tax_rate = Column(Float, nullable=False)
+    sale_value = Column(Float, nullable=False)
+    tax_charged = Column(Float, nullable=False)
+    further_tax = Column(Float, default=0.0)
+    total_amount = Column(Float, nullable=False)
+    discount = Column(Float, default=0.0)
+    
+    invoice = relationship("Invoice", back_populates="items")
+
+class CapturedData(Base):
+    __tablename__ = "captured_data"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=True)
+    father = Column(String(100), nullable=True)
+    cnic = Column(String(20), nullable=True)
+    cell = Column(String(20), nullable=True)
+    address = Column(String(255), nullable=True)
+    
+    chassis_number = Column(String(50), unique=True, index=True, nullable=False)
+    engine_number = Column(String(50), nullable=True)
+    color = Column(String(30), nullable=True)
+    model = Column(String(50), nullable=True)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class Motorcycle(Base):
+    __tablename__ = "motorcycles"
+
+    id = Column(Integer, primary_key=True, index=True)
+    
+    product_model_id = Column(Integer, ForeignKey("product_models.id"), nullable=False)
+    product_model = relationship("ProductModel", back_populates="motorcycles")
+    
+    vin = Column(String(50), unique=True, index=True, nullable=True)
+    chassis_number = Column(String(50), unique=True, index=True, nullable=False)
+    engine_number = Column(String(50), unique=True, index=True, nullable=False)
+    
+    year = Column(Integer, nullable=False)
+    color = Column(String(30), nullable=True)
+    
+    cost_price = Column(Float, nullable=False)
+    sale_price = Column(Float, nullable=False)
+    
+    status = Column(String(20), default="IN_STOCK")
+    purchase_date = Column(DateTime, default=datetime.utcnow)
+    
+    supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True)
+    supplier = relationship("Supplier", back_populates="motorcycles")
+
+    @property
+    def model(self):
+        return self.product_model.model_name if self.product_model else None
+
+    @property
+    def make(self):
+        return self.product_model.make if self.product_model else None
+
+class Price(Base):
+    __tablename__ = "prices"
+
+    id = Column(Integer, primary_key=True, index=True)
+    
+    product_model_id = Column(Integer, ForeignKey("product_models.id"), nullable=False)
+    product_model = relationship("ProductModel", back_populates="prices")
+    
+    base_price = Column(Float, nullable=False)
+    tax_amount = Column(Float, nullable=False)
+    levy_amount = Column(Float, nullable=False)
+    total_price = Column(Float, nullable=False)
+    
+    optional_features = Column(JSON, nullable=True)
+    
+    effective_date = Column(DateTime, default=datetime.utcnow, index=True)
+    expiration_date = Column(DateTime, nullable=True, index=True)
+    currency = Column(String(10), default='Rs')
+
+    __table_args__ = (
+        Index('idx_price_model_active', 'product_model_id', 'expiration_date'),
+    )
+
+    @property
+    def model(self):
+        return self.product_model.model_name if self.product_model else None
+
+class Supplier(Base):
+    __tablename__ = "suppliers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    contact_person = Column(String(100), nullable=True)
+    phone = Column(String(20), nullable=True)
+    email = Column(String(100), nullable=True)
+    address = Column(String(255), nullable=True)
+    
+    motorcycles = relationship("Motorcycle", back_populates="supplier")
+
+class PurchaseOrder(Base):
+    __tablename__ = "purchase_orders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=False)
+    order_date = Column(DateTime, default=datetime.utcnow)
+    status = Column(String(20), default="PENDING")
+    total_amount = Column(Float, default=0.0)
+    
+    supplier = relationship("Supplier")
+    items = relationship("PurchaseOrderItem", back_populates="order", cascade="all, delete-orphan")
+
+class PurchaseOrderItem(Base):
+    __tablename__ = "purchase_order_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    po_id = Column(Integer, ForeignKey("purchase_orders.id"), nullable=False)
+    
+    product_model_id = Column(Integer, ForeignKey("product_models.id"), nullable=False)
+    product_model = relationship("ProductModel", back_populates="purchase_order_items")
+    
+    color = Column(String(30), nullable=True)
+    quantity = Column(Integer, nullable=False)
+    unit_price = Column(Float, nullable=False)
+    total_price = Column(Float, nullable=False)
+    
+    order = relationship("PurchaseOrder", back_populates="items")
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, index=True, nullable=False)
+    hashed_password = Column(String(255), nullable=False)
+    role = Column(String(20), default="sales")
+    is_active = Column(Boolean, default=True)
+
+class FBRConfiguration(Base):
+    __tablename__ = "fbr_configurations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    environment = Column(String(20), unique=True, nullable=False)
+    is_active = Column(Boolean, default=False)
+    
+    api_base_url = Column(String(255), nullable=False)
+    pos_id = Column(String(50), nullable=True)
+    usin = Column(String(50), nullable=True)
+    auth_token = Column(String(500), nullable=True)
+    
+    tax_rate = Column(Float, default=18.0)
+    invoice_type = Column(String(20), default="Standard")
+    discount = Column(Float, default=0.0)
+    
+    pct_code = Column(String(20), default="8711.2010")
+    item_code = Column(String(50), nullable=True)
+    item_name = Column(String(100), nullable=True)
+    
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# --- Spare Parts Ledger ---
+class LedgerTransactionType(str, enum.Enum):
+    CREDIT = "CREDIT"  # Deposit
+    DEBIT = "DEBIT"    # Spare part order
+
+class SpareLedgerTransaction(Base):
+    __tablename__ = "spare_ledger_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(DateTime, default=datetime.utcnow, index=True)
+    trans_type = Column(String(10), nullable=False)
+    amount = Column(Float, nullable=False)
+    reference_number = Column(String(50), nullable=True)
+    description = Column(String(255), nullable=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    month_key = Column(String(7), index=True)  # YYYY-MM of closing cycle (6th..5th)
+
+class SpareLedgerMonthlyClose(Base):
+    __tablename__ = "spare_ledger_monthly_close"
+
+    id = Column(Integer, primary_key=True, index=True)
+    month_key = Column(String(7), unique=True, nullable=False)  # YYYY-MM representing cycle ending on 5th
+    closed_at = Column(DateTime, nullable=False)
+    opening_balance = Column(Float, default=0.0)
+    total_credits = Column(Float, default=0.0)
+    total_debits = Column(Float, default=0.0)
+    closing_balance = Column(Float, default=0.0)
+    carried_forward = Column(Float, default=0.0)
+    status = Column(String(10), default="CLOSED")
+
+class SpareLedgerAudit(Base):
+    __tablename__ = "spare_ledger_audit"
+
+    id = Column(Integer, primary_key=True, index=True)
+    action = Column(String(50), nullable=False)  # CREATE_TXN, UPDATE_TXN, CLOSE_MONTH, EXPORT
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    transaction_id = Column(Integer, ForeignKey("spare_ledger_transactions.id"), nullable=True)
+    details = Column(JSON, nullable=True)

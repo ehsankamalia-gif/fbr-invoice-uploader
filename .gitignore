@@ -1,33 +1,18 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Virtual Environment
 .venv/
 venv/
-env/
-ENV/
-
-# Distribution / Packaging
-build/
-dist/
-*.egg-info/
-
-# Pytest
-.pytest_cache/
-
-# Environment Variables (IMPORTANT)
+__pycache__/
+*.pyc
 .env
-
-# Logs
-*.log
-capture_debug.log
-
-# IDE
+*.db
+fbr_invoices.db
+fbr_invoices.db.bak
 .idea/
 .vscode/
-
-# Project specific generated files
-save_debug.txt
+*.log
+*.sqlite
+capture_debug.log
+fbr_uploader.log
+honda_fbr_backup.sql
+fbr.db
 captured_forms.json
+user_settings.json
