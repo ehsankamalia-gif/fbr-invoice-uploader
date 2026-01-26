@@ -50,7 +50,17 @@ def sync_to_github():
         commit_msg = f"Auto-sync: {time.strftime('%Y-%m-%d %H:%M:%S')}"
         subprocess.run(["git", "commit", "-m", commit_msg], check=True)
         
-        # 3. Push
+        # 3. Pull (Fetch + Merge) to ensure we are up to date
+        print("[Auto-Sync] Pulling latest changes from GitHub...")
+        try:
+            # use --no-edit to avoid opening a text editor for merge messages
+            subprocess.run(["git", "pull", "--no-edit", "origin", "main"], check=True)
+        except subprocess.CalledProcessError:
+            print("[Auto-Sync] Pull failed! You might have merge conflicts.")
+            print("[Auto-Sync] Please resolve conflicts manually in the terminal.")
+            return
+
+        # 4. Push
         # Note: The post-commit hook might have already pushed, but we ensure it here.
         print("[Auto-Sync] Pushing to GitHub...")
         subprocess.run(["git", "push", "origin", "main"], check=True)
