@@ -7,7 +7,7 @@ from watchdog.events import FileSystemEventHandler
 
 # Configuration
 WATCH_DIR = "."
-DEBOUNCE_SECONDS = 5  # Wait for 5 seconds of silence before syncing
+DEBOUNCE_SECONDS = 1  # Sync 1 second after save (Immediate)
 IGNORE_DIRS = {'.git', '.venv', 'venv', '__pycache__', 'dist', 'build', '.idea', '.vscode'}
 IGNORE_EXTENSIONS = {'.pyc', '.pyd', '.log', '.tmp'}
 
@@ -51,6 +51,7 @@ def sync_to_github():
         subprocess.run(["git", "commit", "-m", commit_msg], check=True)
         
         # 3. Push
+        # Note: The post-commit hook might have already pushed, but we ensure it here.
         print("[Auto-Sync] Pushing to GitHub...")
         subprocess.run(["git", "push", "origin", "main"], check=True)
         print("[Auto-Sync] Synchronization Complete!\n")
