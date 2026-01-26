@@ -5,7 +5,7 @@ echo ==========================================
 echo.
 
 echo 1. Downloading latest changes (Git Pull)...
-git pull origin main
+git pull origin main -X ours
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Pull failed! You might have conflicts.
     echo Please resolve conflicts manually.

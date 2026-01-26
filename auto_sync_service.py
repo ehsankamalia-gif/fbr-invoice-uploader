@@ -54,10 +54,10 @@ def sync_to_github():
         print("[Auto-Sync] Pulling latest changes from GitHub...")
         try:
             # use --no-edit to avoid opening a text editor for merge messages
-            subprocess.run(["git", "pull", "--no-edit", "origin", "main"], check=True)
+            # use -X ours to automatically resolve conflicts by keeping LOCAL changes
+            subprocess.run(["git", "pull", "--no-edit", "-X", "ours", "origin", "main"], check=True)
         except subprocess.CalledProcessError:
-            print("[Auto-Sync] Pull failed! You might have merge conflicts.")
-            print("[Auto-Sync] Please resolve conflicts manually in the terminal.")
+            print("[Auto-Sync] Pull failed! Trying to force sync...")
             return
 
         # 4. Push
