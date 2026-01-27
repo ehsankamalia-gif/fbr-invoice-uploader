@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict, Field
@@ -38,6 +39,22 @@ def _pick_env_value(key: str) -> str:
     selected = SANDBOX if FBR_ENV == "SANDBOX" else PRODUCTION
     return selected.get(key) or os.getenv(key, "")
 
+def get_database_url() -> str:
+    """Construct database URL from environment variables."""
+    server = os.getenv("DB_SERVER")
+    if server:
+        user = os.getenv("DB_USER", "root")
+        password = os.getenv("DB_PASSWORD", "")
+        port = os.getenv("DB_PORT", "3306")
+        name = os.getenv("DB_NAME", "fbr_invoice_uploader")
+        
+        # Encode password to handle special characters
+        encoded_password = urllib.parse.quote_plus(password)
+        
+        return f"mysql+pymysql://{user}:{encoded_password}@{server}:{port}/{name}"
+    
+    return os.getenv("DB_URL", "sqlite:///./fbr_invoices.db")
+
 class Settings(BaseModel):
     model_config = ConfigDict(case_sensitive=True)
 
@@ -50,13 +67,12 @@ class Settings(BaseModel):
     FBR_TAX_RATE: float = Field(default_factory=lambda: float(_pick_env_value("FBR_TAX_RATE") or 18.0))
     FBR_PCT_CODE: str = Field(default_factory=lambda: _pick_env_value("FBR_PCT_CODE"))
     
-    # New Fields
     FBR_INVOICE_TYPE: str = Field(default_factory=lambda: _pick_env_value("FBR_INVOICE_TYPE") or "Standard")
     FBR_DISCOUNT: float = Field(default_factory=lambda: float(_pick_env_value("FBR_DISCOUNT") or 0.0))
     FBR_ITEM_CODE: str = Field(default_factory=lambda: _pick_env_value("FBR_ITEM_CODE"))
     FBR_ITEM_NAME: str = Field(default_factory=lambda: _pick_env_value("FBR_ITEM_NAME"))
 
-    DB_URL: str = Field(default_factory=lambda: os.getenv("DB_URL", "sqlite:///./fbr_invoices.db"))
+    DB_URL: str = Field(default_factory=get_database_url)
     LOG_LEVEL: str = Field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
     ENCRYPTION_KEY: str = Field(default_factory=lambda: os.getenv("ENCRYPTION_KEY", ""))
     HONDA_PORTAL_USERNAME: str = Field(default_factory=lambda: os.getenv("HONDA_PORTAL_USERNAME", ""))

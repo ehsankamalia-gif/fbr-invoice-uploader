@@ -18,6 +18,7 @@ from app.ui.dealer_frame import DealerFrame
 from app.ui.print_invoice_frame import PrintInvoiceFrame
 from app.ui.price_list_dialog import PriceListDialog
 from app.ui.fbr_settings_dialog import FBRSettingsDialog
+from app.ui.db_settings_dialog import DatabaseSettingsDialog
 from app.ui.backup_frame import BackupFrame
 from app.ui.spare_ledger_frame import SpareLedgerFrame
 from app.services.dealer_service import dealer_service
@@ -188,6 +189,7 @@ class App(ctk.CTk):
         self.create_menu_group("System Management", "system_grp", "⚙️", [
             ("Backup & Restore", "backup", self.backup_button_event),
             ("FBR Settings", "settings", self.open_fbr_settings),
+            ("Database Connection", "db_settings", self.open_db_settings),
             ("Spare Ledger", "spare_ledger", self.spare_ledger_button_event),
             ("Check for Updates", "update", self.check_updates)
         ])
@@ -1409,6 +1411,9 @@ class App(ctk.CTk):
 
     def open_fbr_settings(self):
         FBRSettingsDialog(self)
+
+    def open_db_settings(self):
+        DatabaseSettingsDialog(self)
 
     def form_capture_button_event(self):
         """Launch the Live Form Capture browser"""

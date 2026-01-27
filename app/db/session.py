@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
-from app.core.config import settings
+from app.core import config
 from app.db.models import Base
 import logging
 
@@ -9,23 +9,49 @@ logger = logging.getLogger(__name__)
 
 # Configure connect_args based on DB type
 connect_args = {}
-if "sqlite" in settings.DB_URL:
+if "sqlite" in config.settings.DB_URL:
     connect_args["check_same_thread"] = False
 
 engine = create_engine(
-    settings.DB_URL, 
+    config.settings.DB_URL, 
     connect_args=connect_args,
     pool_pre_ping=True # Helps with MySQL connection drops
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+def init_db():
+    """Re-initialize the database engine. Useful after settings change."""
+    global engine, SessionLocal
+    
+    # Configure connect_args based on DB type
+    connect_args = {}
+    if "sqlite" in config.settings.DB_URL:
+        connect_args["check_same_thread"] = False
+
+    engine = create_engine(
+        config.settings.DB_URL, 
+        connect_args=connect_args,
+        pool_pre_ping=True
+    )
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def check_connection():
+    """Check if the database connection is working."""
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return True
+    except Exception as e:
+        logger.error(f"DB Connection check failed: {e}")
+        return False
+
 def create_mysql_db_if_missing():
     """
     Checks if the MySQL database exists, and creates it if not.
     This requires parsing the DB_URL to connect to the server without a DB first.
     """
-    if "mysql" not in settings.DB_URL:
+    if "mysql" not in config.settings.DB_URL:
         return
 
     try:
@@ -39,7 +65,7 @@ def create_mysql_db_if_missing():
             # Assumption: DB_URL format is mysql+pymysql://user:pass@host:port/dbname
             try:
                 from sqlalchemy.engine.url import make_url
-                url = make_url(settings.DB_URL)
+                url = make_url(config.settings.DB_URL)
                 db_name = url.database
                 
                 # Create a URL without the database name to connect to the server
@@ -86,6 +112,54 @@ def run_migrations():
     except Exception as e:
         logger.error(f"Migration check failed: {e}")
         print(f"Migration check failed: {e}") # Ensure visibility in console
+
+    # Additional migrations for product_model_id and fbr_configurations
+    try:
+        with engine.connect() as conn:
+            # Check for product_model_id in motorcycles
+            try:
+                conn.execute(text("SELECT product_model_id FROM motorcycles LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding product_model_id to motorcycles table.")
+                # SQLite supports ADD COLUMN. Note: Constraints might not be enforced immediately depending on version/pragma
+                conn.execute(text("ALTER TABLE motorcycles ADD COLUMN product_model_id INTEGER DEFAULT 1")) 
+                conn.commit()
+            
+            # Check for customer_id in invoices
+            try:
+                conn.execute(text("SELECT customer_id FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding customer_id to invoices table.")
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN customer_id INTEGER DEFAULT NULL"))
+                conn.commit()
+
+            # Check for fbr_full_response in invoices
+            try:
+                conn.execute(text("SELECT fbr_full_response FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding fbr_full_response to invoices table.")
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN fbr_full_response TEXT DEFAULT NULL"))
+                conn.commit()
+            
+            # Check for fbr_response_message in invoices
+            try:
+                conn.execute(text("SELECT fbr_response_message FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding fbr_response_message to invoices table.")
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN fbr_response_message TEXT DEFAULT NULL"))
+                conn.commit()
+
+            # Check for fbr_response_code in invoices
+            try:
+                conn.execute(text("SELECT fbr_response_code FROM invoices LIMIT 1"))
+            except Exception:
+                logger.info("Migrating: Adding fbr_response_code to invoices table.")
+                conn.execute(text("ALTER TABLE invoices ADD COLUMN fbr_response_code TEXT DEFAULT NULL"))
+                conn.commit()
+
+    except Exception as e:
+        logger.error(f"Migration phase 2 failed: {e}")
+
 
 def init_db():
     create_mysql_db_if_missing()

@@ -5,27 +5,27 @@ from datetime import datetime as dt
 class InvoiceItemCreate(BaseModel):
     item_code: str
     item_name: str
-    pct_code: Optional[str] = None
+    pct_code: Optional[str] = Field(default=None)
     quantity: float
     tax_rate: float
     sale_value: float
     tax_charged: float # Explicitly passed
     further_tax: float = 0.0 # Added Further Tax
     discount: float = 0.0
-    chassis_number: Optional[str] = None
-    engine_number: Optional[str] = None
-    model_name: Optional[str] = None
-    color: Optional[str] = None
+    chassis_number: Optional[str] = Field(default=None)
+    engine_number: Optional[str] = Field(default=None)
+    model_name: Optional[str] = Field(default=None)
+    color: Optional[str] = Field(default=None)
 
 class InvoiceCreate(BaseModel):
     invoice_number: str
     datetime: dt = Field(default_factory=dt.utcnow)
-    buyer_name: Optional[str] = None
-    buyer_father_name: Optional[str] = None
-    buyer_ntn: Optional[str] = None
-    buyer_cnic: Optional[str] = None
-    buyer_phone: Optional[str] = None
-    buyer_address: Optional[str] = None
+    buyer_name: Optional[str] = Field(default=None)
+    buyer_father_name: Optional[str] = Field(default=None)
+    buyer_ntn: Optional[str] = Field(default=None)
+    buyer_cnic: Optional[str] = Field(default=None)
+    buyer_phone: Optional[str] = Field(default=None)
+    buyer_address: Optional[str] = Field(default=None)
     payment_mode: str = "Cash"
     discount: float = 0.0
     items: List[InvoiceItemCreate]
@@ -38,7 +38,7 @@ class InvoiceResponse(InvoiceCreate):
     total_tax_charged: float
     total_quantity: float
     total_amount: float
-    fbr_invoice_number: Optional[str] = None
+    fbr_invoice_number: Optional[str] = Field(default=None)
     is_fiscalized: bool
     sync_status: str
 
@@ -52,7 +52,7 @@ class PriceBase(BaseModel):
     tax_amount: float
     levy_amount: float
     total_price: float
-    optional_features: Optional[dict] = None
+    optional_features: Optional[dict] = Field(default=None)
     currency: str = "Rs"
 
 class PriceCreate(PriceBase):
@@ -61,7 +61,7 @@ class PriceCreate(PriceBase):
 class PriceResponse(PriceBase):
     id: int
     effective_date: dt
-    expiration_date: Optional[dt] = None
+    expiration_date: Optional[dt] = Field(default=None)
 
     model_config = {
         "from_attributes": True

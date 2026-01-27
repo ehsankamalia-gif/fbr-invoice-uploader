@@ -13,46 +13,52 @@ ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
 class SettingsService:
     def __init__(self):
         self.env_path = ENV_FILE
-        # Do not initialize defaults here to avoid race condition with table creation
-        # self.initialize_defaults() 
+        # Initialize defaults and sync with .env if needed
+        self.initialize_defaults() 
 
     def initialize_defaults(self):
-        """Initialize default configurations in DB if they don't exist."""
+        """Initialize default configurations in DB if they don't exist, and sync from .env if DB is empty."""
+        from app.core.config import SANDBOX, PRODUCTION
+
         db = SessionLocal()
         try:
             # Check for SANDBOX
             sandbox = db.query(FBRConfiguration).filter_by(environment="SANDBOX").first()
             if not sandbox:
-                sandbox = FBRConfiguration(
-                    environment="SANDBOX",
-                    is_active=True,
-                    api_base_url="https://esp.fbr.gov.pk:8243/PT/v1",
-                    pos_id="",
-                    usin="",
-                    auth_token="",
-                    tax_rate=18.0,
-                    invoice_type="Standard",
-                    discount=0.0,
-                    pct_code="8711.2010"
-                )
+                sandbox = FBRConfiguration(environment="SANDBOX", is_active=True)
                 db.add(sandbox)
+            
+            # Sync SANDBOX from .env if DB fields are empty
+            if not sandbox.pos_id and SANDBOX.get("FBR_POS_ID"):
+                sandbox.api_base_url = SANDBOX.get("FBR_API_BASE_URL", "https://esp.fbr.gov.pk:8243/PT/v1")
+                sandbox.pos_id = SANDBOX.get("FBR_POS_ID", "")
+                sandbox.usin = SANDBOX.get("FBR_USIN", "")
+                sandbox.auth_token = SANDBOX.get("FBR_AUTH_TOKEN", "")
+                sandbox.tax_rate = float(SANDBOX.get("FBR_TAX_RATE") or 18.0)
+                sandbox.pct_code = SANDBOX.get("FBR_PCT_CODE", "8711.2010")
+                sandbox.invoice_type = SANDBOX.get("FBR_INVOICE_TYPE", "Standard")
+                sandbox.discount = float(SANDBOX.get("FBR_DISCOUNT") or 0.0)
+                sandbox.item_code = SANDBOX.get("FBR_ITEM_CODE", "")
+                sandbox.item_name = SANDBOX.get("FBR_ITEM_NAME", "")
             
             # Check for PRODUCTION
             prod = db.query(FBRConfiguration).filter_by(environment="PRODUCTION").first()
             if not prod:
-                prod = FBRConfiguration(
-                    environment="PRODUCTION",
-                    is_active=False,
-                    api_base_url="https://gw.fbr.gov.pk/imfs/v1",
-                    pos_id="",
-                    usin="",
-                    auth_token="",
-                    tax_rate=18.0,
-                    invoice_type="Standard",
-                    discount=0.0,
-                    pct_code="8711.2010"
-                )
+                prod = FBRConfiguration(environment="PRODUCTION", is_active=False)
                 db.add(prod)
+                
+            # Sync PRODUCTION from .env if DB fields are empty
+            if not prod.pos_id and PRODUCTION.get("FBR_POS_ID"):
+                prod.api_base_url = PRODUCTION.get("FBR_API_BASE_URL", "https://gw.fbr.gov.pk/imfs/v1")
+                prod.pos_id = PRODUCTION.get("FBR_POS_ID", "")
+                prod.usin = PRODUCTION.get("FBR_USIN", "")
+                prod.auth_token = PRODUCTION.get("FBR_AUTH_TOKEN", "")
+                prod.tax_rate = float(PRODUCTION.get("FBR_TAX_RATE") or 18.0)
+                prod.pct_code = PRODUCTION.get("FBR_PCT_CODE", "8711.2010")
+                prod.invoice_type = PRODUCTION.get("FBR_INVOICE_TYPE", "Standard")
+                prod.discount = float(PRODUCTION.get("FBR_DISCOUNT") or 0.0)
+                prod.item_code = PRODUCTION.get("FBR_ITEM_CODE", "")
+                prod.item_name = PRODUCTION.get("FBR_ITEM_NAME", "")
             
             db.commit()
         except Exception as e:
@@ -211,6 +217,27 @@ class SettingsService:
         self._write_env({
             "HONDA_PORTAL_USERNAME": username,
             "HONDA_PORTAL_PASSWORD": password
+        })
+
+    def get_db_settings(self) -> dict:
+        """Get database connection settings from .env file."""
+        env_vars = self._read_env()
+        return {
+            "server": env_vars.get("DB_SERVER", "localhost"),
+            "port": env_vars.get("DB_PORT", "3306"),
+            "name": env_vars.get("DB_NAME", "fbr_invoice_uploader"),
+            "user": env_vars.get("DB_USER", "root"),
+            "password": env_vars.get("DB_PASSWORD", "")
+        }
+
+    def save_db_settings(self, server, port, name, user, password):
+        """Save database connection settings to .env file."""
+        self._write_env({
+            "DB_SERVER": server,
+            "DB_PORT": port,
+            "DB_NAME": name,
+            "DB_USER": user,
+            "DB_PASSWORD": password
         })
 
 settings_service = SettingsService()

@@ -137,8 +137,8 @@ class BackupService:
         # Format: mysql+pymysql://user:pass@host:port/dbname
         url = urllib.parse.urlparse(settings.DB_URL)
         return {
-            "user": url.username or "root",
-            "password": url.password or "",
+            "user": urllib.parse.unquote(url.username or "root"),
+            "password": urllib.parse.unquote(url.password or ""),
             "host": url.hostname or "localhost",
             "port": url.port or 3306,
             "database": url.path.lstrip('/')

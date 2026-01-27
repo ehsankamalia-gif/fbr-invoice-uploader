@@ -1,5 +1,6 @@
 import os
 import sys
+import urllib.parse
 from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict, Field
@@ -47,6 +48,23 @@ def _pick_env_value(key: str) -> str:
     selected = SANDBOX if CURRENT_FBR_ENV == "SANDBOX" else PRODUCTION
     return selected.get(key) or os.getenv(key, "")
 
+def get_database_url() -> str:
+    """Construct database URL from environment variables."""
+    server = os.getenv("DB_SERVER")
+    if server:
+        user = os.getenv("DB_USER", "root")
+        password = os.getenv("DB_PASSWORD", "")
+        port = os.getenv("DB_PORT", "3306")
+        name = os.getenv("DB_NAME", "fbr_invoice_uploader")
+        
+        # Encode password to handle special characters
+        encoded_password = urllib.parse.quote_plus(password)
+        
+        return f"mysql+pymysql://{user}:{encoded_password}@{server}:{port}/{name}"
+    
+    # Ensure forward slashes for SQLite URL to avoid issues on Windows
+    return os.getenv("DB_URL", f"sqlite:///{BASE_DIR.as_posix()}/fbr_invoices.db")
+
 class Settings(BaseModel):
     model_config = ConfigDict(case_sensitive=True)
 
@@ -66,7 +84,7 @@ class Settings(BaseModel):
     FBR_ITEM_NAME: str = Field(default=_pick_env_value("FBR_ITEM_NAME"))
 
     # Ensure forward slashes for SQLite URL to avoid issues on Windows
-    DB_URL: str = Field(default=os.getenv("DB_URL", f"sqlite:///{BASE_DIR.as_posix()}/fbr_invoices.db"))
+    DB_URL: str = Field(default_factory=get_database_url)
     LOG_LEVEL: str = Field(default=os.getenv("LOG_LEVEL", "INFO"))
     ENCRYPTION_KEY: str = Field(default=os.getenv("ENCRYPTION_KEY", ""))
     HONDA_PORTAL_USERNAME: str = Field(default=os.getenv("HONDA_PORTAL_USERNAME", ""))
@@ -103,22 +121,4 @@ def reload_settings():
         "FBR_ITEM_CODE": os.getenv("FBR_PROD_ITEM_CODE", ""),
         "FBR_ITEM_NAME": os.getenv("FBR_PROD_ITEM_NAME", ""),
     }
-    
-    # Update settings object directly
-    settings.FBR_ENV = CURRENT_FBR_ENV
-    settings.FBR_API_BASE_URL = _pick_env_value("FBR_API_BASE_URL")
-    settings.FBR_POS_ID = _pick_env_value("FBR_POS_ID")
-    settings.FBR_USIN = _pick_env_value("FBR_USIN")
-    settings.FBR_AUTH_TOKEN = _pick_env_value("FBR_AUTH_TOKEN")
-    settings.FBR_TAX_RATE = float(_pick_env_value("FBR_TAX_RATE") or 18.0)
-    settings.FBR_PCT_CODE = _pick_env_value("FBR_PCT_CODE")
-    settings.FBR_INVOICE_TYPE = _pick_env_value("FBR_INVOICE_TYPE") or "Standard"
-    settings.FBR_DISCOUNT = float(_pick_env_value("FBR_DISCOUNT") or 0.0)
-    settings.FBR_ITEM_CODE = _pick_env_value("FBR_ITEM_CODE")
-    settings.FBR_ITEM_NAME = _pick_env_value("FBR_ITEM_NAME")
-    
-    settings.DB_URL = os.getenv("DB_URL", f"sqlite:///{BASE_DIR}/fbr_invoices.db")
-    settings.LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
-    settings.ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", "")
-    settings.HONDA_PORTAL_USERNAME = os.getenv("HONDA_PORTAL_USERNAME", "")
-    settings.HONDA_PORTAL_PASSWORD = os.getenv("HONDA_PORTAL_PASSWORD", "")
+    settings = Settings()
