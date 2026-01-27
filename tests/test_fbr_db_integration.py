@@ -122,7 +122,8 @@ def test_create_invoice_echo_error_rollback(mock_get_active_settings, mock_post_
     # 2. Setup Mock FBR Response (Echo Error)
     mock_post_invoice.return_value = {
         "InvoiceNumber": "INV-TEST-001", # Echoed invoice number
-        "Response": "Success"
+        "Response": "Success",
+        "Code": 100
     }
 
     # 3. Call Service and Expect Error
