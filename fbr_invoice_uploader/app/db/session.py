@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
-from app.core.config import settings
+from app.core import config
 from app.db.models import Base
 import logging
 
@@ -9,25 +9,49 @@ logger = logging.getLogger(__name__)
 
 # Configure connect_args based on DB type
 connect_args = {}
-if "sqlite" in settings.DB_URL:
+if "sqlite" in config.settings.DB_URL:
     connect_args["check_same_thread"] = False
 
-logger.info(f"Initializing Database with URL: {settings.DB_URL}")
-
 engine = create_engine(
-    settings.DB_URL, 
+    config.settings.DB_URL, 
     connect_args=connect_args,
     pool_pre_ping=True # Helps with MySQL connection drops
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+def init_db():
+    """Re-initialize the database engine. Useful after settings change."""
+    global engine, SessionLocal
+    
+    # Configure connect_args based on DB type
+    connect_args = {}
+    if "sqlite" in config.settings.DB_URL:
+        connect_args["check_same_thread"] = False
+
+    engine = create_engine(
+        config.settings.DB_URL, 
+        connect_args=connect_args,
+        pool_pre_ping=True
+    )
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def check_connection():
+    """Check if the database connection is working."""
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return True
+    except Exception as e:
+        logger.error(f"DB Connection check failed: {e}")
+        return False
+
 def create_mysql_db_if_missing():
     """
     Checks if the MySQL database exists, and creates it if not.
     This requires parsing the DB_URL to connect to the server without a DB first.
     """
-    if "mysql" not in settings.DB_URL:
+    if "mysql" not in config.settings.DB_URL:
         return
 
     try:
@@ -41,7 +65,7 @@ def create_mysql_db_if_missing():
             # Assumption: DB_URL format is mysql+pymysql://user:pass@host:port/dbname
             try:
                 from sqlalchemy.engine.url import make_url
-                url = make_url(settings.DB_URL)
+                url = make_url(config.settings.DB_URL)
                 db_name = url.database
                 
                 # Create a URL without the database name to connect to the server

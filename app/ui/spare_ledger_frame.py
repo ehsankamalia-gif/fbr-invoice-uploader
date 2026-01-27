@@ -253,12 +253,17 @@ class SpareLedgerFrame(ctk.CTkFrame):
         # Reference
         ctk.CTkLabel(dialog, text="Reference").pack(pady=(10,5))
         ref_var = ctk.StringVar(value=data['reference'] if edit_mode and data else "")
-        ctk.CTkEntry(dialog, textvariable=ref_var, width=200).pack()
+        ref_entry = ctk.CTkEntry(dialog, textvariable=ref_var, width=200)
+        ref_entry.pack()
 
         # Description
         ctk.CTkLabel(dialog, text="Description").pack(pady=(10,5))
         desc_var = ctk.StringVar(value=data['description'] if edit_mode and data else "")
-        ctk.CTkEntry(dialog, textvariable=desc_var, width=200).pack()
+        desc_entry = ctk.CTkEntry(dialog, textvariable=desc_var, width=200)
+        desc_entry.pack()
+        
+        # Bind Reference Enter -> Focus Description
+        ref_entry.bind("<Return>", lambda e: desc_entry.focus())
 
         # Type (Radio)
         ctk.CTkLabel(dialog, text="Transaction Type").pack(pady=(15,5))
@@ -285,13 +290,15 @@ class SpareLedgerFrame(ctk.CTkFrame):
         credit_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         ctk.CTkLabel(credit_frame, text="Credit Amount").pack()
         credit_amt_var = ctk.StringVar(value=str(data['amount']) if edit_mode and data and data['type'] == 'CREDIT' else "")
-        ctk.CTkEntry(credit_frame, textvariable=credit_amt_var, width=200).pack()
+        credit_entry = ctk.CTkEntry(credit_frame, textvariable=credit_amt_var, width=200)
+        credit_entry.pack()
 
         # Debit Field
         debit_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         ctk.CTkLabel(debit_frame, text="Debit Amount").pack()
         debit_amt_var = ctk.StringVar(value=str(data['amount']) if edit_mode and data and data['type'] == 'DEBIT' else "")
-        ctk.CTkEntry(debit_frame, textvariable=debit_amt_var, width=200).pack()
+        debit_entry = ctk.CTkEntry(debit_frame, textvariable=debit_amt_var, width=200)
+        debit_entry.pack()
 
         # Initial State
         toggle_amount_fields()
@@ -347,6 +354,18 @@ class SpareLedgerFrame(ctk.CTkFrame):
                 # Optional: focus back to amount or reference
             except Exception as e:
                 messagebox.showerror("Error", str(e), parent=dialog)
+
+        # Bind Enter on Amount fields to Save
+        credit_entry.bind("<Return>", lambda e: save())
+        debit_entry.bind("<Return>", lambda e: save())
+
+        # Bind Enter on Description -> Focus Amount
+        def focus_amount(_):
+            if type_var.get() == "CREDIT":
+                credit_entry.focus()
+            else:
+                debit_entry.focus()
+        desc_entry.bind("<Return>", focus_amount)
 
         btn_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         btn_frame.pack(side="bottom", pady=20)

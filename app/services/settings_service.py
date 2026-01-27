@@ -212,4 +212,25 @@ class SettingsService:
             "HONDA_PORTAL_PASSWORD": password
         })
 
+    def get_db_settings(self) -> dict:
+        """Get database connection settings from .env file."""
+        env_vars = self._read_env()
+        return {
+            "server": env_vars.get("DB_SERVER", "localhost"),
+            "port": env_vars.get("DB_PORT", "3306"),
+            "name": env_vars.get("DB_NAME", "fbr_invoice_uploader"),
+            "user": env_vars.get("DB_USER", "root"),
+            "password": env_vars.get("DB_PASSWORD", "")
+        }
+
+    def save_db_settings(self, server, port, name, user, password):
+        """Save database connection settings to .env file."""
+        self._write_env({
+            "DB_SERVER": server,
+            "DB_PORT": port,
+            "DB_NAME": name,
+            "DB_USER": user,
+            "DB_PASSWORD": password
+        })
+
 settings_service = SettingsService()
