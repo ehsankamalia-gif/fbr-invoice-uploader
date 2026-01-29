@@ -412,9 +412,14 @@ class WebImportDialog(ctk.CTkToplevel):
         
         # Load saved URL or default
         saved_url = self.url_manager.get_default_url()
+        
+        # Auto-correct old broken URL
+        if saved_url == "https://portal.atlashonda.com.pk":
+            saved_url = "https://dealers.ahlportal.com"
+            
         if self.url_entry.get():
              self.url_entry.delete(0, "end")
-        self.url_entry.insert(0, saved_url if saved_url else "https://portal.atlashonda.com.pk")
+        self.url_entry.insert(0, saved_url if saved_url else "https://dealers.ahlportal.com")
         self.url_entry.grid(row=0, column=1, padx=(20, 5), pady=10, sticky="ew")
         
         # Save URL Button
@@ -447,8 +452,15 @@ class WebImportDialog(ctk.CTkToplevel):
         )
         self.show_password_check.pack(side="left", padx=5)
         
+        # Explicit Save Button for Credentials
+        self.save_creds_btn = ctk.CTkButton(cred_frame, text="💾 Save", width=60, command=self.save_credentials, fg_color="gray", hover_color="gray30")
+        self.save_creds_btn.pack(side="left", padx=5)
+        
         # Load credentials from settings
-        from app.core.config import settings
+        import app.core.config
+        app.core.config.reload_settings()
+        settings = app.core.config.settings
+        
         if settings.HONDA_PORTAL_USERNAME:
             self.username_entry.insert(0, settings.HONDA_PORTAL_USERNAME)
         if settings.HONDA_PORTAL_PASSWORD:
@@ -505,6 +517,16 @@ class WebImportDialog(ctk.CTkToplevel):
         else:
             self.password_entry.configure(show="*")
 
+    def save_credentials(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        try:
+            from app.services.settings_service import settings_service
+            settings_service.save_honda_credentials(username, password)
+            messagebox.showinfo("Success", "Credentials saved successfully!")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save credentials: {e}")
+
     def open_save_dialog(self):
         url = self.url_entry.get()
         username = self.username_entry.get()
@@ -525,12 +547,24 @@ class WebImportDialog(ctk.CTkToplevel):
             messagebox.showerror("Error", "Please enter a URL first")
             return
             
+        # Auto-save credentials for convenience
+        if username or password:
+            try:
+                from app.services.settings_service import settings_service
+                settings_service.save_honda_credentials(username, password)
+            except Exception as e:
+                print(f"Failed to auto-save credentials: {e}")
+
         try:
             self.scraper.login(url, username=username, password=password)
             self.scrape_btn.configure(state="normal")
             # Also open bookmark dialog to be helpful? No, user just asked for login.
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to launch browser: {e}")
+            msg = str(e)
+            if "ERR_NAME_NOT_RESOLVED" in msg:
+                messagebox.showerror("Connection Error", "Could not connect to the portal.\n\nPlease check:\n1. Your internet connection\n2. The URL (should be https://dealers.ahlportal.com)")
+            else:
+                messagebox.showerror("Error", f"Failed to launch browser: {e}")
 
     def start_scrape(self):
         self.scrape_btn.configure(state="disabled", text="Scraping...")

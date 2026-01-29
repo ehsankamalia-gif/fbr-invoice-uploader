@@ -113,8 +113,8 @@ class FBRClient:
         if not pct_code:
             return "11001010" # Default General Goods
 
-        # Remove dashes and spaces
-        clean_code = str(pct_code).replace("-", "").replace(" ", "").strip()
+        # Remove dashes, spaces, and dots (e.g., 8711.2010 -> 87112010)
+        clean_code = str(pct_code).replace("-", "").replace(" ", "").replace(".", "").strip()
 
         # Check if it's numeric and 8 digits
         if not clean_code.isdigit():
@@ -133,7 +133,12 @@ class FBRClient:
         """
         items = []
         for item in data.get("items", []):
-            pct_code = self._validate_pct_code(item.get("pct_code"))
+            # Prioritize item-level PCT, then settings-level if available
+            raw_pct = item.get("pct_code")
+            if not raw_pct and settings.get("pct_code"):
+                raw_pct = settings.get("pct_code")
+                
+            pct_code = self._validate_pct_code(raw_pct)
             
             items.append({
                 "ItemCode": item.get("item_code"),
@@ -195,6 +200,7 @@ class FBRClient:
             "TotalSaleValue": data.get("total_sale_value"),
             "TotalTaxCharged": data.get("total_tax_charged"),
             "TotalFurtherTax": data.get("total_further_tax", 0.0),
+            "FurtherTax": data.get("total_further_tax", 0.0), # Added explicit FurtherTax field as per FBR requirements
             "PaymentMode": mode_int,
             "InvoiceType": 1
         }

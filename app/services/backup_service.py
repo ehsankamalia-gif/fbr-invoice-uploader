@@ -151,15 +151,31 @@ class BackupService:
         if path_tool:
             return path_tool
             
-        # 2. Check common Laragon paths
-        laragon_path = Path("C:/laragon/bin/mysql")
-        if laragon_path.exists():
-            # Find latest version
-            versions = sorted(laragon_path.glob("mysql-*"), reverse=True)
-            for v in versions:
-                tool_path = v / "bin" / f"{tool_name}.exe"
-                if tool_path.exists():
-                    return str(tool_path)
+        # 2. Dynamic Search for Laragon in parent directories
+        current_path = Path.cwd()
+        # Search up to root
+        for parent in [current_path] + list(current_path.parents):
+            if parent.name.lower() == "laragon":
+                # Found Laragon root
+                mysql_bin = parent / "bin" / "mysql"
+                if mysql_bin.exists():
+                    # Find latest version
+                    versions = sorted(mysql_bin.glob("mysql-*"), reverse=True)
+                    for v in versions:
+                        tool_path = v / "bin" / f"{tool_name}.exe"
+                        if tool_path.exists():
+                            return str(tool_path)
+
+        # 3. Check common Laragon paths (Hardcoded fallbacks)
+        common_drives = ["C:", "D:", "E:", "F:", "G:"]
+        for drive in common_drives:
+             laragon_path = Path(f"{drive}/laragon/bin/mysql")
+             if laragon_path.exists():
+                versions = sorted(laragon_path.glob("mysql-*"), reverse=True)
+                for v in versions:
+                    tool_path = v / "bin" / f"{tool_name}.exe"
+                    if tool_path.exists():
+                        return str(tool_path)
         
         return None
 

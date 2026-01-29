@@ -11,7 +11,8 @@ class BackupFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0) # Title
         self.grid_rowconfigure(1, weight=0) # Settings
-        self.grid_rowconfigure(2, weight=1) # History
+        self.grid_rowconfigure(2, weight=0) # History Label
+        self.grid_rowconfigure(3, weight=1) # History List
 
         # Title
         self.title_label = ctk.CTkLabel(self, text="Backup & Restore", font=ctk.CTkFont(size=24, weight="bold"))
@@ -58,29 +59,31 @@ class BackupFrame(ctk.CTkFrame):
         self.local_path_entry = ctk.CTkEntry(self.settings_frame)
         self.local_path_entry.insert(0, backup_service.config.local_path)
         self.local_path_entry.grid(row=2, column=1, padx=10, sticky="ew", columnspan=3)
-        ctk.CTkButton(self.settings_frame, text="Browse", width=60, command=self.browse_local).grid(row=2, column=4, padx=10)
+        ctk.CTkButton(self.settings_frame, text="Browse", width=80, command=self.browse_local).grid(row=2, column=4, padx=10)
 
         ctk.CTkLabel(self.settings_frame, text="Cloud/Sync Path:").grid(row=3, column=0, padx=20, pady=5, sticky="w")
         self.cloud_path_entry = ctk.CTkEntry(self.settings_frame)
         self.cloud_path_entry.insert(0, backup_service.config.cloud_path)
         self.cloud_path_entry.grid(row=3, column=1, padx=10, sticky="ew", columnspan=3)
-        ctk.CTkButton(self.settings_frame, text="Browse", width=60, command=self.browse_cloud).grid(row=3, column=4, padx=10)
+        ctk.CTkButton(self.settings_frame, text="Browse", width=80, command=self.browse_cloud).grid(row=3, column=4, padx=10)
 
         # Actions
         self.action_frame = ctk.CTkFrame(self.settings_frame, fg_color="transparent")
         self.action_frame.grid(row=4, column=0, columnspan=5, pady=20)
 
-        self.backup_btn = ctk.CTkButton(self.action_frame, text="Backup Now", command=self.create_manual_backup, fg_color="green", hover_color="darkgreen")
+        self.backup_btn = ctk.CTkButton(self.action_frame, text="Backup Now", width=150, height=35,
+                                      command=self.create_manual_backup, fg_color="green", hover_color="darkgreen",
+                                      font=ctk.CTkFont(size=14, weight="bold"))
         self.backup_btn.pack(side="left", padx=10)
 
-        ctk.CTkLabel(self.action_frame, text="Auto-saves on change").pack(side="left", padx=10)
+        ctk.CTkLabel(self.action_frame, text="Auto-saves on change", text_color="gray").pack(side="left", padx=10)
 
         self.status_label = ctk.CTkLabel(self.action_frame, text="", text_color="gray")
         self.status_label.pack(side="right", padx=10)
 
         # --- History Section ---
         self.history_label = ctk.CTkLabel(self, text="Backup History", font=ctk.CTkFont(size=18, weight="bold"))
-        self.history_label.grid(row=2, column=0, padx=20, pady=(10, 5), sticky="w")
+        self.history_label.grid(row=2, column=0, padx=20, pady=(20, 5), sticky="w")
 
         self.history_frame = ctk.CTkScrollableFrame(self)
         self.history_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")

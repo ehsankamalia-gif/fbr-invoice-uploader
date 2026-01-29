@@ -92,14 +92,6 @@ class PriceListDialog(ctk.CTkToplevel):
         # Clear existing
         for item in self.tree.get_children():
             self.tree.delete(item)
-
-    def ensure_visible(self, event):
-        try:
-            focus_item = self.tree.focus()
-            if focus_item:
-                self.tree.see(focus_item)
-        except Exception:
-            pass
             
         # Load from service
         for p in price_service.get_all_active_prices():
@@ -120,6 +112,14 @@ class PriceListDialog(ctk.CTkToplevel):
                 f"{p.levy_amount:,.0f}",
                 f"{p.total_price:,.0f}"
             ))
+
+    def ensure_visible(self, event):
+        try:
+            focus_item = self.tree.focus()
+            if focus_item:
+                self.tree.see(focus_item)
+        except Exception:
+            pass
 
     def get_selected_item(self):
         selection = self.tree.selection()

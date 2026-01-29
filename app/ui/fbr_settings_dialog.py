@@ -173,9 +173,12 @@ class FBRSettingsDialog(ctk.CTkToplevel):
         def create_card(col, title, data, is_active):
             card = ctk.CTkFrame(cards_container, border_width=2 if is_active else 0, border_color=status_color)
             card.grid(row=0, column=col, sticky="nsew", padx=10, pady=5)
-            card.grid_columnconfigure(1, weight=1)
             
-            ctk.CTkLabel(card, text=title, font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, columnspan=2, pady=5)
+            # Better column distribution
+            card.grid_columnconfigure(0, weight=1)
+            card.grid_columnconfigure(1, weight=2)
+            
+            ctk.CTkLabel(card, text=title, font=ctk.CTkFont(size=14, weight="bold")).grid(row=0, column=0, columnspan=2, pady=(10, 15), sticky="ew")
             
             rows = [
                 ("POS ID", data.get('pos_id')),
@@ -185,8 +188,11 @@ class FBRSettingsDialog(ctk.CTkToplevel):
             ]
             
             for i, (lbl, val) in enumerate(rows):
-                ctk.CTkLabel(card, text=f"{lbl}:", text_color="gray", font=ctk.CTkFont(size=11)).grid(row=i+1, column=0, padx=5, sticky="e")
-                ctk.CTkLabel(card, text=str(val or "-"), font=ctk.CTkFont(size=11)).grid(row=i+1, column=1, padx=5, sticky="w")
+                ctk.CTkLabel(card, text=f"{lbl}", text_color=("gray50", "gray70"), font=ctk.CTkFont(size=12, weight="bold")).grid(row=i+1, column=0, padx=(15, 5), pady=4, sticky="e")
+                ctk.CTkLabel(card, text=str(val or "-"), font=ctk.CTkFont(size=12)).grid(row=i+1, column=1, padx=(5, 15), pady=4, sticky="w")
+            
+            # Bottom padding
+            ctk.CTkLabel(card, text="", height=5).grid(row=len(rows)+1, column=0, columnspan=2)
 
         create_card(0, "Sandbox", all_settings['sandbox'], active_env == "SANDBOX")
         create_card(1, "Production", all_settings['production'], active_env == "PRODUCTION")

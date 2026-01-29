@@ -169,17 +169,12 @@ class PriceService:
                 db.add(product_model)
                 db.flush()
 
-            # 2. Expire current active price
-            current_price = db.query(Price).filter(
+            # 2. Expire ALL current active prices
+            now = datetime.utcnow()
+            db.query(Price).filter(
                 Price.product_model_id == product_model.id,
                 Price.expiration_date.is_(None)
-            ).first()
-            
-            now = datetime.utcnow()
-            
-            if current_price:
-                current_price.expiration_date = now
-                db.add(current_price)
+            ).update({Price.expiration_date: now}, synchronize_session=False)
             
             # 3. Create new price
             new_price = Price(
@@ -266,14 +261,16 @@ class PriceService:
             close_db = True
             
         try:
-            current_price = db.query(Price).join(ProductModel).filter(
-                ProductModel.model_name == model,
-                Price.expiration_date.is_(None)
-            ).first()
+            # Get product model first
+            product_model = db.query(ProductModel).filter(ProductModel.model_name == model).first()
             
-            if current_price:
-                current_price.expiration_date = datetime.utcnow()
-                db.add(current_price)
+            if product_model:
+                # Expire ALL active prices for this model
+                db.query(Price).filter(
+                    Price.product_model_id == product_model.id,
+                    Price.expiration_date.is_(None)
+                ).update({Price.expiration_date: datetime.utcnow()}, synchronize_session=False)
+                
                 db.commit()
                 
             # Invalidate cache

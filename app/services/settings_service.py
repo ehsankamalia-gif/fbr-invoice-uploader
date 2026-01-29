@@ -42,7 +42,7 @@ class SettingsService:
                 prod = FBRConfiguration(
                     environment="PRODUCTION",
                     is_active=False,
-                    api_base_url="https://gw.fbr.gov.pk/imfs/v1",
+                    api_base_url="https://gw.fbr.gov.pk/imsp/v1/api/Live",
                     pos_id="",
                     usin="",
                     auth_token="",
@@ -52,6 +52,14 @@ class SettingsService:
                     pct_code="8711.2010"
                 )
                 db.add(prod)
+            else:
+                # Fix for incorrect default URL if present (Auto-Correction)
+                # Known bad URLs: imfs/v1, or without api/Live
+                if prod.api_base_url in ["https://gw.fbr.gov.pk/imfs/v1", "https://gw.fbr.gov.pk/imfs/v1/PostData"]:
+                    prod.api_base_url = "https://gw.fbr.gov.pk/imsp/v1/api/Live"
+                    logger.info("Auto-corrected Production API URL to https://gw.fbr.gov.pk/imsp/v1/api/Live")
+                    # Ensure we don't overwrite user customizations if they are different, 
+                    # but here we specifically target the known bad default we shipped.
             
             db.commit()
         except Exception as e:

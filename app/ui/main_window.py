@@ -15,6 +15,7 @@ from app.api.schemas import InvoiceCreate, InvoiceItemCreate
 from app.ui.inventory_frame import InventoryFrame
 from app.ui.reports_frame import ReportsFrame
 from app.ui.dealer_frame import DealerFrame
+from app.ui.customer_frame import CustomerFrame
 from app.ui.print_invoice_frame import PrintInvoiceFrame
 from app.ui.price_list_dialog import PriceListDialog
 from app.ui.fbr_settings_dialog import FBRSettingsDialog
@@ -35,6 +36,50 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 
 from app.db.models import Motorcycle, Invoice, Customer, CustomerType, CapturedData
+
+
+class ToolTip(object):
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+        self.tip_window = None
+        self.id = None
+        self.x = self.y = 0
+        self.widget.bind("<Enter>", self.enter)
+        self.widget.bind("<Leave>", self.leave)
+
+    def enter(self, event=None):
+        self.schedule()
+
+    def leave(self, event=None):
+        self.unschedule()
+        self.hidetip()
+
+    def schedule(self):
+        self.unschedule()
+        self.id = self.widget.after(500, self.showtip)
+
+    def unschedule(self):
+        id = self.id
+        self.id = None
+        if id:
+            self.widget.after_cancel(id)
+
+    def showtip(self, event=None):
+        x = self.widget.winfo_rootx() + 20
+        y = self.widget.winfo_rooty() + 20
+        self.tip_window = ctk.CTkToplevel(self.widget)
+        self.tip_window.wm_overrideredirect(True)
+        self.tip_window.wm_geometry("+%d+%d" % (x, y))
+        
+        label = ctk.CTkLabel(self.tip_window, text=self.text, text_color="white", fg_color="#333333", corner_radius=5, width=150)
+        label.pack()
+
+    def hidetip(self):
+        tw = self.tip_window
+        self.tip_window = None
+        if tw:
+            tw.destroy()
 
 class App(ctk.CTk):
     def __init__(self):
@@ -58,6 +103,7 @@ class App(ctk.CTk):
         self.create_invoice_frame()
         self.create_reports_frame()
         self.create_dealer_frame()
+        self.create_customer_frame()
         self.create_print_frame()
         self.create_backup_frame()
         self.create_spare_ledger_frame()
@@ -166,9 +212,10 @@ class App(ctk.CTk):
             ("Reports", "reports", self.reports_button_event)
         ])
 
-        # 3. Inventory & Dealers
-        self.create_menu_group("Inventory & Dealers", "inventory_grp", "📦", [
+        # 3. Inventory & CRM
+        self.create_menu_group("Inventory & CRM", "inventory_grp", "📦", [
             ("Inventory", "inventory", self.inventory_button_event),
+            ("Customers", "customer", self.customer_button_event),
             ("Dealers", "dealer", self.dealer_button_event),
             ("Price List", "pricelist", self.open_price_list)
         ])
@@ -194,6 +241,7 @@ class App(ctk.CTk):
         self.print_inv_button = self.nav_buttons.get("print_invoice")
         self.reports_button = self.nav_buttons.get("reports")
         self.inventory_button = self.nav_buttons.get("inventory")
+        self.customer_button = self.nav_buttons.get("customer")
         self.dealer_button = self.nav_buttons.get("dealer")
         self.backup_button = self.nav_buttons.get("backup")
         self.captured_data_button = self.nav_buttons.get("captured_data")
@@ -536,39 +584,46 @@ class App(ctk.CTk):
         if not ocr_service.is_available():
             self.scan_btn.grid_forget() # Hide if no OCR
 
+        # 1.6 NTN (National Tax Number)
+        ctk.CTkLabel(self.form_frame, text="NTN").grid(row=2, column=0, padx=10, pady=5, sticky="e")
+        self.buyer_ntn_var = ctk.StringVar()
+        self.buyer_ntn_var.trace_add("write", self.validate_ntn_input)
+        self.buyer_ntn_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_ntn_var)
+        self.buyer_ntn_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+
         # 2. Buyer Name
-        ctk.CTkLabel(self.form_frame, text="Buyer Name").grid(row=2, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Buyer Name").grid(row=3, column=0, padx=10, pady=5, sticky="e")
         self.buyer_name_var = ctk.StringVar()
         self.buyer_name_var.trace_add("write", self.validate_buyer_name)
         self.buyer_name_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_name_var)
-        self.buyer_name_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_name_entry.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
 
         # 3. Father
-        ctk.CTkLabel(self.form_frame, text="Father Name").grid(row=3, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Father Name").grid(row=4, column=0, padx=10, pady=5, sticky="e")
         self.father_name_var = ctk.StringVar()
         self.father_name_var.trace_add("write", self.validate_father_name)
         self.buyer_father_entry = ctk.CTkEntry(self.form_frame, textvariable=self.father_name_var)
-        self.buyer_father_entry.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_father_entry.grid(row=4, column=1, padx=10, pady=5, sticky="ew")
 
         # 4. Cell
-        ctk.CTkLabel(self.form_frame, text="Cell (Phone)").grid(row=4, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Cell (Phone)").grid(row=5, column=0, padx=10, pady=5, sticky="e")
         self.buyer_cell_var = ctk.StringVar()
         self.buyer_cell_var.trace_add("write", self.validate_cell_input)
         self.buyer_cell_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_cell_var, placeholder_text="03XXXXXXXXX")
-        self.buyer_cell_entry.grid(row=4, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_cell_entry.grid(row=5, column=1, padx=10, pady=5, sticky="ew")
 
         # 5. Address
-        ctk.CTkLabel(self.form_frame, text="Address").grid(row=5, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Address").grid(row=6, column=0, padx=10, pady=5, sticky="e")
         self.buyer_address_var = ctk.StringVar()
         self.buyer_address_var.trace_add("write", self.validate_address)
         self.buyer_address_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_address_var)
-        self.buyer_address_entry.grid(row=5, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_address_entry.grid(row=6, column=1, padx=10, pady=5, sticky="ew")
 
         # 5.5 Model & Color
-        ctk.CTkLabel(self.form_frame, text="Model").grid(row=6, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Model").grid(row=7, column=0, padx=10, pady=5, sticky="e")
         
         self.model_color_frame = ctk.CTkFrame(self.form_frame, fg_color="transparent")
-        self.model_color_frame.grid(row=6, column=1, padx=10, pady=5, sticky="ew")
+        self.model_color_frame.grid(row=7, column=1, padx=10, pady=5, sticky="ew")
         
         # Get active models from DB
         active_prices = price_service.get_all_active_prices()
@@ -585,16 +640,16 @@ class App(ctk.CTk):
         self.color_combo.set("") # Start empty
 
         # 6. Payment Mode (New)
-        ctk.CTkLabel(self.form_frame, text="Payment Mode").grid(row=7, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Payment Mode").grid(row=8, column=0, padx=10, pady=5, sticky="e")
         self.payment_mode_combo = ctk.CTkOptionMenu(self.form_frame, values=["Cash", "Credit", "Cheque", "Online"])
-        self.payment_mode_combo.grid(row=7, column=1, padx=10, pady=5, sticky="ew")
+        self.payment_mode_combo.grid(row=8, column=1, padx=10, pady=5, sticky="ew")
 
         # 7. Chassis Number
-        ctk.CTkLabel(self.form_frame, text="Chassis Number").grid(row=8, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Chassis Number").grid(row=9, column=0, padx=10, pady=5, sticky="e")
         self.chassis_var = ctk.StringVar()
         self.chassis_var.trace_add("write", self.validate_chassis)
         self.chassis_entry = ctk.CTkEntry(self.form_frame, textvariable=self.chassis_var)
-        self.chassis_entry.grid(row=8, column=1, padx=10, pady=5, sticky="ew")
+        self.chassis_entry.grid(row=9, column=1, padx=10, pady=5, sticky="ew")
         self.chassis_entry.bind("<KeyRelease>", self.on_chassis_key_release)
         self.chassis_entry.bind("<Down>", self.on_suggestion_nav)
         self.chassis_entry.bind("<Up>", self.on_suggestion_nav)
@@ -608,14 +663,15 @@ class App(ctk.CTk):
         
         # Container for Chassis Tools (Checkbox + Feedback) in Column 2
         self.chassis_tools_frame = ctk.CTkFrame(self.form_frame, fg_color="transparent")
-        self.chassis_tools_frame.grid(row=8, column=2, padx=5, pady=5, sticky="w")
+        self.chassis_tools_frame.grid(row=9, column=2, padx=5, pady=5, sticky="w")
 
         # Verify Chassis Checkbox (New)
         self.verify_chassis_var = ctk.BooleanVar(value=False)
-        self.verify_chassis_chk = ctk.CTkCheckBox(self.chassis_tools_frame, text="", width=24,
+        self.verify_chassis_chk = ctk.CTkCheckBox(self.chassis_tools_frame, text="Manual", width=70,
                                                 variable=self.verify_chassis_var,
                                                 command=self.on_verify_chassis_change)
         self.verify_chassis_chk.pack(side="left", padx=(0, 5))
+        ToolTip(self.verify_chassis_chk, "Bypass chassis verification (Allow submission if not in stock)")
 
         # Chassis Feedback Label
         self.chassis_feedback_label = ctk.CTkLabel(self.chassis_tools_frame, text="", width=20)
@@ -623,57 +679,57 @@ class App(ctk.CTk):
 
         # Check Stock Button - Moved to Column 3
         self.check_stock_btn = ctk.CTkButton(self.form_frame, text="Check Stock", width=100, command=self.check_stock)
-        self.check_stock_btn.grid(row=8, column=3, padx=10, pady=5)
+        self.check_stock_btn.grid(row=9, column=3, padx=10, pady=5)
 
         # 8. Engine Number
-        ctk.CTkLabel(self.form_frame, text="Engine Number").grid(row=9, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Engine Number").grid(row=10, column=0, padx=10, pady=5, sticky="e")
         self.engine_var = ctk.StringVar()
         self.engine_var.trace_add("write", self.validate_engine)
         self.engine_entry = ctk.CTkEntry(self.form_frame, textvariable=self.engine_var)
-        self.engine_entry.grid(row=9, column=1, padx=10, pady=5, sticky="ew")
+        self.engine_entry.grid(row=10, column=1, padx=10, pady=5, sticky="ew")
 
         # 9. Quantity
-        ctk.CTkLabel(self.form_frame, text="Quantity").grid(row=10, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Quantity").grid(row=11, column=0, padx=10, pady=5, sticky="e")
         
         self.qty_var = ctk.StringVar(value="1")
         self.qty_var.trace_add("write", lambda *args: self.check_form_validity())
         
         # Entry in Column 1 (Main area)
         self.qty_entry = ctk.CTkEntry(self.form_frame, textvariable=self.qty_var, state="disabled")
-        self.qty_entry.grid(row=10, column=1, padx=10, pady=5, sticky="ew")
+        self.qty_entry.grid(row=11, column=1, padx=10, pady=5, sticky="ew")
         
         # Checkbox in Column 2 (Right side - Red Dot Position)
         self.manual_qty_var = ctk.BooleanVar(value=False)
         self.manual_qty_chk = ctk.CTkCheckBox(self.form_frame, text="Edit", variable=self.manual_qty_var, width=60, command=self.toggle_quantity_mode)
-        self.manual_qty_chk.grid(row=10, column=2, padx=5, pady=5, sticky="w")
+        self.manual_qty_chk.grid(row=11, column=2, padx=5, pady=5, sticky="w")
 
 
 
         # 10. Amount Excluding Sale Tax
-        ctk.CTkLabel(self.form_frame, text="Amount (Excl. Tax)").grid(row=11, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Amount (Excl. Tax)").grid(row=12, column=0, padx=10, pady=5, sticky="e")
         self.amount_var = ctk.StringVar()
         self.amount_var.trace_add("write", lambda *args: self.check_form_validity())
         self.amount_excl_entry = ctk.CTkEntry(self.form_frame, textvariable=self.amount_var)
-        self.amount_excl_entry.grid(row=11, column=1, padx=10, pady=5, sticky="ew")
+        self.amount_excl_entry.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
         # Bind event to auto-calc tax
         self.amount_excl_entry.bind("<KeyRelease>", self.calculate_totals)
 
         # 11. Sale Tax (Read Only or Editable)
-        ctk.CTkLabel(self.form_frame, text="Sale Tax").grid(row=12, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Sale Tax").grid(row=13, column=0, padx=10, pady=5, sticky="e")
         self.tax_entry = ctk.CTkEntry(self.form_frame)
-        self.tax_entry.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
+        self.tax_entry.grid(row=13, column=1, padx=10, pady=5, sticky="ew")
         self.tax_entry.bind("<KeyRelease>", self.calculate_totals)
 
         # 12. Further Tax
-        ctk.CTkLabel(self.form_frame, text="Further Tax").grid(row=13, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Further Tax").grid(row=14, column=0, padx=10, pady=5, sticky="e")
         self.further_tax_entry = ctk.CTkEntry(self.form_frame)
-        self.further_tax_entry.grid(row=13, column=1, padx=10, pady=5, sticky="ew")
+        self.further_tax_entry.grid(row=14, column=1, padx=10, pady=5, sticky="ew")
         self.further_tax_entry.bind("<KeyRelease>", self.calculate_totals)
 
         # 13. Price (Total)
-        ctk.CTkLabel(self.form_frame, text="Total Price (Incl. Tax)").grid(row=14, column=0, padx=10, pady=5, sticky="e")
+        ctk.CTkLabel(self.form_frame, text="Total Price (Incl. Tax)").grid(row=15, column=0, padx=10, pady=5, sticky="e")
         self.total_price_entry = ctk.CTkEntry(self.form_frame)
-        self.total_price_entry.grid(row=14, column=1, padx=10, pady=5, sticky="ew")
+        self.total_price_entry.grid(row=15, column=1, padx=10, pady=5, sticky="ew")
 
         # Button Frame for Submit and Reset
         self.btn_frame = ctk.CTkFrame(self.invoice_frame, fg_color="transparent")
@@ -694,9 +750,10 @@ class App(ctk.CTk):
     def setup_keyboard_navigation(self):
         """Sets up Enter key navigation through form fields in a specific sequence."""
         # Define the sequence of widgets
-        # Sequence: ID -> Name -> Father -> Cell -> Address -> Model -> Color -> Payment -> Chassis -> Engine
+        # Sequence: ID -> NTN -> Name -> Father -> Cell -> Address -> Model -> Color -> Payment -> Chassis -> Engine
         self.nav_sequence = [
             self.buyer_cnic_entry,
+            self.buyer_ntn_entry,
             self.buyer_name_entry,
             self.buyer_father_entry,
             self.buyer_cell_entry,
@@ -784,11 +841,8 @@ class App(ctk.CTk):
 
     def on_last_field_enter(self, event):
         """Handles Enter key on the last field (Engine Number)."""
-        # Validate that all required fields are populated
-        if self.validate_all_fields():
-            self.submit_invoice()
-        else:
-             messagebox.showwarning("Validation Error", "Please fill all required fields before submitting.")
+        # Directly trigger submit logic which handles its own validation
+        self.submit_invoice()
              
     def validate_all_fields(self):
         """Checks if all fields in the navigation sequence have values."""
@@ -828,6 +882,9 @@ class App(ctk.CTk):
             qty = float(self.qty_entry.get() or 0)
             amount_excl = float(self.amount_excl_entry.get() or 0)
             
+            # Identify which widget has focus to prevent overwriting user input while typing
+            focused_widget = self.focus_get()
+
             # Default values if no price object
             tax_charged = 0.0
             total_further_tax = 0.0
@@ -843,11 +900,7 @@ class App(ctk.CTk):
                 total_further_tax = further_tax_per_unit * qty
                 
                 # We trust the user/price table for the base amount. 
-                # If the user edited the Amount(Excl), we still use the fixed tax from table 
-                # (assuming tax is based on MRP/Table Price, not transactional price, or user didn't edit).
-                # But to be perfectly consistent with "Values from price table", 
-                # we should probably verify if amount_excl matches base_price.
-                # For now, we calculate total based on whatever is in the Amount field + Fixed Taxes.
+                # If the user edited the Amount(Excl), we still use the fixed tax from table.
                 
             else:
                 # Fallback to Rate-based calculation (Legacy/Manual mode)
@@ -857,23 +910,42 @@ class App(ctk.CTk):
                 
                 sale_value = amount_excl * qty
                 tax_charged = (sale_value * tax_rate) / 100
-                total_further_tax = 0.0 # No further tax in manual mode unless added logic
+                
+                # Preserver existing Further Tax in manual mode (don't force to 0)
+                try:
+                    total_further_tax = float(self.further_tax_entry.get() or 0)
+                except ValueError:
+                    total_further_tax = 0.0
             
+            # Allow manual override if user is currently typing in these fields
+            if focused_widget == self.tax_entry:
+                try:
+                    tax_charged = float(self.tax_entry.get() or 0)
+                except ValueError:
+                    pass
+            
+            if focused_widget == self.further_tax_entry:
+                try:
+                    total_further_tax = float(self.further_tax_entry.get() or 0)
+                except ValueError:
+                    pass
+
             # Final Calculation
             sale_value_total = amount_excl * qty
             total_amount = sale_value_total + tax_charged + total_further_tax
             
-            # Update UI Fields
-            self.tax_entry.delete(0, 'end')
-            self.tax_entry.insert(0, f"{tax_charged:.2f}")
+            # Update UI Fields (Only if not focused, to avoid fighting with user input)
+            if focused_widget != self.tax_entry:
+                self.tax_entry.delete(0, 'end')
+                self.tax_entry.insert(0, f"{tax_charged:.2f}")
             
-            self.further_tax_entry.delete(0, 'end')
-            self.further_tax_entry.insert(0, f"{total_further_tax:.2f}")
+            if focused_widget != self.further_tax_entry:
+                self.further_tax_entry.delete(0, 'end')
+                self.further_tax_entry.insert(0, f"{total_further_tax:.2f}")
             
-            self.total_price_entry.delete(0, 'end')
-            self.total_price_entry.insert(0, f"{total_amount:.2f}")
-            
-
+            if focused_widget != self.total_price_entry:
+                self.total_price_entry.delete(0, 'end')
+                self.total_price_entry.insert(0, f"{total_amount:.2f}")
             
             self.check_form_validity()
             
@@ -1032,6 +1104,51 @@ class App(ctk.CTk):
 
         self.check_form_validity()
 
+    def validate_ntn_input(self, *args):
+        value = self.buyer_ntn_var.get()
+        try:
+            cursor_pos = self.buyer_ntn_entry.index(ctk.INSERT)
+        except:
+            cursor_pos = len(value)
+        
+        if value == "":
+            self.check_form_validity()
+            return
+        
+        # Allow digits and dash (hyphen) for NTN like "1234567-8"
+        cleaned = ''.join(c for c in value if c.isdigit() or c == '-')
+        
+        if value != cleaned:
+            # Preserve cursor relative to allowed chars
+            # Subtract count of removed chars before cursor
+            removed_before = 0
+            for i, c in enumerate(value[:cursor_pos]):
+                if not (c.isdigit() or c == '-'):
+                    removed_before += 1
+            
+            new_cursor = cursor_pos - removed_before
+            
+            self.buyer_ntn_var.set(cleaned)
+            
+            # Defer cursor restore to avoid UI reset races
+            if hasattr(self, '_ntn_cursor_job') and self._ntn_cursor_job:
+                try:
+                    self.after_cancel(self._ntn_cursor_job)
+                except:
+                    pass
+            
+            def set_cursor():
+                try:
+                    self.buyer_ntn_entry.icursor(new_cursor)
+                except:
+                    pass
+                self._ntn_cursor_job = None
+            
+            self._ntn_cursor_job = self.after(1, set_cursor)
+            return
+        
+        self.check_form_validity()
+
     def check_form_validity(self):
         # List of required fields
         # Ensure all variables are initialized before checking
@@ -1069,7 +1186,13 @@ class App(ctk.CTk):
     def validate_cnic_input(self, *args):
         value = self.buyer_cnic_var.get()
         
-        # Remove any non-digit/non-dash characters (though we mainly want to control digits and dashes)
+        # Get current cursor position to restore it later
+        try:
+            cursor_pos = self.buyer_cnic_entry.index(ctk.INSERT)
+        except:
+            cursor_pos = len(value)
+
+        # Remove any non-digit/non-dash characters
         clean_digits = ''.join(filter(str.isdigit, value))
         
         formatted = clean_digits
@@ -1083,10 +1206,37 @@ class App(ctk.CTk):
             formatted = formatted[:15]
             
         if value != formatted:
+            # Adjust cursor position
+            # Calculate clean cursor position (relative to digits only)
+            non_digits_before = sum(1 for c in value[:cursor_pos] if not c.isdigit())
+            clean_pos = cursor_pos - non_digits_before
+            
+            # Map to formatted position based on fixed dashes
+            new_cursor = clean_pos
+            if clean_pos > 5:
+                new_cursor += 1
+            if clean_pos > 12:
+                new_cursor += 1
+            
             self.buyer_cnic_var.set(formatted)
-            # If we just reformatted, we can still check if it's complete and valid for lookup
-            # But the 'set' will trigger another trace call, so we can let that handle it.
-            # HOWEVER, to be robust against race conditions or suppressed events:
+            
+            # Restore cursor with slight delay to ensure UI update is complete
+            # and cancel any pending cursor updates to prevent race conditions
+            if hasattr(self, '_cnic_cursor_job') and self._cnic_cursor_job:
+                try:
+                    self.after_cancel(self._cnic_cursor_job)
+                except:
+                    pass
+            
+            def set_cursor():
+                try:
+                    self.buyer_cnic_entry.icursor(new_cursor)
+                except:
+                    pass
+                self._cnic_cursor_job = None
+
+            self._cnic_cursor_job = self.after(1, set_cursor)
+
             if len(clean_digits) == 13:
                  self.perform_cnic_lookup(formatted)
             return
@@ -1154,7 +1304,7 @@ class App(ctk.CTk):
         
         # Clear fields (inv_num_entry excluded as it is readonly and set via generate_invoice_number)
         # Note: qty_entry is handled separately below due to state toggle
-        for entry in [self.buyer_cnic_entry, self.buyer_name_entry, self.buyer_father_entry,
+        for entry in [self.buyer_ntn_entry, self.buyer_cnic_entry, self.buyer_name_entry, self.buyer_father_entry,
                      self.buyer_cell_entry, self.buyer_address_entry, self.chassis_entry,
                      self.engine_entry, self.amount_excl_entry,
                      self.tax_entry, self.further_tax_entry, self.total_price_entry]:
@@ -1204,6 +1354,10 @@ class App(ctk.CTk):
         self.dealer_frame = DealerFrame(self, corner_radius=0, fg_color="transparent")
         self.dealer_frame.grid_columnconfigure(0, weight=1)
 
+    def create_customer_frame(self):
+        self.customer_frame = CustomerFrame(self, corner_radius=0, fg_color="transparent")
+        self.customer_frame.grid_columnconfigure(0, weight=1)
+
     def create_print_frame(self):
         self.print_invoice_frame = PrintInvoiceFrame(self, corner_radius=0, fg_color="transparent")
         self.print_invoice_frame.grid_columnconfigure(0, weight=1)
@@ -1223,6 +1377,7 @@ class App(ctk.CTk):
         # set button color for selected button
         if self.home_button: self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         if self.inventory_button: self.inventory_button.configure(fg_color=("gray75", "gray25") if name == "inventory" else "transparent")
+        if self.customer_button: self.customer_button.configure(fg_color=("gray75", "gray25") if name == "customer" else "transparent")
         if self.invoice_button: self.invoice_button.configure(fg_color=("gray75", "gray25") if name == "invoice" else "transparent")
         if self.reports_button: self.reports_button.configure(fg_color=("gray75", "gray25") if name == "reports" else "transparent")
         if self.dealer_button: self.dealer_button.configure(fg_color=("gray75", "gray25") if name == "dealer" else "transparent")
@@ -1263,6 +1418,12 @@ class App(ctk.CTk):
             self.dealer_frame.load_dealers()
         else:
             self.dealer_frame.grid_forget()
+
+        if name == "customer":
+            self.customer_frame.grid(row=0, column=1, sticky="nsew")
+            self.customer_frame.load_customers()
+        else:
+            self.customer_frame.grid_forget()
 
         if name == "backup":
             self.backup_frame.grid(row=0, column=1, sticky="nsew")
@@ -1313,6 +1474,9 @@ class App(ctk.CTk):
 
     def dealer_button_event(self):
         self.select_frame_by_name("dealer")
+
+    def customer_button_event(self):
+        self.select_frame_by_name("customer")
 
     def backup_button_event(self):
         self.select_frame_by_name("backup")
@@ -1898,6 +2062,10 @@ class App(ctk.CTk):
             color=color
         )
         
+        # Prepare NTN - Send "-" if empty or 0
+        raw_ntn = self.buyer_ntn_var.get().strip()
+        final_ntn = "-" if not raw_ntn or raw_ntn == "0" else raw_ntn
+
         inv = InvoiceCreate(
             invoice_number=inv_num,
             buyer_cnic=buyer_cnic,
@@ -1905,6 +2073,7 @@ class App(ctk.CTk):
             buyer_father_name=buyer_father,
             buyer_phone=buyer_cell,
             buyer_address=buyer_address,
+            buyer_ntn=final_ntn,
             payment_mode=payment_mode,
             items=[item]
         )

@@ -7,6 +7,7 @@ from app.db.models import Invoice, Motorcycle, Customer, ProductModel, InvoiceIt
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 from app.services.print_service import print_service
+from app.ui.calendar_dialog import CalendarDialog
 
 class ReportsFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -57,9 +58,33 @@ class ReportsFrame(ctk.CTkFrame):
         self.sales_status_var = ctk.StringVar(value="All")
         self.sales_status_combo = ctk.CTkComboBox(self.sales_controls, values=["All", "Synced", "Pending"], variable=self.sales_status_var, width=120)
         self.sales_status_combo.pack(side="left", padx=5)
+
+        # Period Filter
+        ctk.CTkLabel(self.sales_controls, text="Period:").pack(side="left", padx=(10, 5))
+        self.sales_period_var = ctk.StringVar(value="All Time")
+        self.sales_period_combo = ctk.CTkComboBox(self.sales_controls, values=["All Time", "Today", "This Month", "Custom"], variable=self.sales_period_var, width=120, command=self.toggle_date_inputs)
+        self.sales_period_combo.pack(side="left", padx=5)
+        
+        self.date_frame = ctk.CTkFrame(self.sales_controls, fg_color="transparent")
+        self.date_frame.pack(side="left", padx=0) # Hidden initially by toggle_date_inputs logic
+        
+        self.start_date_entry = ctk.CTkEntry(self.date_frame, width=100, placeholder_text="YYYY-MM-DD")
+        self.start_date_entry.pack(side="left", padx=2)
+        
+        # Calendar Button for Start Date
+        ctk.CTkButton(self.date_frame, text="📅", width=30, command=lambda: self.open_calendar(self.start_date_entry)).pack(side="left", padx=(0, 5))
+        
+        self.end_date_entry = ctk.CTkEntry(self.date_frame, width=100, placeholder_text="YYYY-MM-DD")
+        self.end_date_entry.pack(side="left", padx=2)
+        
+        # Calendar Button for End Date
+        ctk.CTkButton(self.date_frame, text="📅", width=30, command=lambda: self.open_calendar(self.end_date_entry)).pack(side="left", padx=(0, 5))
         
         self.filter_sales_btn = ctk.CTkButton(self.sales_controls, text="Filter", width=80, command=self.load_sales)
-        self.filter_sales_btn.pack(side="left", padx=5)
+        self.filter_sales_btn.pack(side="left", padx=10)
+
+        # Initial Toggle
+        self.toggle_date_inputs("All Time")
 
         self.export_sales_btn = ctk.CTkButton(self.sales_controls, text="Export CSV", command=self.export_sales)
         self.export_sales_btn.pack(side="right")
@@ -152,6 +177,27 @@ class ReportsFrame(ctk.CTkFrame):
         self.inv_tree.pack(side="left", fill="both", expand=True)
         v_scroll.config(command=self.inv_tree.yview)
 
+    def toggle_date_inputs(self, choice):
+        if choice == "Custom":
+            self.date_frame.pack(side="left", padx=5, before=self.filter_sales_btn)
+        else:
+            self.date_frame.pack_forget()
+
+    def open_calendar(self, entry_widget):
+        current_text = entry_widget.get().strip()
+        current_date = None
+        if current_text:
+             try:
+                 current_date = datetime.strptime(current_text, "%Y-%m-%d")
+             except ValueError:
+                 pass
+
+        def on_date_select(date_str):
+            entry_widget.delete(0, "end")
+            entry_widget.insert(0, date_str)
+            
+        CalendarDialog(self, on_date_select, current_date=current_date)
+
     def load_data(self):
         self.load_sales()
         self.load_inventory()
@@ -170,7 +216,41 @@ class ReportsFrame(ctk.CTkFrame):
             # Apply Filters
             search_text = self.sales_search.get().strip()
             status_filter = self.sales_status_var.get()
+            period = self.sales_period_var.get()
             
+            # Date Filter
+            now = datetime.now()
+            start_date = None
+            end_date = None
+            
+            if period == "Today":
+                start_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
+                end_date = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+            elif period == "This Month":
+                start_date = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                # End of month
+                import calendar
+                last_day = calendar.monthrange(now.year, now.month)[1]
+                end_date = now.replace(day=last_day, hour=23, minute=59, second=59, microsecond=999999)
+            elif period == "Custom":
+                s_str = self.start_date_entry.get().strip()
+                e_str = self.end_date_entry.get().strip()
+                if s_str:
+                    try:
+                        start_date = datetime.strptime(s_str, "%Y-%m-%d")
+                    except ValueError:
+                        pass
+                if e_str:
+                    try:
+                        end_date = datetime.strptime(e_str, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+                    except ValueError:
+                        pass
+
+            if start_date:
+                query = query.filter(Invoice.datetime >= start_date)
+            if end_date:
+                query = query.filter(Invoice.datetime <= end_date)
+
             if search_text:
                 search = f"%{search_text}%"
                 query = query.outerjoin(Invoice.items).outerjoin(InvoiceItem.motorcycle).filter(
