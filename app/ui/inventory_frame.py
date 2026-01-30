@@ -493,7 +493,7 @@ class WebImportDialog(ctk.CTkToplevel):
         
         # 3. Scrape Action
         self.pagination_var = ctk.BooleanVar(value=True)
-        self.pagination_check = ctk.CTkCheckBox(self, text="Scrape All Pages (Max 10)", variable=self.pagination_var)
+        self.pagination_check = ctk.CTkCheckBox(self, text="Scrape All Pages (Max 50)", variable=self.pagination_var)
         self.pagination_check.grid(row=5, column=0, padx=20, pady=5)
 
         self.scrape_btn = ctk.CTkButton(self, text="2. Scrape Page", command=self.start_scrape, state="disabled")
@@ -576,7 +576,8 @@ class WebImportDialog(ctk.CTkToplevel):
 
         try:
             if self.pagination_var.get():
-                new_data = self.scraper.scrape_all_pages(max_pages=10, status_callback=update_status)
+                # Scrape up to 1000 pages (effectively all for most tables)
+                new_data = self.scraper.scrape_all_pages(max_pages=1000, status_callback=update_status)
             else:
                 new_data = self.scraper.scrape_current_page()
             

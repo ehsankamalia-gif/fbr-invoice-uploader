@@ -378,84 +378,88 @@ class HondaScraper:
         
         logger.info("Attempting to find Next button...")
         
-        # 1. Try to find standard pagination first
-        try:
-            # Check for standard "Next" text links or buttons
-            # We use a very broad text match but verify it's a clickable element
-            next_btn = self.page.query_selector("text=/Next|next|Next >|Next »|>|»/")
-            if next_btn and next_btn.is_visible():
-                # Verify not disabled
-                if "disabled" not in (next_btn.get_attribute("class") or "").lower():
-                    logger.info("Found Next button via text match.")
-                    next_btn.click(force=True)
-                    return True
-        except:
-            pass
+        # List of potential selectors for "Next" button
+        selectors = [
+            # 1. Text-based (Playwright pseudoselector)
+            "text=/Next|next|Next >|Next »|>|»/",
+            
+            # 2. Common Frameworks
+            ".paginate_button.next",        # DataTables
+            "li.next a",                    # Bootstrap
+            "li.page-item.next a",          # Bootstrap 4+
+            ".k-pager-nav.k-pager-last",    # Kendo UI
+            ".k-i-arrow-e",                 # Kendo UI Icon
+            
+            # 3. Attributes
+            "a[title='Go to the next page']",
+            "a[title='Next Page']", 
+            "button[title='Next Page']",
+            "a[aria-label='Next']",
+            "button[aria-label='Next']",
+            
+            # 4. Generic Classes
+            ".next-page",
+            ".btn-next",
+            
+            # 5. Icons
+            ".fa-chevron-right",
+            ".fa-angle-right",
+            ".glyphicon-chevron-right"
+        ]
 
-        # 2. Try DataTables specific selector
-        try:
-            dt_next = self.page.query_selector(".paginate_button.next")
-            if dt_next and dt_next.is_visible():
-                 if "disabled" not in (dt_next.get_attribute("class") or "").lower():
-                    logger.info("Found DataTables Next button.")
-                    dt_next.click(force=True)
-                    return True
-        except:
-            pass
-
-        # 3. Try Attribute-based selectors (Title, Aria-label) - Essential for Icon-only buttons (Kendo, Bootstrap)
-        try:
-            attr_selectors = [
-                "a[title='Go to the next page']", # Kendo UI
-                "a[title='Next Page']", 
-                "button[title='Next Page']",
-                "a[aria-label='Next']",
-                "button[aria-label='Next']",
-                ".k-i-arrow-e", # Kendo Icon
-                ".fa-chevron-right", # FontAwesome
-                ".fa-angle-right"
-            ]
-            for selector in attr_selectors:
-                btn = self.page.query_selector(selector)
-                if btn and btn.is_visible():
-                    parent = btn.query_selector("..") # Check parent for disabled class
-                    parent_class = parent.get_attribute("class") or "" if parent else ""
-                    btn_class = btn.get_attribute("class") or ""
+        for selector in selectors:
+            try:
+                # Get all matching elements
+                elements = self.page.query_selector_all(selector)
+                for btn in elements:
+                    if not btn.is_visible():
+                        continue
+                        
+                    # Check for disabled state (class or attribute) on button or parent
+                    class_attr = (btn.get_attribute("class") or "").lower()
+                    disabled_attr = btn.get_attribute("disabled")
                     
-                    if "disabled" not in btn_class.lower() and "disabled" not in parent_class.lower():
-                        logger.info(f"Found Next button via selector: {selector}")
-                        btn.click(force=True)
-                        return True
-        except:
-            pass
+                    parent = btn.query_selector("..")
+                    parent_class = (parent.get_attribute("class") or "").lower() if parent else ""
+                    
+                    if "disabled" in class_attr or disabled_attr is not None or "disabled" in parent_class:
+                        continue
+                        
+                    logger.info(f"Found Next button via selector: {selector}")
+                    btn.click(force=True)
+                    return True
+            except Exception as e:
+                # Ignore individual selector errors
+                continue
 
-        # 4. JS Evaluation Fallback (Most robust for unknown structures)
+        # JS Fallback (last resort)
         try:
             logger.info("Trying generic JS text match for 'Next'...")
             clicked = self.page.evaluate("""() => {
-                // Helper to check if element is visible
                 function isVisible(elem) {
                     return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
                 }
-
-                // Get all potential clickable elements
-                const elements = Array.from(document.querySelectorAll('a, button, li, span, div.page-link'));
+                
+                // Find all potential clickable elements
+                const elements = Array.from(document.querySelectorAll('a, button, li, span, div.page-link, input[type="button"], input[type="submit"]'));
                 
                 for (const el of elements) {
                     const text = el.textContent.trim().toLowerCase();
+                    const val = (el.value || '').trim().toLowerCase();
                     
-                    // Strict matches for "next", ">", "»"
-                    if (text === 'next' || text === '>' || text === '»' || text === 'next >') {
+                    // Match text or value
+                    if (['next', '>', '»', 'next >'].includes(text) || ['next', '>', '»'].includes(val)) {
                         
-                        // Check if disabled
-                        if (el.classList.contains('disabled') || el.getAttribute('disabled') !== null) {
+                        // Check disabled
+                        if (el.classList.contains('disabled') || el.hasAttribute('disabled')) {
                             continue;
                         }
                         
-                        // Check if it's a "Next" button inside a pagination list
-                        // e.g. <li class="next"><a href="...">Next</a></li>
-                        // We might need to click the <a> inside the <li> or the <li> itself
-                        
+                        // Check parent disabled (common in pagination li)
+                        if (el.parentElement && el.parentElement.classList.contains('disabled')) {
+                            continue;
+                        }
+
                         if (isVisible(el)) {
                             el.click();
                             return true;
@@ -466,12 +470,11 @@ class HondaScraper:
             }""")
             
             if clicked:
-                logger.info("JS Click successful")
+                logger.info("Clicked Next button via JS fallback.")
                 return True
         except Exception as e:
-            logger.warning(f"JS fallback failed: {e}")
+            logger.warning(f"JS Fallback failed: {e}")
 
-        logger.warning("No pagination 'Next' button found.")
         return False
 
 
