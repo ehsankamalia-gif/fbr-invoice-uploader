@@ -292,9 +292,10 @@ class HondaScraper:
                 const allElements = document.querySelectorAll('*');
                 for (const el of allElements) {
                     // Check for "out of X" text (e.g., "1-50 out of 500" or "Page 1 of 10")
-                    if (el.children.length === 0 && el.textContent && el.textContent.match(/of\s+(\d+)/i)) {
-                         const match = el.textContent.match(/of\s+(\d+)/i);
-                         if (match) {
+                // Use innerText to catch text even if not in leaf node, but filter by length to avoid large blocks
+                if (el.innerText && el.innerText.length < 50 && el.innerText.match(/of\s+(\d+)/i)) {
+                     const match = el.innerText.match(/of\s+(\d+)/i);
+                     if (match) {
                              const num = parseInt(match[1]);
                              const text = el.textContent.toLowerCase();
                              
