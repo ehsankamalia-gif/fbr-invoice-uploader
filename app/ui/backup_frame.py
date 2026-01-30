@@ -76,6 +76,11 @@ class BackupFrame(ctk.CTkFrame):
                                       font=ctk.CTkFont(size=14, weight="bold"))
         self.backup_btn.pack(side="left", padx=10)
 
+        self.import_btn = ctk.CTkButton(self.action_frame, text="Import Backup", width=150, height=35,
+                                      command=self.import_backup, fg_color="#3498DB", hover_color="#2980B9",
+                                      font=ctk.CTkFont(size=14, weight="bold"))
+        self.import_btn.pack(side="left", padx=10)
+
         ctk.CTkLabel(self.action_frame, text="Auto-saves on change", text_color="gray").pack(side="left", padx=10)
 
         self.status_label = ctk.CTkLabel(self.action_frame, text="", text_color="gray")
@@ -125,6 +130,14 @@ class BackupFrame(ctk.CTkFrame):
                 
         except Exception as e:
             messagebox.showerror("Error", f"Invalid settings: {e}")
+
+    def import_backup(self):
+        path = filedialog.askopenfilename(
+            title="Select Backup File",
+            filetypes=[("Backup Files", "*.zip *.enc"), ("All Files", "*.*")]
+        )
+        if path:
+            self.confirm_restore(path)
 
     def create_manual_backup(self):
         self.backup_btn.configure(state="disabled", text="Backing up...")

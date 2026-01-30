@@ -20,13 +20,21 @@ class UpdateService:
         Helper to run git commands.
         """
         try:
+            # Hide console window on Windows
+            startupinfo = None
+            if sys.platform == "win32":
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+
             # Ensure we are in the repo directory
             result = subprocess.run(
                 ["git"] + args,
                 cwd=self.repo_path,
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
+                startupinfo=startupinfo
             )
             return result.stdout.strip()
         except subprocess.CalledProcessError as e:

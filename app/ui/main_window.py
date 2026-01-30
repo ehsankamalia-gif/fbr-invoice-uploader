@@ -26,7 +26,10 @@ from app.services.dealer_service import dealer_service
 from app.services.backup_service import backup_service
 from app.services.form_capture_service import form_capture_service
 from app.services.update_service import UpdateService
+from app.services.sync_service import sync_service
 from app.ui.captured_data_frame import CapturedDataFrame
+from app.ui.welcome_frame import WelcomeFrame
+from app.excise.ui.excise_frame import ExciseFrame
 
 from app.utils.price_data import price_manager
 import app.core.config as config
@@ -37,6 +40,16 @@ ctk.set_default_color_theme("blue")
 
 from app.db.models import Motorcycle, Invoice, Customer, CustomerType, CapturedData
 
+
+import logging
+
+# Configure logging
+logging.basicConfig(
+    filename='app.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 class ToolTip(object):
     def __init__(self, widget, text):
@@ -108,13 +121,21 @@ class App(ctk.CTk):
         self.create_backup_frame()
         self.create_spare_ledger_frame()
         self.create_captured_data_frame()
+        self.create_excise_frame()
 
         self.select_frame_by_name("home")
+        
+        # Show Welcome Screen
+        self.create_welcome_frame()
         
         # Start Backup Scheduler if enabled
         backup_service.start_scheduler()
         # Start ledger auto-close daily check
         self.after(60000, self.ledger_auto_close_tick)
+        
+        # Start Sync Service
+        sync_service.set_status_callback(self.on_sync_status_change)
+        sync_service.start()
         
         # Handle Window Close
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -125,7 +146,34 @@ class App(ctk.CTk):
             form_capture_service.stop_capture_session()
         except Exception as e:
             print(f"Error stopping capture: {e}")
+        try:
+            sync_service.stop()
+        except Exception as e:
+            print(f"Error stopping sync service: {e}")
         self.destroy()
+
+    def on_sync_status_change(self, is_online, pending_count):
+        """Called by background thread, so must use after to update UI safely"""
+        if self.winfo_exists():
+             self.after(0, lambda: self._update_sync_ui(is_online, pending_count))
+
+    def _update_sync_ui(self, is_online, pending_count):
+        if not self.winfo_exists(): return
+        
+        try:
+            if is_online:
+                self.sync_status_dot.configure(text_color="#2ECC71") # Green
+                self.sync_status_label.configure(text="Online")
+            else:
+                self.sync_status_dot.configure(text_color="#E74C3C") # Red
+                self.sync_status_label.configure(text="Offline")
+                
+            if pending_count > 0:
+                self.pending_label.configure(text=f"{pending_count} Pending Uploads")
+            else:
+                self.pending_label.configure(text="")
+        except Exception:
+            pass
 
     def ledger_auto_close_tick(self):
         try:
@@ -174,6 +222,26 @@ class App(ctk.CTk):
                                       corner_radius=4)
         self.env_badge.pack(anchor="w", padx=25, pady=5)
         self.update_env_badge()
+        
+        # Sync Status Section
+        self.status_frame = ctk.CTkFrame(self.brand_frame, fg_color="transparent")
+        self.status_frame.pack(anchor="w", padx=25, pady=(0, 2))
+        
+        self.sync_status_dot = ctk.CTkLabel(self.status_frame, text="●", font=("Arial", 16), text_color="gray")
+        self.sync_status_dot.pack(side="left", padx=(0, 5))
+        
+        self.sync_status_label = ctk.CTkLabel(self.status_frame, text="Checking...", font=("Arial", 10), text_color="gray")
+        self.sync_status_label.pack(side="left")
+        
+        # Sync Now Button (Small)
+        self.sync_now_btn = ctk.CTkButton(self.status_frame, text="Sync", width=50, height=20, 
+                                        font=("Arial", 10), fg_color="#555555", hover_color="#666666",
+                                        command=lambda: sync_service.trigger_sync_now())
+        self.sync_now_btn.pack(side="left", padx=(10, 0))
+        
+        # Pending Count
+        self.pending_label = ctk.CTkLabel(self.brand_frame, text="", font=("Arial", 10, "bold"), text_color="#E67E22")
+        self.pending_label.pack(anchor="w", padx=25, pady=(0, 10))
         
         # Separator Line
         self.separator = ctk.CTkFrame(self.sidebar_frame, height=2, fg_color=("gray85", "gray25"))
@@ -235,6 +303,11 @@ class App(ctk.CTk):
             ("View Captured Data", "captured_data", self.captured_data_button_event)
         ])
 
+        # 6. Excise & Taxation (Independent Module)
+        self.create_menu_group("Excise & Taxation", "excise_grp", "🚔", [
+            ("Excise Dashboard", "excise", self.excise_button_event)
+        ])
+
         # Map legacy button attributes for compatibility
         self.home_button = self.nav_buttons.get("home")
         self.invoice_button = self.nav_buttons.get("invoice")
@@ -249,6 +322,7 @@ class App(ctk.CTk):
         self.spare_ledger_button = self.nav_buttons.get("spare_ledger")
         self.price_list_button = self.nav_buttons.get("pricelist")
         self.capture_button = self.nav_buttons.get("capture_live")
+        self.excise_button = self.nav_buttons.get("excise")
 
         # Exit Button (Red/Professional Look)
         self.exit_button = ctk.CTkButton(self.sidebar_frame, text="Exit", 
@@ -419,23 +493,33 @@ class App(ctk.CTk):
         # Create Cards
         # Row 1
         self.card_stock = self.create_stat_card(self.stats_grid, "In Stock", "0", 
-                                              icon="📦", row=0, col=0, color="#27AE60") # Green
+                                              icon="📦", row=0, col=0, color="#27AE60",
+                                              command=self.show_stock_details) # Green
         self.card_sold = self.create_stat_card(self.stats_grid, "Total Sold", "0", 
-                                             icon="🤝", row=0, col=1, color="#F39C12") # Orange
+                                             icon="🤝", row=0, col=1, color="#F39C12",
+                                             command=self.show_sold_details) # Orange
         self.card_sales = self.create_stat_card(self.stats_grid, "Total Revenue", "PKR 0", 
-                                              icon="💰", row=0, col=2, color="#8E44AD") # Purple
+                                              icon="💰", row=0, col=2, color="#8E44AD",
+                                              command=self.show_revenue_details) # Purple
         
         # Row 2
         self.card_fbr_success = self.create_stat_card(self.stats_grid, "FBR Success", "0", 
-                                            icon="✅", row=1, col=0, color="#27AE60") # Green
+                                            icon="✅", row=1, col=0, color="#27AE60",
+                                            command=self.show_fbr_success_details) # Green
         self.card_fbr_failed = self.create_stat_card(self.stats_grid, "FBR Failed", "0", 
-                                            icon="❌", row=1, col=1, color="#C0392B") # Red
+                                            icon="❌", row=1, col=1, color="#C0392B",
+                                            command=self.show_fbr_failed_details) # Red
         self.card_customers = self.create_stat_card(self.stats_grid, "Customers", "0", 
-                                                  icon="👥", row=1, col=2, color="#2980B9") # Blue
+                                                  icon="👥", row=1, col=2, color="#2980B9",
+                                                  command=self.show_customers_details) # Blue
         
         # Row 3
         self.card_dealers = self.create_stat_card(self.stats_grid, "Dealers", "0", 
-                                                icon="🏢", row=2, col=0, color="#16A085") # Teal
+                                                icon="🏢", row=2, col=0, color="#16A085",
+                                                command=self.show_dealers_details) # Teal
+        self.card_pending = self.create_stat_card(self.stats_grid, "Pending Uploads", "0",
+                                                icon="⏳", row=2, col=1, color="#E67E22",
+                                                command=self.show_pending_details) # Orange
 
         self.auto_refresh_stats()
 
@@ -449,23 +533,84 @@ class App(ctk.CTk):
         except Exception as e:
             print(f"Auto refresh error: {e}")
 
-    def create_stat_card(self, parent, title, value, icon, row, col, color):
+    # Dashboard Interactive Handlers
+    def show_stock_details(self):
+        self.select_frame_by_name("inventory")
+        if hasattr(self, 'inventory_frame'):
+            self.inventory_frame.status_var.set("IN_STOCK")
+            self.inventory_frame.apply_filters()
+
+    def show_sold_details(self):
+        self.select_frame_by_name("inventory")
+        if hasattr(self, 'inventory_frame'):
+            self.inventory_frame.status_var.set("SOLD")
+            self.inventory_frame.apply_filters()
+
+    def show_revenue_details(self):
+        self.select_frame_by_name("reports")
+        if hasattr(self, 'reports_frame'):
+            self.reports_frame.tabview.set("Sales Report")
+            self.reports_frame.sales_status_var.set("All")
+            self.reports_frame.load_sales()
+
+    def show_fbr_success_details(self):
+        self.select_frame_by_name("reports")
+        if hasattr(self, 'reports_frame'):
+            self.reports_frame.tabview.set("Sales Report")
+            self.reports_frame.sales_status_var.set("Synced")
+            self.reports_frame.load_sales()
+
+    def show_fbr_failed_details(self):
+        self.select_frame_by_name("reports")
+        if hasattr(self, 'reports_frame'):
+            self.reports_frame.tabview.set("Sales Report")
+            self.reports_frame.sales_status_var.set("Failed")
+            self.reports_frame.load_sales()
+
+    def show_customers_details(self):
+        self.select_frame_by_name("customer")
+
+    def show_dealers_details(self):
+        self.select_frame_by_name("dealer")
+
+    def show_pending_details(self):
+        self.select_frame_by_name("reports")
+        if hasattr(self, 'reports_frame'):
+            self.reports_frame.tabview.set("Sales Report")
+            self.reports_frame.sales_status_var.set("Pending")
+            self.reports_frame.load_sales()
+
+    def create_stat_card(self, parent, title, value, icon, row, col, color, command=None):
         """Creates a stylish stat card."""
         card = ctk.CTkFrame(parent, corner_radius=15, fg_color=("white", "gray20"))
         card.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
         
+        if command:
+            card.configure(cursor="hand2")
+            card.bind("<Button-1>", lambda e: command())
+        
         # Left accent bar
         accent = ctk.CTkFrame(card, width=6, corner_radius=10, fg_color=color)
         accent.pack(side="left", fill="y", pady=5, padx=(5, 10))
+        if command:
+            accent.bind("<Button-1>", lambda e: command())
+            accent.configure(cursor="hand2")
         
         content = ctk.CTkFrame(card, fg_color="transparent")
         content.pack(side="left", fill="both", expand=True, padx=5, pady=10)
+        if command:
+            content.bind("<Button-1>", lambda e: command())
+            content.configure(cursor="hand2")
         
         # Title
-        ctk.CTkLabel(content, text=title.upper(), 
+        title_label = ctk.CTkLabel(content, text=title.upper(), 
                    font=ctk.CTkFont(size=11, weight="bold"),
                    text_color=("gray50", "gray40"),
-                   anchor="w").pack(fill="x")
+                   anchor="w")
+        title_label.pack(fill="x")
+        if command:
+            title_label.bind("<Button-1>", lambda e: command())
+            title_label.configure(cursor="hand2")
         
         # Value
         val_label = ctk.CTkLabel(content, text=value, 
@@ -473,12 +618,18 @@ class App(ctk.CTk):
                                text_color=("gray10", "gray90"),
                                anchor="w")
         val_label.pack(fill="x", pady=(2, 0))
+        if command:
+            val_label.bind("<Button-1>", lambda e: command())
+            val_label.configure(cursor="hand2")
         
         # Icon (Right side)
         icon_label = ctk.CTkLabel(card, text=icon, 
                                 font=ctk.CTkFont(size=30),
                                 text_color=color)
         icon_label.pack(side="right", padx=15)
+        if command:
+            icon_label.bind("<Button-1>", lambda e: command())
+            icon_label.configure(cursor="hand2")
         
         return val_label  # Return the value label to update it later
 
@@ -517,10 +668,39 @@ class App(ctk.CTk):
             dealer_count = db.query(Customer).filter(Customer.type == CustomerType.DEALER).count()
             self.card_dealers.configure(text=f"{dealer_count}")
             
+            # Pending Uploads
+            pending_count = db.query(Invoice).filter(Invoice.sync_status == "PENDING").count()
+            self.card_pending.configure(text=f"{pending_count}")
+            
         except Exception as e:
             print(f"Error refreshing stats: {e}")
         finally:
             db.close()
+
+    def show_field_error(self, widget, message):
+        """Highlights a field with error and shows a tooltip."""
+        widget.configure(border_color="red")
+        
+        # Remove existing tooltip if any
+        if hasattr(widget, "_error_tooltip"):
+            widget._error_tooltip.hidetip()
+            del widget._error_tooltip
+            
+        # Add new tooltip
+        tooltip = ToolTip(widget, message)
+        widget._error_tooltip = tooltip
+        
+        # Optional: Flash the widget or play sound? Keep it professional.
+        logger.warning(f"Validation Error on {widget}: {message}")
+
+    def clear_field_error(self, widget):
+        """Clears error highlight and tooltip."""
+        # Reset to default border color (approximate for System theme)
+        widget.configure(border_color=["#979DA2", "#565B5E"])
+        
+        if hasattr(widget, "_error_tooltip"):
+            widget._error_tooltip.hidetip()
+            del widget._error_tooltip
 
     def create_invoice_frame(self):
         self.invoice_frame = ctk.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -588,8 +768,9 @@ class App(ctk.CTk):
         ctk.CTkLabel(self.form_frame, text="NTN").grid(row=2, column=0, padx=10, pady=5, sticky="e")
         self.buyer_ntn_var = ctk.StringVar()
         self.buyer_ntn_var.trace_add("write", self.validate_ntn_input)
-        self.buyer_ntn_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_ntn_var)
+        self.buyer_ntn_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_ntn_var, placeholder_text="1234567-8")
         self.buyer_ntn_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_ntn_entry.bind("<FocusOut>", self.validate_ntn_strict)
 
         # 2. Buyer Name
         ctk.CTkLabel(self.form_frame, text="Buyer Name").grid(row=3, column=0, padx=10, pady=5, sticky="e")
@@ -611,6 +792,7 @@ class App(ctk.CTk):
         self.buyer_cell_var.trace_add("write", self.validate_cell_input)
         self.buyer_cell_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_cell_var, placeholder_text="03XXXXXXXXX")
         self.buyer_cell_entry.grid(row=5, column=1, padx=10, pady=5, sticky="ew")
+        self.buyer_cell_entry.bind("<FocusOut>", self.validate_cell_strict)
 
         # 5. Address
         ctk.CTkLabel(self.form_frame, text="Address").grid(row=6, column=0, padx=10, pady=5, sticky="e")
@@ -709,27 +891,46 @@ class App(ctk.CTk):
         ctk.CTkLabel(self.form_frame, text="Amount (Excl. Tax)").grid(row=12, column=0, padx=10, pady=5, sticky="e")
         self.amount_var = ctk.StringVar()
         self.amount_var.trace_add("write", lambda *args: self.check_form_validity())
-        self.amount_excl_entry = ctk.CTkEntry(self.form_frame, textvariable=self.amount_var)
+        self.amount_excl_entry = ctk.CTkEntry(self.form_frame, textvariable=self.amount_var, state="disabled")
         self.amount_excl_entry.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
-        # Bind event to auto-calc tax
         self.amount_excl_entry.bind("<KeyRelease>", self.calculate_totals)
+        
+        self.manual_amount_var = ctk.BooleanVar(value=False)
+        self.manual_amount_chk = ctk.CTkCheckBox(self.form_frame, text="", variable=self.manual_amount_var, width=20, 
+                                                 command=lambda: self.toggle_field_edit(self.amount_excl_entry, self.manual_amount_var))
+        self.manual_amount_chk.grid(row=12, column=2, padx=5, pady=5, sticky="w")
 
         # 11. Sale Tax (Read Only or Editable)
         ctk.CTkLabel(self.form_frame, text="Sale Tax").grid(row=13, column=0, padx=10, pady=5, sticky="e")
-        self.tax_entry = ctk.CTkEntry(self.form_frame)
+        self.tax_entry = ctk.CTkEntry(self.form_frame, state="disabled")
         self.tax_entry.grid(row=13, column=1, padx=10, pady=5, sticky="ew")
         self.tax_entry.bind("<KeyRelease>", self.calculate_totals)
 
+        self.manual_tax_var = ctk.BooleanVar(value=False)
+        self.manual_tax_chk = ctk.CTkCheckBox(self.form_frame, text="", variable=self.manual_tax_var, width=20,
+                                              command=lambda: self.toggle_field_edit(self.tax_entry, self.manual_tax_var))
+        self.manual_tax_chk.grid(row=13, column=2, padx=5, pady=5, sticky="w")
+
         # 12. Further Tax
         ctk.CTkLabel(self.form_frame, text="Further Tax").grid(row=14, column=0, padx=10, pady=5, sticky="e")
-        self.further_tax_entry = ctk.CTkEntry(self.form_frame)
+        self.further_tax_entry = ctk.CTkEntry(self.form_frame, state="disabled")
         self.further_tax_entry.grid(row=14, column=1, padx=10, pady=5, sticky="ew")
         self.further_tax_entry.bind("<KeyRelease>", self.calculate_totals)
 
+        self.manual_ft_var = ctk.BooleanVar(value=False)
+        self.manual_ft_chk = ctk.CTkCheckBox(self.form_frame, text="", variable=self.manual_ft_var, width=20,
+                                             command=lambda: self.toggle_field_edit(self.further_tax_entry, self.manual_ft_var))
+        self.manual_ft_chk.grid(row=14, column=2, padx=5, pady=5, sticky="w")
+
         # 13. Price (Total)
         ctk.CTkLabel(self.form_frame, text="Total Price (Incl. Tax)").grid(row=15, column=0, padx=10, pady=5, sticky="e")
-        self.total_price_entry = ctk.CTkEntry(self.form_frame)
+        self.total_price_entry = ctk.CTkEntry(self.form_frame, state="disabled")
         self.total_price_entry.grid(row=15, column=1, padx=10, pady=5, sticky="ew")
+
+        self.manual_total_var = ctk.BooleanVar(value=False)
+        self.manual_total_chk = ctk.CTkCheckBox(self.form_frame, text="", variable=self.manual_total_var, width=20,
+                                                command=lambda: self.toggle_field_edit(self.total_price_entry, self.manual_total_var))
+        self.manual_total_chk.grid(row=15, column=2, padx=5, pady=5, sticky="w")
 
         # Button Frame for Submit and Reset
         self.btn_frame = ctk.CTkFrame(self.invoice_frame, fg_color="transparent")
@@ -738,14 +939,31 @@ class App(ctk.CTk):
         self.submit_btn = ctk.CTkButton(self.btn_frame, text="Submit Invoice", command=self.submit_invoice, state="disabled")
         self.submit_btn.grid(row=0, column=0, padx=10)
 
-        self.reset_btn = ctk.CTkButton(self.btn_frame, text="Reset Form", command=self.reset_form, fg_color="gray")
+        self.reset_btn = ctk.CTkButton(self.btn_frame, text="Reset Form", command=self.confirm_and_reset, fg_color="gray")
         self.reset_btn.grid(row=0, column=1, padx=10)
 
         # Initialize Keyboard Navigation
         self.setup_keyboard_navigation()
 
+    def toggle_field_edit(self, entry_widget, check_var):
+        """Toggles the editable state of an entry widget based on checkbox variable."""
+        if check_var.get():
+            entry_widget.configure(state="normal")
+        else:
+            entry_widget.configure(state="disabled")
 
-
+    def update_entry_value(self, entry_widget, value):
+        """Updates the value of an entry widget, handling disabled state."""
+        current_state = entry_widget.cget("state")
+        
+        if current_state == "disabled":
+            entry_widget.configure(state="normal")
+            
+        entry_widget.delete(0, "end")
+        entry_widget.insert(0, str(value))
+        
+        if current_state == "disabled":
+            entry_widget.configure(state="disabled")
 
     def setup_keyboard_navigation(self):
         """Sets up Enter key navigation through form fields in a specific sequence."""
@@ -936,16 +1154,13 @@ class App(ctk.CTk):
             
             # Update UI Fields (Only if not focused, to avoid fighting with user input)
             if focused_widget != self.tax_entry:
-                self.tax_entry.delete(0, 'end')
-                self.tax_entry.insert(0, f"{tax_charged:.2f}")
+                self.update_entry_value(self.tax_entry, f"{tax_charged:.2f}")
             
             if focused_widget != self.further_tax_entry:
-                self.further_tax_entry.delete(0, 'end')
-                self.further_tax_entry.insert(0, f"{total_further_tax:.2f}")
+                self.update_entry_value(self.further_tax_entry, f"{total_further_tax:.2f}")
             
             if focused_widget != self.total_price_entry:
-                self.total_price_entry.delete(0, 'end')
-                self.total_price_entry.insert(0, f"{total_amount:.2f}")
+                self.update_entry_value(self.total_price_entry, f"{total_amount:.2f}")
             
             self.check_form_validity()
             
@@ -991,8 +1206,7 @@ class App(ctk.CTk):
             # Use first available price
             price = prices[0]
             self.current_price_obj = price
-            self.amount_excl_entry.delete(0, "end")
-            self.amount_excl_entry.insert(0, str(price.base_price))
+            self.update_entry_value(self.amount_excl_entry, str(price.base_price))
             self.calculate_totals()
 
     def on_color_change(self, color_choice):
@@ -1004,8 +1218,7 @@ class App(ctk.CTk):
         
         self.current_price_obj = price
         if price:
-            self.amount_excl_entry.delete(0, "end")
-            self.amount_excl_entry.insert(0, str(price.base_price))
+            self.update_entry_value(self.amount_excl_entry, str(price.base_price))
             self.calculate_totals()
 
     def validate_buyer_name(self, *args):
@@ -1028,6 +1241,19 @@ class App(ctk.CTk):
 
     def validate_father_name(self, *args):
         self._validate_name(self.father_name_var)
+
+    def validate_ntn_strict(self, event=None):
+        value = self.buyer_ntn_var.get()
+        if not value:
+            self.clear_field_error(self.buyer_ntn_entry)
+            return
+
+        # Simple check: 7 digits or 7+1 digits
+        # Regex: ^\d{7}(-\d)?$ 
+        if not re.match(r"^\d{7}(-\d)?$", value):
+             self.show_field_error(self.buyer_ntn_entry, "Invalid NTN. Format: 1234567 or 1234567-8")
+        else:
+             self.clear_field_error(self.buyer_ntn_entry)
 
     def _validate_name(self, var):
         value = var.get()
@@ -1103,6 +1329,29 @@ class App(ctk.CTk):
             return
 
         self.check_form_validity()
+        
+        # Real-time feedback
+        if len(value) == 11:
+            if not value.startswith("03"):
+                 self.show_field_error(self.buyer_cell_entry, "Invalid Format. Must start with 03")
+            else:
+                 self.clear_field_error(self.buyer_cell_entry)
+        elif len(value) > 0:
+             # Don't show error while typing unless it's obviously wrong (not implemented here to be less annoying)
+             pass
+        else:
+             self.clear_field_error(self.buyer_cell_entry)
+
+    def validate_cell_strict(self, event=None):
+        """Strict validation on FocusOut."""
+        value = self.buyer_cell_var.get()
+        if not value:
+            return # Empty is handled by required check on submit
+            
+        if not re.match(r"^03\d{9}$", value):
+            self.show_field_error(self.buyer_cell_entry, "Invalid Format. Must be 03XXXXXXXXX (11 digits)")
+        else:
+            self.clear_field_error(self.buyer_cell_entry)
 
     def validate_ntn_input(self, *args):
         value = self.buyer_ntn_var.get()
@@ -1150,38 +1399,11 @@ class App(ctk.CTk):
         self.check_form_validity()
 
     def check_form_validity(self):
-        # List of required fields
-        # Ensure all variables are initialized before checking
-        if not hasattr(self, 'inv_num_var'):
-            return
-
-        required_vars = [
-            self.inv_num_var,
-            self.buyer_cnic_var,  # Added CNIC
-            self.buyer_name_var,
-            self.father_name_var,
-            self.buyer_cell_var,
-            self.buyer_address_var,
-            self.chassis_var,
-            self.engine_var,
-            self.qty_var,
-            self.amount_var
-        ]
-
-        # Check if all fields have values
-        all_filled = all(var.get().strip() for var in required_vars)
-
-        # Specific checks
-        cell = self.buyer_cell_var.get()
-        cell_valid = len(cell) == 11
-        
-        cnic = self.buyer_cnic_var.get()
-        cnic_valid = len(cnic) == 15 and re.match(r"^\d{5}-\d{7}-\d{1}$", cnic)
-
-        if all_filled and cell_valid and cnic_valid:
+        # We now handle validation on submit with detailed errors.
+        # So we always keep the button enabled to allow the user to click and see errors.
+        if hasattr(self, 'submit_btn'):
             self.submit_btn.configure(state="normal")
-        else:
-            self.submit_btn.configure(state="disabled")
+        return
 
     def validate_cnic_input(self, *args):
         value = self.buyer_cnic_var.get()
@@ -1244,6 +1466,12 @@ class App(ctk.CTk):
         # Auto-fill customer details if CNIC is complete (13 digits)
         if len(clean_digits) == 13:
              self.perform_cnic_lookup(formatted)
+             self.clear_field_error(self.buyer_cnic_entry)
+        elif len(clean_digits) > 0 and len(formatted) < 15:
+             # Optional: could show "Incomplete CNIC" but might be annoying while typing
+             pass
+        else:
+             self.clear_field_error(self.buyer_cnic_entry)
 
         self.check_form_validity()
 
@@ -1254,6 +1482,17 @@ class App(ctk.CTk):
             
         # Ensure it looks like a valid CNIC before querying (13 digits, ignoring dashes)
         clean_digits = ''.join(filter(str.isdigit, cnic))
+        
+        # Validation
+        if not cnic:
+             return
+
+        if len(clean_digits) != 13:
+             self.show_field_error(self.buyer_cnic_entry, "Invalid CNIC. Must be 13 digits.")
+             return
+        else:
+             self.clear_field_error(self.buyer_cnic_entry)
+
         if len(clean_digits) == 13:
              self.auto_fill_customer_by_cnic(cnic)
 
@@ -1299,8 +1538,29 @@ class App(ctk.CTk):
         except Exception as e:
             print(f"QR Code Error: {e}")
 
+    def confirm_and_reset(self):
+        """Asks for confirmation before resetting if form has data."""
+        # Check if key fields have data
+        if (self.inv_num_entry.get() or 
+            self.buyer_name_entry.get() or 
+            self.chassis_entry.get() or
+            self.buyer_cnic_entry.get()):
+            
+            if not messagebox.askyesno("Confirm Reset", "Are you sure you want to reset the form?\nAll entered data will be lost."):
+                return
+        
+        self.reset_form()
+
     def reset_form(self, clear_qr=True):
         self.generate_invoice_number() # Auto-generate next number
+        
+        # Clear Errors
+        for entry in [self.buyer_ntn_entry, self.buyer_cnic_entry, self.buyer_name_entry, self.buyer_father_entry,
+                     self.buyer_cell_entry, self.buyer_address_entry, self.chassis_entry,
+                     self.engine_entry, self.amount_excl_entry,
+                     self.tax_entry, self.further_tax_entry, self.total_price_entry,
+                     self.qty_entry, self.inv_num_entry]:
+             self.clear_field_error(entry)
         
         # Clear fields (inv_num_entry excluded as it is readonly and set via generate_invoice_number)
         # Note: qty_entry is handled separately below due to state toggle
@@ -1308,7 +1568,7 @@ class App(ctk.CTk):
                      self.buyer_cell_entry, self.buyer_address_entry, self.chassis_entry,
                      self.engine_entry, self.amount_excl_entry,
                      self.tax_entry, self.further_tax_entry, self.total_price_entry]:
-            entry.delete(0, 'end')
+            self.update_entry_value(entry, "")
 
         # Reset Quantity Logic
         self.manual_qty_var.set(False)
@@ -1316,6 +1576,19 @@ class App(ctk.CTk):
         self.qty_entry.delete(0, 'end')
         self.qty_entry.insert(0, "1")
         self.qty_entry.configure(state="disabled")
+
+        # Reset Amount/Tax Manual Toggles
+        self.manual_amount_var.set(False)
+        self.amount_excl_entry.configure(state="disabled")
+        
+        self.manual_tax_var.set(False)
+        self.tax_entry.configure(state="disabled")
+        
+        self.manual_ft_var.set(False)
+        self.further_tax_entry.configure(state="disabled")
+        
+        self.manual_total_var.set(False)
+        self.total_price_entry.configure(state="disabled")
         
         # Clear Dropdowns
         self.model_combo.set("")
@@ -1370,6 +1643,21 @@ class App(ctk.CTk):
         self.captured_data_frame = CapturedDataFrame(self, corner_radius=0, fg_color="transparent")
         self.captured_data_frame.grid_columnconfigure(0, weight=1)
 
+    def create_excise_frame(self):
+        self.excise_frame = ExciseFrame(self, corner_radius=0, fg_color="transparent")
+        self.excise_frame.grid_columnconfigure(0, weight=1)
+
+    def create_welcome_frame(self):
+        self.welcome_frame = WelcomeFrame(self, self.dismiss_welcome)
+        # Use high rowspan/columnspan to cover the entire grid (sidebar + content)
+        self.welcome_frame.grid(row=0, column=0, rowspan=10, columnspan=10, sticky="nsew")
+        self.welcome_frame.lift() # Ensure it's on top
+
+    def dismiss_welcome(self):
+        if hasattr(self, 'welcome_frame'):
+            self.welcome_frame.destroy()
+            del self.welcome_frame
+
     def select_frame_by_name(self, name):
         # Auto-expand menu if the selected item is inside a group
         self.expand_menu_containing(name)
@@ -1386,6 +1674,8 @@ class App(ctk.CTk):
         if self.captured_data_button: self.captured_data_button.configure(fg_color=("gray75", "gray25") if name == "captured_data" else "transparent")
         if hasattr(self, "spare_ledger_button") and self.spare_ledger_button:
             self.spare_ledger_button.configure(fg_color=("gray75", "gray25") if name == "spare_ledger" else "transparent")
+        if hasattr(self, "excise_button"):
+            self.excise_button.configure(fg_color=("gray75", "gray25") if name == "excise" else "transparent")
 
         # show selected frame
         if name == "home":
@@ -1448,6 +1738,12 @@ class App(ctk.CTk):
         else:
             self.spare_ledger_frame.grid_forget()
 
+        if name == "excise":
+            self.excise_frame.grid(row=0, column=1, sticky="nsew")
+            # self.excise_frame.refresh_data() # called in __init__
+        else:
+            self.excise_frame.grid_forget()
+
     def generate_invoice_number(self):
         """Fetches the next auto-incremented invoice number."""
         db = SessionLocal()
@@ -1488,6 +1784,9 @@ class App(ctk.CTk):
 
     def captured_data_button_event(self):
         self.select_frame_by_name("captured_data")
+
+    def excise_button_event(self):
+        self.select_frame_by_name("excise")
 
     def open_price_list(self):
         PriceListDialog(self)
@@ -1549,8 +1848,7 @@ class App(ctk.CTk):
         
         # Handle Price Fallback if no active price found
         if not self.current_price_obj:
-            self.amount_excl_entry.delete(0, "end")
-            self.amount_excl_entry.insert(0, str(bike.sale_price))
+            self.update_entry_value(self.amount_excl_entry, str(bike.sale_price))
             self.current_levy = 0
             self.calculate_totals() # Trigger tax calc manually since on_model_change didn't do it fully
 
@@ -1675,9 +1973,9 @@ class App(ctk.CTk):
         self.model_combo.set("")
         self.color_combo.set("")
         self.amount_var.set("")
-        self.tax_entry.delete(0, "end")
-        self.further_tax_entry.delete(0, "end")
-        self.total_price_entry.delete(0, "end")
+        self.update_entry_value(self.tax_entry, "")
+        self.update_entry_value(self.further_tax_entry, "")
+        self.update_entry_value(self.total_price_entry, "")
         self.chassis_feedback_label.configure(text="", text_color="black")
 
     def clear_customer_details(self):
@@ -1946,6 +2244,10 @@ class App(ctk.CTk):
             db.close()
 
     def submit_invoice(self):
+        # 1. Confirmation Dialog
+        if not messagebox.askyesno("Confirm Submission", "Are you sure you want to submit this invoice to FBR?"):
+            return
+
         # Visual indication for loading state
         self.submit_btn.configure(state="disabled", text="Submitting...")
         self.update_idletasks()
@@ -1955,8 +2257,19 @@ class App(ctk.CTk):
             self.submit_btn.configure(state="normal", text="Submit Invoice")
 
     def _process_invoice_submission(self):
+        # 1. Clear previous errors
+        self.clear_field_error(self.inv_num_entry)
+        self.clear_field_error(self.buyer_name_entry)
+        self.clear_field_error(self.buyer_cnic_entry)
+        self.clear_field_error(self.buyer_ntn_entry)
+        self.clear_field_error(self.buyer_cell_entry)
+        self.clear_field_error(self.chassis_entry)
+        self.clear_field_error(self.qty_entry)
+        self.clear_field_error(self.amount_excl_entry)
+
         inv_num = self.inv_num_entry.get()
         buyer_cnic = self.buyer_cnic_entry.get()
+        buyer_ntn = self.buyer_ntn_entry.get()
         buyer_name = self.buyer_name_entry.get()
         buyer_father = self.buyer_father_entry.get()
         buyer_cell = self.buyer_cell_entry.get()
@@ -1966,64 +2279,82 @@ class App(ctk.CTk):
         chassis = self.chassis_entry.get()
         engine = self.engine_entry.get()
         
+        has_error = False
+
+        # 2. Validate Numbers
         try:
             qty = float(self.qty_entry.get().replace(',', '') or 0)
+            if qty <= 0:
+                self.show_field_error(self.qty_entry, "Quantity must be > 0")
+                has_error = True
+            
             amount_excl = float(self.amount_excl_entry.get().replace(',', '') or 0)
-            # Use calculated or entered tax/total
+            if amount_excl <= 0:
+                self.show_field_error(self.amount_excl_entry, "Amount must be > 0")
+                has_error = True
+
             tax = float(self.tax_entry.get().replace(',', '') or 0)
             further_tax = float(self.further_tax_entry.get().replace(',', '') or 0)
             total = float(self.total_price_entry.get().replace(',', '') or 0)
         except ValueError:
-            messagebox.showerror("Error", "Invalid Number Fields")
+            logger.error("Invalid number format in invoice form")
+            messagebox.showerror("Error", "Invalid Number Fields. Please check quantity and amounts.")
             return
 
+        # 3. Validate Required Fields
         if not inv_num:
-            messagebox.showerror("Error", "Invoice Number required")
-            return
+            self.show_field_error(self.inv_num_entry, "Invoice Number is required")
+            has_error = True
+        
         if not buyer_name:
-            messagebox.showerror("Error", "Buyer Name required")
-            return
-            
-        # Validate CNIC
+            self.show_field_error(self.buyer_name_entry, "Buyer Name is required")
+            has_error = True
+
+        # 4. Validate Formats
         if buyer_cnic and not re.match(r"^\d{5}-\d{7}-\d{1}$", buyer_cnic):
-             messagebox.showerror("Error", "Invalid CNIC Format.\nMust be: 33302-1234567-0")
-             return
+            self.show_field_error(self.buyer_cnic_entry, "Invalid CNIC Format (33302-1234567-0)")
+            has_error = True
 
-        # Validate Cell Number Format (03XXXXXXXXX)
+        if buyer_ntn and not re.match(r"^\d{7}(-\d)?$", buyer_ntn):
+            self.show_field_error(self.buyer_ntn_entry, "Invalid NTN Format (1234567-8)")
+            has_error = True
+
         if buyer_cell and not re.match(r"^03\d{9}$", buyer_cell):
-            messagebox.showerror("Error", "Invalid Cell Number.\nFormat must be: 03021523127 (11 digits starting with 03)")
-            return
+            self.show_field_error(self.buyer_cell_entry, "Invalid Cell Format (03XXXXXXXXX)")
+            has_error = True
 
-        # --- Chassis Validation Logic ---
+        # 5. Validate Chassis (Database Check)
         if chassis:
             bypass_verification = self.verify_chassis_var.get()
-            
             db_check = SessionLocal()
             try:
                 bike = db_check.query(Motorcycle).filter(Motorcycle.chassis_number == chassis).first()
-                
                 if not bypass_verification:
-                    # Case 1: Unchecked (Strict Validation)
                     if not bike:
-                        messagebox.showerror("Validation Error", "Chassis number not found in inventory.\nPlease verify or check the box to proceed.")
-                        return
-                    if bike.status != "IN_STOCK":
-                        messagebox.showerror("Validation Error", f"Chassis found but status is {bike.status} (Not IN_STOCK).")
-                        return
-                else:
-                    # Case 2: Checked (Warning Only)
-                    if not bike:
-                        messagebox.showwarning("Warning", "Proceeding without chassis number verification (Not in DB).")
+                        self.show_field_error(self.chassis_entry, "Chassis not found in inventory")
+                        has_error = True
                     elif bike.status != "IN_STOCK":
-                        messagebox.showwarning("Warning", f"Proceeding with chassis status: {bike.status}")
-                        
+                        self.show_field_error(self.chassis_entry, f"Chassis is {bike.status}")
+                        has_error = True
+                else:
+                    if not bike:
+                        logger.warning(f"Bypassing verification: Chassis {chassis} not found")
+                    elif bike.status != "IN_STOCK":
+                        logger.warning(f"Bypassing verification: Chassis {chassis} is {bike.status}")
+
             except Exception as e:
+                logger.error(f"Database error during chassis validation: {e}")
                 messagebox.showerror("Database Error", f"Could not validate chassis: {e}")
                 return
             finally:
                 db_check.close()
-        # --------------------------------
+        
+        if has_error:
+            logger.warning("Invoice submission blocked due to validation errors")
+            messagebox.showwarning("Validation Error", "Please correct the highlighted fields before submitting.")
+            return
 
+        # 6. Proceed with Submission
         # Create dummy item for simplicity in this UI demo
         model = self.model_combo.get()
         color = self.color_combo.get()
@@ -2080,8 +2411,10 @@ class App(ctk.CTk):
 
         db = SessionLocal()
         try:
+            logger.info(f"Submitting invoice {inv_num} for {buyer_name}")
             invoice = invoice_service.create_invoice(db, inv)
             fbr_id = invoice.fbr_invoice_number or "N/A"
+            logger.info(f"Invoice {inv_num} created successfully. FBR ID: {fbr_id}")
             messagebox.showinfo("Success", f"Invoice Created and Queued for Sync\nFBR ID: {fbr_id}")
             
             self.reset_form(clear_qr=False)
@@ -2103,9 +2436,11 @@ class App(ctk.CTk):
             except:
                 msg = f"FBR Submission Error: {str(e)}"
             
+            logger.error(f"FBR RetryError: {msg}")
             messagebox.showerror("FBR Connection Error", msg)
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            logger.error(f"Unexpected error during invoice submission: {e}", exc_info=True)
+            messagebox.showerror("Error", f"An unexpected error occurred:\n{str(e)}")
         finally:
             db.close()
 

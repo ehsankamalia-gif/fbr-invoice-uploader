@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Boolean, JSON, Index, Enum
 from sqlalchemy.orm import relationship, declarative_base
-from datetime import datetime
+import datetime as dt
 import enum
 
 Base = declarative_base()
@@ -22,7 +22,7 @@ class Customer(Base):
     address = Column(String(255), nullable=True)
     type = Column(String(20), default=CustomerType.INDIVIDUAL)
     
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=dt.datetime.utcnow)
     
     invoices = relationship("Invoice", back_populates="customer")
 
@@ -48,7 +48,7 @@ class Invoice(Base):
     invoice_number = Column(String(50), unique=True, index=True, nullable=False)
     pos_id = Column(String(20), nullable=False)
     usin = Column(String(50), nullable=False) # Updated to be Unique in context, but FBR allows multiple? USIN is unique POS ID basically.
-    datetime = Column(DateTime, default=datetime.utcnow)
+    datetime = Column(DateTime, default=dt.datetime.utcnow)
     
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=True)
     customer = relationship("Customer", back_populates="invoices")
@@ -65,6 +65,7 @@ class Invoice(Base):
     fbr_invoice_number = Column(String(50), nullable=True)
     is_fiscalized = Column(Boolean, default=False)
     sync_status = Column(String(20), default="PENDING")
+    status_updated_at = Column(DateTime, default=dt.datetime.utcnow)
     fbr_response_code = Column(String(10), nullable=True)
     fbr_response_message = Column(String(255), nullable=True)
     fbr_full_response = Column(JSON, nullable=True)
@@ -109,7 +110,7 @@ class CapturedData(Base):
     color = Column(String(30), nullable=True)
     model = Column(String(50), nullable=True)
     
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=dt.datetime.utcnow)
 
 class Motorcycle(Base):
     __tablename__ = "motorcycles"
@@ -130,7 +131,7 @@ class Motorcycle(Base):
     sale_price = Column(Float, nullable=False)
     
     status = Column(String(20), default="IN_STOCK")
-    purchase_date = Column(DateTime, default=datetime.utcnow)
+    purchase_date = Column(DateTime, default=dt.datetime.utcnow)
     
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True)
     supplier = relationship("Supplier", back_populates="motorcycles")
@@ -158,7 +159,7 @@ class Price(Base):
     
     optional_features = Column(JSON, nullable=True)
     
-    effective_date = Column(DateTime, default=datetime.utcnow, index=True)
+    effective_date = Column(DateTime, default=dt.datetime.utcnow, index=True)
     expiration_date = Column(DateTime, nullable=True, index=True)
     currency = Column(String(10), default='Rs')
 
@@ -187,7 +188,7 @@ class PurchaseOrder(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=False)
-    order_date = Column(DateTime, default=datetime.utcnow)
+    order_date = Column(DateTime, default=dt.datetime.utcnow)
     status = Column(String(20), default="PENDING")
     total_amount = Column(Float, default=0.0)
     
@@ -239,7 +240,7 @@ class FBRConfiguration(Base):
     item_code = Column(String(50), nullable=True)
     item_name = Column(String(100), nullable=True)
     
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
 
 # --- Spare Parts Ledger ---
 class LedgerTransactionType(str, enum.Enum):
@@ -250,7 +251,7 @@ class SpareLedgerTransaction(Base):
     __tablename__ = "spare_ledger_transactions"
 
     id = Column(Integer, primary_key=True, index=True)
-    timestamp = Column(DateTime, default=datetime.utcnow, index=True)
+    timestamp = Column(DateTime, default=dt.datetime.utcnow, index=True)
     trans_type = Column(String(10), nullable=False)
     amount = Column(Float, nullable=False)
     reference_number = Column(String(50), nullable=True)
@@ -276,7 +277,7 @@ class SpareLedgerAudit(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     action = Column(String(50), nullable=False)  # CREATE_TXN, UPDATE_TXN, CLOSE_MONTH, EXPORT
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=dt.datetime.utcnow)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     transaction_id = Column(Integer, ForeignKey("spare_ledger_transactions.id"), nullable=True)
     details = Column(JSON, nullable=True)

@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+import sys
 import time
 import logging
 import hashlib
@@ -203,8 +204,14 @@ class BackupService:
         cmd.append(config["database"])
         
         try:
+            startupinfo = None
+            if sys.platform == "win32":
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+
             with open(sql_file, "w") as f:
-                subprocess.run(cmd, stdout=f, check=True, text=True)
+                subprocess.run(cmd, stdout=f, check=True, text=True, startupinfo=startupinfo)
             return sql_file
         except subprocess.CalledProcessError as e:
             logger.error(f"MySQL Dump failed: {e}")
@@ -234,8 +241,14 @@ class BackupService:
         cmd.append(config["database"])
         
         try:
+            startupinfo = None
+            if sys.platform == "win32":
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+
             with open(sql_file, "r") as f:
-                subprocess.run(cmd, stdin=f, check=True)
+                subprocess.run(cmd, stdin=f, check=True, startupinfo=startupinfo)
         except subprocess.CalledProcessError as e:
              raise Exception(f"MySQL restore failed: {e}")
 

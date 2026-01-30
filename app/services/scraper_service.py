@@ -185,17 +185,33 @@ class HondaScraper:
         messagebox.showinfo("Installing Components", "First-time setup: Installing browser automation components.\nThis may take 1-2 minutes. Please wait...")
         
         try:
+            # Helper to run commands without console window
+            def run_hidden(cmd):
+                startupinfo = None
+                if sys.platform == "win32":
+                    startupinfo = subprocess.STARTUPINFO()
+                    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                    startupinfo.wShowWindow = subprocess.SW_HIDE
+                
+                subprocess.run(
+                    cmd,
+                    check=True,
+                    capture_output=True, # Capture output to prevent printing to console
+                    startupinfo=startupinfo
+                )
+
             # 1. Install playwright package
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "playwright"])
+            run_hidden([sys.executable, "-m", "pip", "install", "playwright"])
             
             # 2. Install chromium browser
             # We use --with-deps if on Linux, but on Windows usually just install is enough.
-            # Adding shell=True can help on Windows sometimes, but list args is safer.
-            subprocess.check_call([sys.executable, "-m", "playwright", "install", "chromium"])
+            run_hidden([sys.executable, "-m", "playwright", "install", "chromium"])
             
             messagebox.showinfo("Success", "Components installed successfully! Launching browser...")
         except subprocess.CalledProcessError as e:
-            raise Exception(f"Installation command failed: {e}")
+            # Try to decode stderr if available
+            error_msg = e.stderr.decode() if e.stderr else str(e)
+            raise Exception(f"Installation command failed: {error_msg}")
 
     def navigate(self, url: str):
         """Navigates to the specified URL."""

@@ -39,6 +39,9 @@ class ReportsFrame(ctk.CTkFrame):
         
         # Initial Load
         self.load_data()
+        
+        # Start Auto Refresh
+        self.start_auto_refresh()
 
     def setup_sales_tab(self):
         self.tab_sales.grid_columnconfigure(0, weight=1)
@@ -56,7 +59,7 @@ class ReportsFrame(ctk.CTkFrame):
         
         ctk.CTkLabel(self.sales_controls, text="Status:").pack(side="left", padx=(10, 5))
         self.sales_status_var = ctk.StringVar(value="All")
-        self.sales_status_combo = ctk.CTkComboBox(self.sales_controls, values=["All", "Synced", "Pending"], variable=self.sales_status_var, width=120)
+        self.sales_status_combo = ctk.CTkComboBox(self.sales_controls, values=["All", "Synced", "Pending", "Failed"], variable=self.sales_status_var, width=120)
         self.sales_status_combo.pack(side="left", padx=5)
 
         # Period Filter
@@ -88,6 +91,9 @@ class ReportsFrame(ctk.CTkFrame):
 
         self.export_sales_btn = ctk.CTkButton(self.sales_controls, text="Export CSV", command=self.export_sales)
         self.export_sales_btn.pack(side="right")
+        
+        self.view_detail_btn = ctk.CTkButton(self.sales_controls, text="View Details", fg_color="#E67E22", hover_color="#D35400", command=lambda: self.show_sales_detail(None))
+        self.view_detail_btn.pack(side="right", padx=10)
         
         self.print_sales_btn = ctk.CTkButton(self.sales_controls, text="Print Invoice", fg_color="green", hover_color="darkgreen", command=self.print_selected_invoice)
         self.print_sales_btn.pack(side="right", padx=10)
@@ -122,6 +128,12 @@ class ReportsFrame(ctk.CTkFrame):
         
         self.sales_tree.pack(side="left", fill="both", expand=True)
         v_scroll.config(command=self.sales_tree.yview)
+        
+        # Configure Tags for Status
+        self.sales_tree.tag_configure("synced", foreground="green")
+        self.sales_tree.tag_configure("pending", foreground="#E67E22") # Orange
+        self.sales_tree.tag_configure("failed", foreground="red")
+        
         # Bind double click
         self.sales_tree.bind("<Double-1>", self.show_sales_detail)
 
@@ -266,13 +278,26 @@ class ReportsFrame(ctk.CTkFrame):
             if status_filter == "Synced":
                 query = query.filter(Invoice.is_fiscalized == True)
             elif status_filter == "Pending":
-                query = query.filter(Invoice.is_fiscalized == False)
+                query = query.filter(Invoice.is_fiscalized == False, Invoice.sync_status != "FAILED")
+            elif status_filter == "Failed":
+                query = query.filter(Invoice.sync_status == "FAILED")
             
             invoices = query.all()
             
             for inv in invoices:
                 date_str = inv.datetime.strftime("%Y-%m-%d %H:%M")
-                status = "Synced" if inv.is_fiscalized else "Pending"
+                
+                # Determine Status and Tag
+                if inv.is_fiscalized:
+                    status = "Synced"
+                    tag = "synced"
+                elif inv.sync_status == "FAILED":
+                    status = "Failed"
+                    tag = "failed"
+                else:
+                    status = "Pending"
+                    tag = "pending"
+                
                 buyer_name = inv.customer.name if inv.customer else "N/A"
                 
                 # Get chassis and engine numbers
@@ -294,10 +319,68 @@ class ReportsFrame(ctk.CTkFrame):
                     engine_str,
                     f"{inv.total_amount:,.2f}",
                     status
-                ))
+                ), tags=(tag,))
             
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load sales: {e}")
+        finally:
+            db.close()
+
+    def start_auto_refresh(self):
+        self._auto_refresh_loop()
+
+    def _auto_refresh_loop(self):
+        try:
+            if self.tabview.get() == "Sales Report":
+                self.update_sales_status()
+        except Exception:
+            pass # Ignore GUI errors if tabview destroyed
+        self.after(5000, self._auto_refresh_loop)
+
+    def update_sales_status(self):
+        items = self.sales_tree.get_children()
+        if not items:
+            return
+            
+        inv_map = {} 
+        for item_id in items:
+            vals = self.sales_tree.item(item_id)['values']
+            if vals and len(vals) > 1:
+                inv_map[str(vals[1])] = item_id
+                
+        if not inv_map:
+            return
+            
+        db = SessionLocal()
+        try:
+            invoices = db.query(Invoice.invoice_number, Invoice.is_fiscalized, Invoice.sync_status).filter(
+                Invoice.invoice_number.in_(inv_map.keys())
+            ).all()
+            
+            for inv_num, is_fiscalized, sync_status in invoices:
+                item_id = inv_map.get(inv_num)
+                if not item_id: continue
+                
+                if is_fiscalized:
+                    status = "Synced"
+                    tag = "synced"
+                elif sync_status == "FAILED":
+                    status = "Failed"
+                    tag = "failed"
+                else:
+                    status = "Pending"
+                    tag = "pending"
+                
+                current_vals = list(self.sales_tree.item(item_id)['values'])
+                if len(current_vals) > 6:
+                    current_status = current_vals[6]
+                    
+                    if current_status != status:
+                        current_vals[6] = status
+                        self.sales_tree.item(item_id, values=current_vals, tags=(tag,))
+                    
+        except Exception as e:
+            print(f"Auto refresh error: {e}")
         finally:
             db.close()
 
@@ -396,6 +479,9 @@ class ReportsFrame(ctk.CTkFrame):
         # Values are (Date, Invoice #, Buyer, Total, Status)
         inv_num = item['values'][1]
         
+        self.configure(cursor="wait")
+        self.update_idletasks()
+        
         db = SessionLocal()
         try:
             inv = db.query(Invoice).options(
@@ -405,18 +491,59 @@ class ReportsFrame(ctk.CTkFrame):
             
             if inv:
                 self.open_sales_detail_dialog(inv)
+            else:
+                messagebox.showerror("Error", "Invoice not found in database.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to fetch invoice details: {e}")
         finally:
             db.close()
+            self.configure(cursor="")
+
+    def _format_error_message(self, msg):
+        """Helper to make error messages user-friendly."""
+        if not msg:
+            return "Unknown Error"
+            
+        # Common FBR/Network Errors
+        if "ConnectionError" in msg:
+            return "Internet Connection Failed. Please check your network."
+        if "Timeout" in msg:
+            return "FBR Server Timeout. The server might be busy or down."
+        if "RetryError" in msg:
+            # Try to extract the underlying cause if visible
+            if "ConnectionError" in msg:
+                 return "Internet Connection Failed (Retried multiple times)."
+            return "Upload failed after multiple attempts. FBR Server may be down."
+            
+        return msg
 
     def open_sales_detail_dialog(self, inv):
         dialog = ctk.CTkToplevel(self)
-        dialog.title(f"Invoice Detail: {inv.invoice_number}")
+        
+        status_str = "SYNCED"
+        if inv.sync_status == "FAILED": status_str = "FAILED"
+        elif not inv.is_fiscalized: status_str = "PENDING"
+            
+        dialog.title(f"Invoice Detail: {inv.invoice_number} [{status_str}]")
         dialog.geometry("900x700")
+        dialog.grab_set() # Modal behavior
         
         # Main Scrollable Frame
         scroll_frame = ctk.CTkScrollableFrame(dialog)
         scroll_frame.pack(fill="both", expand=True, padx=10, pady=10)
         
+        # --- Status Banner (if not synced) ---
+        if inv.sync_status == "FAILED":
+             banner = ctk.CTkFrame(scroll_frame, fg_color="#FFCDD2") # Light Red
+             banner.pack(fill="x", pady=5)
+             
+             clean_msg = self._format_error_message(inv.fbr_response_message)
+             ctk.CTkLabel(banner, text=f"⚠️ Upload Failed: {clean_msg}", text_color="#C62828", font=ctk.CTkFont(weight="bold")).pack(pady=10)
+        elif not inv.is_fiscalized:
+             banner = ctk.CTkFrame(scroll_frame, fg_color="#FFE0B2") # Light Orange
+             banner.pack(fill="x", pady=5)
+             ctk.CTkLabel(banner, text=f"⏳ Pending Upload: {inv.fbr_response_message or 'Waiting for connection...'}", text_color="#EF6C00", font=ctk.CTkFont(weight="bold")).pack(pady=10)
+
         # --- Customer Info ---
         cust_frame = ctk.CTkFrame(scroll_frame)
         cust_frame.pack(fill="x", pady=5)
@@ -459,14 +586,29 @@ class ReportsFrame(ctk.CTkFrame):
             ("POS ID:", inv.pos_id),
             ("USIN:", inv.usin),
             ("Payment Mode:", inv.payment_mode),
-            ("Sync Status:", inv.sync_status)
+            ("Sync Status:", inv.sync_status),
+            ("Status Updated:", inv.status_updated_at.strftime("%Y-%m-%d %H:%M:%S") if inv.status_updated_at else "N/A")
         ]
         
         for i, (label, value) in enumerate(fields):
             row = i // 2
             col = (i % 2) * 2
             ctk.CTkLabel(grid_frame, text=label, font=ctk.CTkFont(weight="bold")).grid(row=row, column=col, sticky="w", padx=5, pady=2)
-            ctk.CTkLabel(grid_frame, text=str(value or "N/A")).grid(row=row, column=col+1, sticky="w", padx=5, pady=2)
+            
+            # Color code Sync Status
+            text_color = "text_color" # Default
+            if label == "Sync Status:":
+                if value == "SYNCED":
+                    text_color = "green"
+                elif value == "FAILED":
+                    text_color = "red"
+                elif value == "PENDING":
+                    text_color = "#E67E22"
+            
+            lbl = ctk.CTkLabel(grid_frame, text=str(value or "N/A"))
+            if text_color != "text_color":
+                lbl.configure(text_color=text_color, font=ctk.CTkFont(weight="bold"))
+            lbl.grid(row=row, column=col+1, sticky="w", padx=5, pady=2)
 
         # --- Items ---
         items_frame = ctk.CTkFrame(scroll_frame)
@@ -497,6 +639,39 @@ class ReportsFrame(ctk.CTkFrame):
             for col, v in enumerate(vals):
                 ctk.CTkLabel(row_frame, text=v, width=100).grid(row=0, column=col, padx=2)
                 
+        # --- Motorcycle Information ---
+        has_motorcycles = any(item.motorcycle for item in inv.items)
+        if has_motorcycles:
+            moto_frame = ctk.CTkFrame(scroll_frame)
+            moto_frame.pack(fill="x", pady=5)
+            
+            ctk.CTkLabel(moto_frame, text="Motorcycle Information", font=ctk.CTkFont(size=16, weight="bold")).pack(pady=5)
+            
+            for item in inv.items:
+                if item.motorcycle:
+                    # Item Header
+                    ctk.CTkLabel(moto_frame, text=f"• {item.item_name}", font=ctk.CTkFont(weight="bold"), anchor="w").pack(fill="x", padx=20, pady=(5,0))
+                    
+                    # Details Grid
+                    details_frame = ctk.CTkFrame(moto_frame, fg_color="transparent")
+                    details_frame.pack(fill="x", padx=30, pady=2)
+                    
+                    m_fields = [
+                        ("Chassis Number:", item.motorcycle.chassis_number),
+                        ("Engine Number:", item.motorcycle.engine_number),
+                        ("Color:", item.motorcycle.color),
+                        ("Model Year:", item.motorcycle.year)
+                    ]
+                    
+                    for k, (lbl, val) in enumerate(m_fields):
+                        r = k // 2
+                        c = (k % 2) * 2
+                        ctk.CTkLabel(details_frame, text=lbl, font=ctk.CTkFont(weight="bold")).grid(row=r, column=c, sticky="w", padx=5)
+                        ctk.CTkLabel(details_frame, text=str(val or "N/A")).grid(row=r, column=c+1, sticky="w", padx=5)
+            
+            # Add some spacing
+            ctk.CTkLabel(moto_frame, text="").pack(pady=2)
+
         # --- Financial Summary ---
         sum_frame = ctk.CTkFrame(scroll_frame)
         sum_frame.pack(fill="x", pady=5)
@@ -538,27 +713,26 @@ class ReportsFrame(ctk.CTkFrame):
                 ctk.CTkLabel(grid_frame, text=label, font=ctk.CTkFont(weight="bold")).grid(row=i, column=0, sticky="w", padx=5, pady=2)
                 ctk.CTkLabel(grid_frame, text=str(value or "N/A"), wraplength=600).grid(row=i, column=1, sticky="w", padx=5, pady=2)
 
+        # --- Print Action ---
+        btn_frame = ctk.CTkFrame(scroll_frame, fg_color="transparent")
+        btn_frame.pack(fill="x", pady=20)
+        
+        def _do_print():
+            try:
+                success, msg = print_service.print_invoice(inv)
+                if not success:
+                    messagebox.showerror("Print Error", msg)
+            except Exception as e:
+                messagebox.showerror("Error", f"An error occurred while printing: {e}")
+
+        ctk.CTkButton(btn_frame, text="🖨 Print Invoice", command=_do_print, 
+                      height=40, font=ctk.CTkFont(size=14, weight="bold"),
+                      fg_color="#00897B", hover_color="#00695C").pack()
+
     def show_inventory_detail(self, event):
         selection = self.inv_tree.selection()
         if not selection:
             return
-
-    def ensure_visible_sales(self, event):
-        try:
-            focus_item = self.sales_tree.focus()
-            if focus_item:
-                self.sales_tree.see(focus_item)
-        except Exception:
-            pass
-
-    def ensure_visible_inv(self, event):
-        try:
-            focus_item = self.inv_tree.focus()
-            if focus_item:
-                self.inv_tree.see(focus_item)
-        except Exception:
-            pass
-
             
         item = self.inv_tree.item(selection[0])
         # Values are (chassis, engine, model, color, status)
@@ -575,6 +749,22 @@ class ReportsFrame(ctk.CTkFrame):
                 self.open_inventory_detail_dialog(bike)
         finally:
             db.close()
+
+    def ensure_visible_sales(self, event):
+        try:
+            focus_item = self.sales_tree.focus()
+            if focus_item:
+                self.sales_tree.see(focus_item)
+        except Exception:
+            pass
+
+    def ensure_visible_inv(self, event):
+        try:
+            focus_item = self.inv_tree.focus()
+            if focus_item:
+                self.inv_tree.see(focus_item)
+        except Exception:
+            pass
 
     def open_inventory_detail_dialog(self, bike):
         dialog = ctk.CTkToplevel(self)
