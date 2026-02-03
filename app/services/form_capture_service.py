@@ -561,6 +561,11 @@ class FormCaptureService:
             if (typeof MutationObserver !== 'undefined') {{
                 const observer = new MutationObserver((mutations) => {{
                     mutations.forEach((mutation) => {{
+                        // Ignore our own visual feedback changes to avoid infinite loops
+                        if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'data-captured' || mutation.attributeName === 'class')) {{
+                            return;
+                        }}
+
                         let target = mutation.target;
                         if (target.nodeType === 3) target = target.parentElement; // Text node -> Parent
                         
@@ -576,7 +581,7 @@ class FormCaptureService:
                         subtree: true, 
                         childList: true, 
                         characterData: true,
-                        attributes: true
+                        attributes: true,
                     }});
                 }}
             }}
@@ -604,18 +609,134 @@ class FormCaptureService:
             // -----------------------------------------------------------
             const previousValues = {{}};
 
+            function getElementValue(el) {{
+                let val = el.value;
+                if (el.type === 'checkbox' || el.type === 'radio') {{
+                    val = el.checked;
+                }} else if (el.tagName === 'SELECT') {{
+                    val = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
+                }} else if (val === undefined || val === null) {{
+                    val = (el.innerText || el.textContent || "").trim();
+                }}
+                return val;
+            }}
+
+            // NEW: Label-based extraction for read-only fields
+            const LABEL_STRATEGIES = [
+                {{ label: "Full Name", selector: "#txt_full_name" }},
+                {{ label: "Father / Husband Name", selector: "#txt_father_name" }}
+            ];
+
+            function captureByLabels() {{
+                LABEL_STRATEGIES.forEach(strategy => {{
+                    // 1. Skip if primary selector exists in DOM
+                    if (document.querySelector(strategy.selector)) return;
+                    
+                    // 2. Find label using XPath
+                    // Use robust XPath to find text nodes containing the label
+                    const xpath = `//*[text()[contains(., '${{strategy.label}}')]]`;
+                    try {{
+                        const result = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                        
+                        for (let i = 0; i < result.snapshotLength; i++) {{
+                            const el = result.snapshotItem(i);
+                            
+                            // Determine potential value element container
+                            let valueEl = null;
+                            let method = "unknown";
+
+                            // Strategy A: Direct Next Sibling (e.g., <div>Label</div><div>Value</div>)
+                            if (el.nextElementSibling) {{
+                                valueEl = el.nextElementSibling;
+                                method = "sibling";
+                            }}
+                            
+                            // Strategy B: Parent TD Sibling (e.g., <td>Label</td><td>Value</td>)
+                            // If direct sibling didn't yield a value or wasn't suitable, try stepping up to TD
+                            if (!valueEl || (valueEl.tagName === 'BR' || valueEl.tagName === 'HR')) {{
+                                const parentTd = el.closest('td');
+                                if (parentTd) {{
+                                    valueEl = parentTd.nextElementSibling;
+                                    method = "parent_td_sibling";
+                                }}
+                            }}
+
+                            // Strategy C: Table Row Cell Index (for nested structures or complex tables)
+                            if (!valueEl) {{
+                                const parentRow = el.closest('tr');
+                                if (parentRow) {{
+                                    const cells = Array.from(parentRow.cells);
+                                    // Find which cell contains our label element
+                                    const idx = cells.findIndex(c => c === el || c.contains(el));
+                                    if (idx !== -1 && idx + 1 < cells.length) {{
+                                        valueEl = cells[idx + 1];
+                                        method = "row_cell_index";
+                                    }}
+                                }}
+                            }}
+                            
+                            if (valueEl) {{
+                                let val = "";
+                                // Check for value property first (inputs, selects)
+                                if (valueEl.value !== undefined && valueEl.value !== "") {{
+                                    val = valueEl.value;
+                                }} else {{
+                                    val = (valueEl.innerText || valueEl.textContent || "").trim();
+                                }}
+                                
+                                // If val is empty, check if valueEl contains an input/select/textarea
+                                if (!val && valueEl.children.length > 0) {{
+                                    const input = valueEl.querySelector('input, select, textarea');
+                                    if (input) {{
+                                         if (input.value !== undefined && input.value !== "") {{
+                                             val = input.value;
+                                         }}
+                                    }}
+                                }}
+                                
+                                // Clean up common separators if they were captured
+                                if (val.startsWith(":")) val = val.substring(1).trim();
+                                
+                                if (val && val.length > 1) {{
+                                    // Capture it!
+                                    const data = {{
+                                        selector: strategy.selector, // Masquerade as the expected selector
+                                        value: val,
+                                        type: 'label_inference',
+                                        method: method,
+                                        label_found: strategy.label,
+                                        timestamp: Date.now() / 1000
+                                    }};
+                                    
+                                    // Check if value is new
+                                    if (previousValues[strategy.selector] !== val) {{
+                                        console.log(`[Label Inference] MATCH: '${{strategy.label}}' -> '${{val}}' via ${{method}}`);
+                                        if (window.py_capture) window.py_capture(data);
+                                        previousValues[strategy.selector] = val;
+                                        
+                                        // Visual feedback on value element
+                                        try {{
+                                            valueEl.style.outline = '2px dashed #3498db'; // Blue dashed
+                                            valueEl.setAttribute('data-captured', 'true');
+                                            valueEl.title = `Captured as ${{strategy.label}}`;
+                                        }} catch(e) {{}}
+                                    }}
+                                    return; // Stop after first valid match
+                                }}
+                            }}
+                        }}
+                    }} catch(e) {{
+                        console.error("Error in captureByLabels", e);
+                    }}
+                }});
+            }}
+
             function pollWhitelistedElements() {{
+                // 1. Standard Selectors
                 INCLUDE_SELECTORS.forEach(selector => {{
                     const els = document.querySelectorAll(selector);
                     els.forEach(el => {{
-                        let val = el.value;
-                        if (el.type === 'checkbox' || el.type === 'radio') {{
-                            val = el.checked;
-                        }} else if (el.tagName === 'SELECT') {{
-                            val = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
-                        }} else if (val === undefined || val === null) {{
-                            val = el.innerText || el.textContent || "";
-                        }}
+                        const val = getElementValue(el);
 
                         // Unique key for tracking
                         const key = selector; 
@@ -630,10 +751,30 @@ class FormCaptureService:
                         }}
                     }});
                 }});
+                
+                // 2. Label Inference
+                captureByLabels();
             }}
             
             // Poll every 2 seconds
             setInterval(pollWhitelistedElements, 2000);
+
+            // Initial Capture of whitelisted elements (Fix for static TD elements)
+            setTimeout(() => {{
+                console.log("Running initial capture for whitelisted elements...");
+                INCLUDE_SELECTORS.forEach(selector => {{
+                    const els = document.querySelectorAll(selector);
+                    els.forEach(el => {{
+                        // Capture immediately to ensure static data (like TD) is grabbed
+                        capture(el, 'initial_load');
+                        
+                        // Update polling cache
+                        const val = getElementValue(el);
+                        const key = selector; 
+                        previousValues[key] = val;
+                    }});
+                }});
+            }}, 1000);
 
             // -----------------------------------------------------------
             // SUBMIT DETECTION
