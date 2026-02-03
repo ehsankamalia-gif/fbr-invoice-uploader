@@ -36,6 +36,7 @@ class InvoiceResponse(InvoiceCreate):
     usin: str
     total_sale_value: float
     total_tax_charged: float
+    total_further_tax: float = 0.0
     total_quantity: float
     total_amount: float
     fbr_invoice_number: Optional[str] = None

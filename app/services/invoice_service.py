@@ -203,6 +203,7 @@ class InvoiceService:
                 "buyer_phone": customer.phone if customer else "",
                 "total_sale_value": invoice.total_sale_value,
                 "total_tax_charged": invoice.total_tax_charged,
+                "total_further_tax": invoice.total_further_tax,
                 "total_quantity": invoice.total_quantity,
                 "total_amount": invoice.total_amount,
                 "payment_mode": invoice.payment_mode,
