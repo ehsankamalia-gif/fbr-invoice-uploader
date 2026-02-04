@@ -52,8 +52,10 @@ class CapturedFormProcessor:
 
             # 3. Validate required fields
             if not self._validate(mapped_data):
-                logger.error("Validation failed for captured form.")
+                logger.error(f"Validation failed for captured form. Missing fields. Mapped Data: {mapped_data}")
                 return False
+
+            logger.info("Validation passed. Attempting to save to database...")
 
             # 4. Save to CapturedData Table
             with SessionLocal() as db:

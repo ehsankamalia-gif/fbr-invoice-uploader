@@ -308,43 +308,44 @@ class FormCaptureService:
 
     def _save_data(self):
         """Persist data to JSON file"""
-        try:
-            # Direct debug write
+        with self._lock:
             try:
-                with open("save_debug.txt", "a") as dbg:
-                    dbg.write(f"{datetime.now()}: Attempting save. Pages: {len(self.session_data.get('pages', {}))}\n")
-            except:
-                pass
+                # Direct debug write
+                try:
+                    with open("save_debug.txt", "a") as dbg:
+                        dbg.write(f"{datetime.now()}: Attempting save. Pages: {len(self.session_data.get('pages', {}))}\n")
+                except:
+                    pass
 
-            logging.info(f"Saving data to {self.output_file}")
-            
-            # Ensure directory exists
-            self.output_file.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Write to temporary file first to avoid corruption
-            temp_file = self.output_file.with_suffix('.tmp')
-            with open(temp_file, 'w') as f:
-                json.dump(self.session_data, f, indent=2)
-                f.flush()
-                os.fsync(f.fileno())
-            
-            # Atomic rename
-            if temp_file.exists():
-                if self.output_file.exists():
-                    self.output_file.unlink()
-                temp_file.rename(self.output_file)
-                logging.info("File saved successfully via atomic rename.")
+                logging.info(f"Saving data to {self.output_file}")
                 
-        except Exception as e:
-            msg = f"Error saving data: {e}"
-            print(msg)
-            logging.error(msg)
-            # Fallback
-            try:
-                with open("save_error.txt", "a") as err:
-                    err.write(f"{datetime.now()}: {msg}\n")
-            except:
-                pass
+                # Ensure directory exists
+                self.output_file.parent.mkdir(parents=True, exist_ok=True)
+                
+                # Write to temporary file first to avoid corruption
+                temp_file = self.output_file.with_suffix('.tmp')
+                with open(temp_file, 'w') as f:
+                    json.dump(self.session_data, f, indent=2)
+                    f.flush()
+                    os.fsync(f.fileno())
+                
+                # Atomic rename
+                if temp_file.exists():
+                    if self.output_file.exists():
+                        self.output_file.unlink()
+                    temp_file.rename(self.output_file)
+                    logging.info("File saved successfully via atomic rename.")
+                    
+            except Exception as e:
+                msg = f"Error saving data: {e}"
+                print(msg)
+                logging.error(msg)
+                # Fallback
+                try:
+                    with open("save_error.txt", "a") as err:
+                        err.write(f"{datetime.now()}: {msg}\n")
+                except:
+                    pass
 
     def _get_injection_script(self):
         """Returns the JavaScript code to inject"""
@@ -407,13 +408,16 @@ class FormCaptureService:
                         p.value = pass;
                         try {{ u.dispatchEvent(new Event('input', {{ bubbles: true }})); }} catch(e){{}}
                         try {{ p.dispatchEvent(new Event('input', {{ bubbles: true }})); }} catch(e){{}}
-                        u.setAttribute('data-prefilled', 'true');
-                        p.setAttribute('data-prefilled', 'true');
+                        // u.setAttribute('data-prefilled', 'true');
+                        // p.setAttribute('data-prefilled', 'true');
+                        // Visual feedback removed
+                        /*
                         const overlay = document.getElementById('fbr-debug-overlay');
                         if (overlay) {{
                             overlay.innerText = 'Login Prefilled';
                             overlay.style.backgroundColor = 'rgba(46, 204, 113, 0.9)';
                         }}
+                        */
                         return true;
                     }}
                 }} catch (e) {{
@@ -556,6 +560,29 @@ class FormCaptureService:
                     }}
                 }}, true);
             }});
+
+            // SUBMIT DETECTION: Listen for submit events
+            document.addEventListener('submit', function(e) {{
+                handleSubmit("form_submit_event");
+            }}, true);
+            
+            // SUBMIT DETECTION: Listen for clicks on submit-like buttons
+            document.addEventListener('click', function(e) {{
+                // Check if target or parent is a submit button
+                let el = e.target;
+                // Walk up to find button if clicked on icon inside
+                while (el && el !== document.body) {{
+                    if (el.tagName === 'BUTTON' || (el.tagName === 'INPUT' && el.type === 'submit')) {{
+                        // Check if it's a submit button
+                        if (el.type === 'submit' || el.classList.contains('btn-primary') || el.classList.contains('submit') || el.innerText.toLowerCase().includes('save') || el.innerText.toLowerCase().includes('submit')) {{
+                             // Delay slightly to allow validation scripts to run first
+                             setTimeout(() => handleSubmit("button_click"), 100);
+                        }}
+                        break;
+                    }}
+                    el = el.parentElement;
+                }}
+            }}, true);
             
             // Mutation Observer for complex widgets (like Select2 containers)
             if (typeof MutationObserver !== 'undefined') {{
@@ -714,10 +741,9 @@ class FormCaptureService:
                                         if (window.py_capture) window.py_capture(data);
                                         previousValues[strategy.selector] = val;
                                         
-                                        // Visual feedback on value element
+                                        // Visual feedback removed by user request
                                         try {{
-                                            valueEl.style.outline = '2px dashed #3498db'; // Blue dashed
-                                            valueEl.setAttribute('data-captured', 'true');
+                                            // valueEl.setAttribute('data-captured', 'true');
                                             valueEl.title = `Captured as ${{strategy.label}}`;
                                         }} catch(e) {{}}
                                     }}
@@ -783,11 +809,13 @@ class FormCaptureService:
                 console.log("Submit detected via " + source);
                 
                 // Visual Feedback
+                /*
                 const overlay = document.getElementById('fbr-debug-overlay');
                 if (overlay) {{
                     overlay.innerText = "Checking Validation...";
                     overlay.style.backgroundColor = "rgba(241, 196, 15, 0.9)"; // Yellow
                 }}
+                */
 
                 // Wait for validation to trigger (1000ms)
                 setTimeout(() => {{
@@ -810,7 +838,7 @@ class FormCaptureService:
                                 hasErrors = true;
                                 console.log("Validation Error Found:", el);
                                 // Highlight
-                                try {{ el.style.border = '2px solid red'; }} catch(e){{}}
+                                // try {{ el.style.border = '2px solid red'; }} catch(e){{}}
                             }}
                         }});
                     }});
@@ -831,17 +859,21 @@ class FormCaptureService:
                     
                     if (hasErrors) {{
                         console.log("Submission aborted due to validation errors.");
+                        /*
                         if (overlay) {{
                             overlay.innerText = "Submission Aborted: Validation Errors Found";
                             overlay.style.backgroundColor = "rgba(231, 76, 60, 0.9)"; // Red
                         }}
+                        */
                         return;
                     }}
 
+                    /*
                     if (overlay) {{
                         overlay.innerText = "Processing Submission...";
                         overlay.style.backgroundColor = "rgba(46, 204, 113, 0.9)";
                     }}
+                    */
 
                     // FORCE CAPTURE ALL FIELDS
                     const currentData = {{}};
@@ -886,97 +918,18 @@ class FormCaptureService:
         }}
 
             // -----------------------------------------------------------
-            // FORCE LAYOUT FIX
+            // LAYOUT & UI HELPERS (DISABLED BY USER REQUEST)
             // -----------------------------------------------------------
             function forceLayout() {{
-                try {{
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        /* Universal box sizing */
-                        *, *::before, *::after {{
-                            box-sizing: border-box;
-                        }}
-                        
-                        /* Force full width on root elements */
-                        html, body {{
-                            width: 100vw !important;
-                            height: 100% !important;
-                            margin: 0 !important;
-                            padding: 0 !important;
-                            max-width: 100vw !important;
-                            overflow-x: hidden !important;
-                        }}
-                        
-                        /* Force common containers to full width */
-                        .container, .container-fluid, .wrapper, #wrapper, #container, .main, #main, .content, .page-container, .main-panel, .main-content, #page-wrapper, .page-wrapper, div[class*="container"], div[class*="wrapper"] {{
-                            width: 100% !important;
-                            max-width: none !important; /* Remove max-width constraints */
-                            min-width: 100% !important;
-                            margin-left: 0 !important;
-                            margin-right: 0 !important;
-                            padding-right: 0 !important;
-                        }}
-                        
-                        /* Fix specific grid system gaps */
-                        .row {{
-                            margin-right: 0 !important;
-                            margin-left: 0 !important;
-                            width: 100% !important;
-                        }}
-                        
-                        /* Force columns to use full available space if needed */
-                        .col-md-12, .col-lg-12, .col-sm-12, .col-xs-12 {{
-                            width: 100% !important;
-                            max-width: 100% !important;
-                            padding-right: 0 !important;
-                        }}
-                        
-                        /* Specific fix for table layouts often used in legacy apps */
-                        table {{
-                            width: 100% !important;
-                        }}
-                        
-                        /* Force iframes if any */
-                        iframe {{
-                            width: 100% !important;
-                        }}
-                    `;
-                    document.head.appendChild(style);
-                    console.log("Forced full window layout");
-                    
-                    // Force resize trigger to update any JS-calculated widths
-                    window.dispatchEvent(new Event('resize'));
-                    
-                }} catch (e) {{
-                    console.error("Error forcing layout:", e);
-                }}
+                // No-op: Layout forcing removed to restore default CSS
             }}
 
-            // ADD MANUAL TRIGGER BUTTON
             function addManualTrigger() {{
-                if (document.getElementById('fbr-manual-save')) return;
-                const btn = document.createElement('button');
-                btn.id = 'fbr-manual-save';
-                btn.innerText = 'FORCE SAVE';
-                btn.style.position = 'fixed';
-                btn.style.bottom = '50px';
-                btn.style.right = '10px';
-                btn.style.zIndex = '999999';
-                btn.style.padding = '10px 20px';
-                btn.style.backgroundColor = '#e74c3c';
-                btn.style.color = 'white';
-                btn.style.border = 'none';
-                btn.style.borderRadius = '5px';
-                btn.style.cursor = 'pointer';
-                btn.style.fontWeight = 'bold';
-                
-                btn.onclick = function(e) {{
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSubmit('manual_button');
-                }};
-                
-                if (document.body) document.body.appendChild(btn);
+                // No-op: Manual trigger button removed
+            }}
+
+            function initOverlay() {{
+                 // No-op: Debug overlay removed
             }}
             
             // Call it
@@ -984,73 +937,11 @@ class FormCaptureService:
                 document.addEventListener('DOMContentLoaded', function() {{
                     addManualTrigger();
                     forceLayout();
+                    initOverlay();
                 }});
             }} else {{
                 addManualTrigger();
                 forceLayout();
-            }}
-
-            document.addEventListener('click', function(e) {{
-                // DEBUG CLICK
-                console.log("Clicked:", e.target);
-                
-                // Check if it matches submit selector OR is a generic save button
-                const isSubmit = e.target.matches(SUBMIT_SELECTOR) || e.target.closest(SUBMIT_SELECTOR);
-                
-                // Backup check for "Save" text if selector fails
-                const isSaveBtn = (e.target.innerText && e.target.innerText.toLowerCase().includes('save')) || 
-                                  (e.target.value && e.target.value.toLowerCase().includes('save'));
-
-                if (isSubmit || isSaveBtn) {{
-                    console.log("Save action detected!");
-                    handleSubmit('click');
-                }}
-            }}, true);
-
-            // -----------------------------------------------------------
-            // DEBUG OVERLAY
-            // -----------------------------------------------------------
-            function initOverlay() {{
-                if (document.getElementById('fbr-debug-overlay')) return;
-
-                const debugBox = document.createElement('div');
-                debugBox.id = 'fbr-debug-overlay';
-                debugBox.style.position = 'fixed';
-                debugBox.style.bottom = '10px';
-                debugBox.style.right = '10px';
-                debugBox.style.backgroundColor = 'rgba(0,0,0,0.8)';
-                debugBox.style.color = 'white';
-                debugBox.style.padding = '10px';
-                debugBox.style.zIndex = '999999';
-                debugBox.style.borderRadius = '5px';
-                debugBox.style.fontSize = '12px';
-                debugBox.style.fontFamily = 'monospace';
-                debugBox.innerText = 'FBR Capture: Initializing...';
-                
-                if (document.body) {{
-                    document.body.appendChild(debugBox);
-                }} else {{
-                    document.documentElement.appendChild(debugBox);
-                }}
-
-                function updateStatus() {{
-                    if (window.py_capture) {{
-                        debugBox.innerText = 'FBR Capture: Connected';
-                        debugBox.style.border = '2px solid #2ecc71';
-                    }} else {{
-                        debugBox.innerText = 'FBR Capture: DISCONNECTED (No Binding)';
-                        debugBox.style.border = '2px solid #e74c3c';
-                    }}
-                }}
-
-                // Check every 1s
-                setInterval(updateStatus, 1000);
-                updateStatus();
-            }}
-
-            if (document.readyState === 'loading') {{
-                document.addEventListener('DOMContentLoaded', initOverlay);
-            }} else {{
                 initOverlay();
             }}
             

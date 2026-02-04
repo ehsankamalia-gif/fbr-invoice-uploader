@@ -38,14 +38,14 @@ class HondaScraper:
         # Launch with a large viewport if needed
         if not self.browser or not self.browser.is_connected():
             self.browser = self.playwright.chromium.launch(headless=headless, args=["--start-maximized"])
-            self.context = self.browser.new_context(viewport={"width": 1280, "height": 720})
+            self.context = self.browser.new_context(no_viewport=True)
             self.page = self.context.new_page()
         elif not self.page or self.page.is_closed():
              # Browser exists but page is closed - refresh context and page
              if self.context:
                  try: self.context.close()
                  except: pass
-             self.context = self.browser.new_context(viewport={"width": 1280, "height": 720})
+             self.context = self.browser.new_context(no_viewport=True)
              self.page = self.context.new_page()
 
     def login(self, url: str, username: str = None, password: str = None):
@@ -93,6 +93,9 @@ class HondaScraper:
 
         try:
             # 1. Identify correct login form fields
+            
+            # Apply layout fixes immediately after navigation
+            self._apply_layout_fixes()
             
             # 1. Identify correct login form fields
             # Strategies: specific placeholders (Best for this site), names, IDs, or generic types
@@ -219,9 +222,16 @@ class HondaScraper:
             self.start_browser()
         try:
             self.page.goto(url)
+            self._apply_layout_fixes()
         except Exception as e:
             logger.error(f"Navigation failed: {e}")
             raise
+
+    def _apply_layout_fixes(self):
+        """
+        No-op: Layout fixes removed as per user request to restore default CSS.
+        """
+        pass
 
     def trigger_bookmark_dialog(self):
         """Simulates Ctrl+D to open the browser's bookmark dialog."""
