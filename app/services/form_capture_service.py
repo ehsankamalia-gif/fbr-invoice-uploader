@@ -17,7 +17,7 @@ logging.basicConfig(
 
 class FormCaptureService:
     _instance = None
-    _lock = threading.RLock()
+    _lock = threading.RLock()  # RLock to allow re-entrant locking (e.g. clear_data -> _save_data)
 
     def __new__(cls):
         with cls._lock:
