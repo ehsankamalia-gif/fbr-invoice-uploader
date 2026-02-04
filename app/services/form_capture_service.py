@@ -877,14 +877,15 @@ class FormCaptureService:
                     }}
                     
                     if (hasErrors) {{
-                        console.log("Submission aborted due to validation errors.");
+                        console.log("Validation errors detected, but proceeding with capture for debugging...");
                         /*
                         if (overlay) {{
                             overlay.innerText = "Submission Aborted: Validation Errors Found";
                             overlay.style.backgroundColor = "rgba(231, 76, 60, 0.9)"; // Red
                         }}
                         */
-                        return;
+                        // REMOVED return to ensure we capture data even if validation seems to fail
+                        // return; 
                     }}
 
                     /*

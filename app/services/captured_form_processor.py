@@ -180,7 +180,9 @@ class CapturedFormProcessor:
         # Minimal validation
         # Only require chassis number now as that's the primary key/unique identifier
         if not data.get("chassis_number"):
-            logger.warning("Missing chassis_number in captured data")
-            return False
+            logger.warning("Missing chassis_number in captured data. Generating temporary ID to ensure data preservation.")
+            # Generate a temporary chassis number so we can save and debug the rest of the data
+            data["chassis_number"] = f"UNKNOWN-CHASSIS-{int(datetime.now().timestamp())}"
+            # return False # Old behavior: reject
             
         return True
