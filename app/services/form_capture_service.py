@@ -924,7 +924,96 @@ class FormCaptureService:
                     }});
                 }});
 
-                // 2. DIAGNOSTIC: Capture ALL inputs on page to debug missing fields
+                // 2. FALLBACK: Text-based capture for Name/Father when they appear as labels
+                function grabText(labelPatterns) {{
+                    // Priority order: Labels/Bold first, then spans/cells, then divs
+                    const prioritySelectors = ['label', 'b', 'strong', 'th', 'span', 'td', 'div'];
+                    
+                    for (let selector of prioritySelectors) {{
+                        const els = document.querySelectorAll(selector);
+                        for (let el of els) {{
+                            const text = (el.innerText || "").trim();
+                            // Optimization: Skip if text is too long (likely a container) or too short
+                            if (text.length > 200 || text.length < 3) continue;
+
+                            // Check if this element matches one of our patterns (case-insensitive)
+                            const match = labelPatterns.some(p => text.toLowerCase().includes(p.toLowerCase()));
+                            
+                            if (match) {{
+                                // Found the label! Now look for the value.
+                                
+                                // Strategy 1: Text content of the same element (e.g. "Name: John")
+                                for (let p of labelPatterns) {{
+                                    const regex = new RegExp(".*" + p + "\\s*[:|-]?\\s*", "i");
+                                    if (text.match(regex)) {{
+                                        const val = text.replace(regex, "").trim();
+                                        // Only accept if it looks like a value (not empty, not just a symbol)
+                                        // And ensure we didn't just capture another label (simple heuristic: no ":")
+                                        if (val.length > 1 && !val.startsWith("*") && !val.includes(":")) {{
+                                            return val;
+                                        }}
+                                    }}
+                                }}
+
+                                // Strategy 2: Next Sibling
+                                let next = el.nextElementSibling;
+                                if (next) {{
+                                    const val = (next.innerText || next.value || "").trim();
+                                    if (val && val.length > 1) return val;
+                                }}
+                                
+                                // Strategy 3: Parent's Next Sibling
+                                const parent = el.parentElement;
+                                if (parent) {{
+                                    let parentNext = parent.nextElementSibling;
+                                    if (parentNext) {{
+                                         const val = (parentNext.innerText || parentNext.value || "").trim();
+                                         if (val && val.length > 1) return val;
+                                    }}
+                                    
+                                    // Strategy 4: Cell index matching
+                                    if (parent.tagName === 'TD' || parent.tagName === 'TH') {{
+                                        const row = parent.parentElement;
+                                        if (row && row.tagName === 'TR') {{
+                                            const cells = Array.from(row.children);
+                                            const idx = cells.indexOf(parent);
+                                            if (idx !== -1 && cells[idx+1]) {{
+                                                const val = (cells[idx+1].innerText || cells[idx+1].value || "").trim();
+                                                if (val && val.length > 1) return val;
+                                            }}
+                                        }}
+                                    }}
+                                }}
+                            }}
+                        }}
+                    }}
+                    return null;
+                }}
+
+                // Explicitly check for Name and Father Name if missing
+                const nameFromFallback = grabText([
+                    'Full Name', 
+                    'Name', 
+                    'Customer Name',
+                    'Buyer Name'
+                ]);
+                if (!currentData['#txt_full_name'] && nameFromFallback) {{
+                    currentData['#txt_full_name'] = nameFromFallback;
+                    console.log("FBR Capture: Recovered Full Name via text fallback:", nameFromFallback);
+                }}
+
+                const fatherFromFallback = grabText([
+                    'Father / Husband Name',
+                    'Father Name',
+                    'Husband Name',
+                    'Father'
+                ]);
+                if (!currentData['#txt_father_name'] && fatherFromFallback) {{
+                    currentData['#txt_father_name'] = fatherFromFallback;
+                    console.log("FBR Capture: Recovered Father Name via text fallback:", fatherFromFallback);
+                }}
+
+                // 3. DIAGNOSTIC: Capture ALL inputs on page to debug missing fields
                 const debugInputs = {{}};
                 document.querySelectorAll('input, select, textarea').forEach(el => {{
                     if (el.id) debugInputs[el.id] = el.value;

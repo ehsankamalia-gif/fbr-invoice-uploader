@@ -7182,3 +7182,1111 @@ RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'htt
 Flat Data Keys: ['input#nic1', 'input#nic2', 'input#nic3', 'input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', 'input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
 Flat Data Content: {'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_full_name': 'yousaf', 'input#txt_father_name': 'khan', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', 'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', '#txt_chassis_no': 'JB631316', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '1142632', '#nic3': '5', '#txt_full_name': 'yousaf', '#txt_father_name': 'khan', '#txt_address': 'chak no 715 gb', '#txt_cell_no': '03021425426', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'nuZpJu6navjhOQSDO38EnlInXWtOO5xRrkhRlCze', 'user_name': '101296', 'password': '95858260', 'captcha_code': '34232'}}
 Mapped Data: {'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '1142632', 'buyer_cnic_part3': '5', 'buyer_name': 'yousaf', 'buyer_father_name': 'khan', 'buyer_address': 'chak no 715 gb, Kamalia', 'buyer_phone': '03021425426', 'city': 'Kamalia', 'chassis_number': 'JB631316', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic': '33302-1142632-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770236585.936, 'forced_capture': {'_debug_all_inputs': {'_token': 'qXRSWDIxBqIt0cbKejZ25mVLIk1cNC9c3IooJEWL', 'user_name': '101296', 'password': '95858260', 'captcha_code': '64691'}}}
+2026-02-05 01:23:05.951399: Attempting save. Pages: 4
+
+--- SUBMISSION START 2026-02-05 01:23:05.971570 ---
+Flat Data Keys: ['input#nic1', 'input#nic2', 'input#nic3', 'input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', 'input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_full_name': 'yousaf', 'input#txt_father_name': 'khan', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', 'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', '#txt_chassis_no': 'JB631316', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '1142632', '#nic3': '5', '#txt_full_name': 'yousaf', '#txt_father_name': 'khan', '#txt_address': 'chak no 715 gb', '#txt_cell_no': '03021425426', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'qXRSWDIxBqIt0cbKejZ25mVLIk1cNC9c3IooJEWL', 'user_name': '101296', 'password': '95858260', 'captcha_code': '64691'}}
+Mapped Data: {'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '1142632', 'buyer_cnic_part3': '5', 'buyer_name': 'yousaf', 'buyer_father_name': 'khan', 'buyer_address': 'chak no 715 gb, Kamalia', 'buyer_phone': '03021425426', 'city': 'Kamalia', 'chassis_number': 'JB631316', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic': '33302-1142632-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770237372.518, 'forced_capture': {'_debug_all_inputs': {'_token': 'I5ygG2La23dQNDqVWQOGAK1KOErP7gIwnXCGUaUh', 'user_name': '101296', 'password': '95858260', 'captcha_code': '81408'}}}
+2026-02-05 01:36:12.531683: Attempting save (try 1). Pages: 4
+
+--- SUBMISSION START 2026-02-05 01:36:12.549853 ---
+Flat Data Keys: ['input#nic1', 'input#nic2', 'input#nic3', 'input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', 'input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_full_name': 'yousaf', 'input#txt_father_name': 'khan', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', 'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', '#txt_chassis_no': 'JB631316', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '1142632', '#nic3': '5', '#txt_full_name': 'yousaf', '#txt_father_name': 'khan', '#txt_address': 'chak no 715 gb', '#txt_cell_no': '03021425426', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'I5ygG2La23dQNDqVWQOGAK1KOErP7gIwnXCGUaUh', 'user_name': '101296', 'password': '95858260', 'captcha_code': '81408'}}
+Mapped Data: {'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '1142632', 'buyer_cnic_part3': '5', 'buyer_name': 'yousaf', 'buyer_father_name': 'khan', 'buyer_address': 'chak no 715 gb, Kamalia', 'buyer_phone': '03021425426', 'city': 'Kamalia', 'chassis_number': 'JB631316', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic': '33302-1142632-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770237998.327, 'forced_capture': {'_debug_all_inputs': {'_token': '2RvyoJZ1JPaMKvvKIR4phCnYHe1hZNl9gJjmO9Lg', 'user_name': '101296', 'password': '95858260', 'captcha_code': '99446'}}}
+2026-02-05 01:46:38.346820: Attempting save (try 1). Pages: 4
+
+--- SUBMISSION START 2026-02-05 01:46:38.378586 ---
+Flat Data Keys: ['input#nic1', 'input#nic2', 'input#nic3', 'input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', 'input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_full_name': 'yousaf', 'input#txt_father_name': 'khan', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', 'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', '#txt_chassis_no': 'JB631316', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '1142632', '#nic3': '5', '#txt_full_name': 'yousaf', '#txt_father_name': 'khan', '#txt_address': 'chak no 715 gb', '#txt_cell_no': '03021425426', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '2RvyoJZ1JPaMKvvKIR4phCnYHe1hZNl9gJjmO9Lg', 'user_name': '101296', 'password': '95858260', 'captcha_code': '99446'}}
+Mapped Data: {'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '1142632', 'buyer_cnic_part3': '5', 'buyer_name': 'yousaf', 'buyer_father_name': 'khan', 'buyer_address': 'chak no 715 gb, Kamalia', 'buyer_phone': '03021425426', 'city': 'Kamalia', 'chassis_number': 'JB631316', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic': '33302-1142632-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770238275.757, 'forced_capture': {'_debug_all_inputs': {'_token': 'cpc2HDFIWnp9ICgHA4X5w4qolDkaeWsGytPwz92N', 'user_name': '101296', 'password': '95858260', 'captcha_code': '37021'}}}
+2026-02-05 01:51:15.775762: Attempting save (try 1). Pages: 4
+
+--- SUBMISSION START 2026-02-05 01:51:15.801057 ---
+Flat Data Keys: ['input#nic1', 'input#nic2', 'input#nic3', 'input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', 'input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_full_name': 'yousaf', 'input#txt_father_name': 'khan', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', 'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', '#txt_chassis_no': 'JB631316', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '1142632', '#nic3': '5', '#txt_full_name': 'yousaf', '#txt_father_name': 'khan', '#txt_address': 'chak no 715 gb', '#txt_cell_no': '03021425426', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'cpc2HDFIWnp9ICgHA4X5w4qolDkaeWsGytPwz92N', 'user_name': '101296', 'password': '95858260', 'captcha_code': '37021'}}
+Mapped Data: {'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '1142632', 'buyer_cnic_part3': '5', 'buyer_name': 'yousaf', 'buyer_father_name': 'khan', 'buyer_address': 'chak no 715 gb, Kamalia', 'buyer_phone': '03021425426', 'city': 'Kamalia', 'chassis_number': 'JB631316', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic': '33302-1142632-5'}
+2026-02-05 02:00:47.655596: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770238883.06, 'forced_capture': {'_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'user_name': '101296', 'password': '95858260', 'captcha_code': '18186'}}}
+2026-02-05 02:01:23.071977: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:01:23.081934 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'user_name': '101296', 'password': '95858260', 'captcha_code': '18186'}}
+Mapped Data: {}
+2026-02-05 02:01:23.120316: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770238883.168, 'forced_capture': {'_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'user_name': '101296', 'password': '95858260', 'captcha_code': '18186'}}}
+2026-02-05 02:01:23.180253: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:01:23.204611 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'user_name': '101296', 'password': '95858260', 'captcha_code': '18186'}}
+Mapped Data: {}
+2026-02-05 02:01:23.223989: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770238937.749}
+2026-02-05 02:02:17.756999: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770238937.75}
+2026-02-05 02:02:17.774229: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770238937.751}
+2026-02-05 02:02:17.793813: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770238937.752}
+2026-02-05 02:02:17.811968: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770238937.753}
+2026-02-05 02:02:17.828751: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770238937.754}
+2026-02-05 02:02:17.845768: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770238937.755}
+2026-02-05 02:02:17.860810: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238937.756}
+2026-02-05 02:02:17.881554: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770238937.757}
+2026-02-05 02:02:17.897671: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770238937.759}
+2026-02-05 02:02:17.915468: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770238941.326}
+2026-02-05 02:02:21.333954: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH281424', 'type': 'text', 'timestamp': 1770238942.551}
+2026-02-05 02:02:22.560071: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH281424', 'type': 'text', 'timestamp': 1770238942.749}
+2026-02-05 02:02:22.755772: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH281424', 'type': 'text', 'timestamp': 1770238943.278}
+2026-02-05 02:02:23.285074: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH281424', 'type': 'text', 'timestamp': 1770238943.278}
+2026-02-05 02:02:23.303776: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH281424', 'type': 'text', 'timestamp': 1770238943.279}
+2026-02-05 02:02:23.319848: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770238945.54}
+2026-02-05 02:02:25.549932: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '3', 'type': 'text', 'timestamp': 1770238946.752}
+2026-02-05 02:02:26.761652: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33256', 'type': 'text', 'timestamp': 1770238947.569}
+2026-02-05 02:02:27.580630: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33256', 'type': 'text', 'timestamp': 1770238947.57}
+2026-02-05 02:02:27.605850: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33256', 'type': 'text', 'timestamp': 1770238947.572}
+2026-02-05 02:02:27.628113: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33256', 'type': 'text', 'timestamp': 1770238947.771}
+2026-02-05 02:02:27.779550: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3', 'type': 'text', 'timestamp': 1770238947.975}
+2026-02-05 02:02:27.985782: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33256', 'type': 'text', 'timestamp': 1770238948.758}
+2026-02-05 02:02:28.769700: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '32222', 'type': 'text', 'timestamp': 1770238948.76}
+2026-02-05 02:02:28.794419: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3222211', 'type': 'text', 'timestamp': 1770238949.087}
+2026-02-05 02:02:29.099895: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3222211', 'type': 'text', 'timestamp': 1770238949.088}
+2026-02-05 02:02:29.125415: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3222211', 'type': 'text', 'timestamp': 1770238949.09}
+2026-02-05 02:02:29.157859: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3222211', 'type': 'text', 'timestamp': 1770238949.318}
+2026-02-05 02:02:29.327562: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770238949.477}
+2026-02-05 02:02:29.486210: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770238950.391}
+2026-02-05 02:02:30.404727: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770238950.392}
+2026-02-05 02:02:30.427585: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770238950.393}
+2026-02-05 02:02:30.453662: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3222211', 'type': 'text', 'timestamp': 1770238950.749}
+2026-02-05 02:02:30.764414: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770238950.751}
+2026-02-05 02:02:30.789515: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770238951.53, 'forced_capture': {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:02:31.565888: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:02:31.577550 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'BH281424', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33256', 'input#nic2': '3222211', 'input#nic3': '1', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'BH281424', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33256', 'buyer_cnic_part2': '3222211', 'buyer_cnic_part3': '1', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '33256-3222211-1'}
+2026-02-05 02:02:31.592333: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770238951.624, 'forced_capture': {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:02:31.710087: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:02:31.719727 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'BH281424', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33256', 'buyer_cnic_part2': '3222211', 'buyer_cnic_part3': '1', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '33256-3222211-1'}
+2026-02-05 02:02:31.731143: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_full_name', 'value': '', 'type': 'text', 'timestamp': 1770238955.661}
+2026-02-05 02:02:35.669350: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed', 'type': 'text', 'timestamp': 1770238958.377}
+2026-02-05 02:02:38.383538: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed a', 'type': 'text', 'timestamp': 1770238958.754}
+2026-02-05 02:02:38.761142: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed ali', 'type': 'text', 'timestamp': 1770238959.166}
+2026-02-05 02:02:39.174170: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed ali', 'type': 'text', 'timestamp': 1770238959.167}
+2026-02-05 02:02:39.190709: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed ali', 'type': 'text', 'timestamp': 1770238959.168}
+2026-02-05 02:02:39.208386: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed ali', 'type': 'text', 'timestamp': 1770238959.275}
+2026-02-05 02:02:39.282404: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'am', 'type': 'text', 'timestamp': 1770238960.332}
+2026-02-05 02:02:40.338814: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'javed ali', 'type': 'text', 'timestamp': 1770238960.752}
+2026-02-05 02:02:40.760150: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ame', 'type': 'text', 'timestamp': 1770238960.753}
+2026-02-05 02:02:40.779085: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ameer', 'type': 'text', 'timestamp': 1770238961.427}
+2026-02-05 02:02:41.434071: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ameer', 'type': 'text', 'timestamp': 1770238961.773}
+2026-02-05 02:02:41.780598: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ameer', 'type': 'text', 'timestamp': 1770238961.774}
+2026-02-05 02:02:41.797184: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ameer', 'type': 'text', 'timestamp': 1770238961.775}
+2026-02-05 02:02:41.814271: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ameer', 'type': 'text', 'timestamp': 1770238962.748}
+2026-02-05 02:02:42.755012: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238963.039}
+2026-02-05 02:02:43.047708: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238963.04}
+2026-02-05 02:02:43.066948: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770238963.277}
+2026-02-05 02:02:43.283328: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770238963.279}
+2026-02-05 02:02:43.300739: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238969.011}
+2026-02-05 02:02:49.022223: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238970.958}
+2026-02-05 02:02:50.967251: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238970.959}
+2026-02-05 02:02:50.983468: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238976.572}
+2026-02-05 02:02:56.580824: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'hcak', 'type': 'text', 'timestamp': 1770238978.451}
+2026-02-05 02:02:58.456725: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'hc', 'type': 'text', 'timestamp': 1770238978.765}
+2026-02-05 02:02:58.773767: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238979.4}
+2026-02-05 02:02:59.406112: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770238980.762}
+2026-02-05 02:03:00.768136: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770238980.87}
+2026-02-05 02:03:00.875494: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729', 'type': 'text', 'timestamp': 1770238982.253}
+2026-02-05 02:03:02.260034: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 g', 'type': 'text', 'timestamp': 1770238982.756}
+2026-02-05 02:03:02.762238: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 gb', 'type': 'text', 'timestamp': 1770238983.241}
+2026-02-05 02:03:03.250167: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 gb', 'type': 'text', 'timestamp': 1770238983.29}
+2026-02-05 02:03:03.300617: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 gb', 'type': 'text', 'timestamp': 1770238983.292}
+2026-02-05 02:03:03.326522: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 gb', 'type': 'text', 'timestamp': 1770238983.295}
+2026-02-05 02:03:03.371228: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 729 gb', 'type': 'text', 'timestamp': 1770238984.761}
+2026-02-05 02:03:04.770450: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '0302', 'type': 'text', 'timestamp': 1770238984.762}
+2026-02-05 02:03:04.796886: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '030252', 'type': 'text', 'timestamp': 1770238985.276}
+2026-02-05 02:03:05.284609: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03025222222', 'type': 'text', 'timestamp': 1770238985.893}
+2026-02-05 02:03:05.898458: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03025222222', 'type': 'text', 'timestamp': 1770238986.093}
+2026-02-05 02:03:06.101985: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03025222222', 'type': 'text', 'timestamp': 1770238986.094}
+2026-02-05 02:03:06.117173: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03025222222', 'type': 'text', 'timestamp': 1770238986.095}
+2026-02-05 02:03:06.132296: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03025222222', 'type': 'text', 'timestamp': 1770238986.762}
+2026-02-05 02:03:06.768884: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Kamalia', 'type': 'span', 'timestamp': 1770238992.75}
+2026-02-05 02:03:12.756866: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770238994.608, 'forced_capture': {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_full_name': 'javed ali', '#txt_father_name': 'ameer', '#txt_address': 'chak no 729 gb', '#txt_cell_no': '03025222222', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '8', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3325632222111', 'txt_full_name': 'javed ali', 'txt_father_name': 'ameer', 'cmbGender': 'M', 'txt_date_of_birth': '2000-11-28', 'txt_address': 'chak no 729 gb', 'txt_cell_no': '03025222222', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '123', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:03:14.636965: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:03:14.646711 ---
+Flat Data Keys: ['input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_full_name': 'javed ali', 'input#txt_father_name': 'ameer', 'input#txt_address': 'chak no 729 gb', 'input#txt_cell_no': '03025222222', 'span#select2-cmb_city-container': 'Kamalia', '#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_full_name': 'javed ali', '#txt_father_name': 'ameer', '#txt_address': 'chak no 729 gb', '#txt_cell_no': '03025222222', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '8', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3325632222111', 'txt_full_name': 'javed ali', 'txt_father_name': 'ameer', 'cmbGender': 'M', 'txt_date_of_birth': '2000-11-28', 'txt_address': 'chak no 729 gb', 'txt_cell_no': '03025222222', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '123', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'buyer_name': 'javed ali', 'buyer_father_name': 'ameer', 'buyer_address': 'chak no 729 gb, Kamalia', 'buyer_phone': '03025222222', 'city': 'Kamalia', 'chassis_number': 'BH281424', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33256', 'buyer_cnic_part2': '3222211', 'buyer_cnic_part3': '1', 'buyer_cnic': '33256-3222211-1'}
+2026-02-05 02:03:14.664136: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770238994.699, 'forced_capture': {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_full_name': 'javed ali', '#txt_father_name': 'ameer', '#txt_address': 'chak no 729 gb', '#txt_cell_no': '03025222222', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '8', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3325632222111', 'txt_full_name': 'javed ali', 'txt_father_name': 'ameer', 'cmbGender': 'M', 'txt_date_of_birth': '2000-11-28', 'txt_address': 'chak no 729 gb', 'txt_cell_no': '03025222222', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '123', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:03:14.738033: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:03:14.746917 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'BH281424', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33256', '#nic2': '3222211', '#nic3': '1', '#txt_full_name': 'javed ali', '#txt_father_name': 'ameer', '#txt_address': 'chak no 729 gb', '#txt_cell_no': '03025222222', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': 'nCIMY6Z2UBXpxzFSfyWAgyXcTgfVpJTy9LysFEXt', 'chassis_no': 'BH281424', 'engine_no': '7281501', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH281424', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33256', 'nic2': '3222211', 'nic3': '1', 'customer_id': '4955085', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '8', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3325632222111', 'txt_full_name': 'javed ali', 'txt_father_name': 'ameer', 'cmbGender': 'M', 'txt_date_of_birth': '2000-11-28', 'txt_address': 'chak no 729 gb', 'txt_cell_no': '03025222222', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '123', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'BH281424', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33256', 'buyer_cnic_part2': '3222211', 'buyer_cnic_part3': '1', 'buyer_name': 'javed ali', 'buyer_father_name': 'ameer', 'buyer_address': 'chak no 729 gb, Kamalia', 'buyer_phone': '03025222222', 'city': 'Kamalia', 'buyer_cnic': '33256-3222211-1'}
+2026-02-05 02:03:14.758138: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770238997.83}
+2026-02-05 02:03:17.839481: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770238997.831}
+2026-02-05 02:03:17.857411: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770238997.832}
+2026-02-05 02:03:17.874900: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770238997.832}
+2026-02-05 02:03:17.891537: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770238997.833}
+2026-02-05 02:03:17.907005: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770238997.834}
+2026-02-05 02:03:17.929284: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770238997.834}
+2026-02-05 02:03:17.946695: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770238997.835}
+2026-02-05 02:03:17.967691: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770238997.836}
+2026-02-05 02:03:17.984775: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770238997.838}
+2026-02-05 02:03:18.003370: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770239585.21, 'forced_capture': {'_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'user_name': '101296', 'password': '95858260', 'captcha_code': '71951'}}}
+2026-02-05 02:13:05.853517: Attempting save (try 1). Pages: 2
+
+--- SUBMISSION START 2026-02-05 02:13:05.869624 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': '', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '', 'input#nic2': '', 'input#nic3': '', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'user_name': '101296', 'password': '95858260', 'captcha_code': '71951'}}
+Mapped Data: {'chassis_number': '', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '', 'buyer_cnic_part2': '', 'buyer_cnic_part3': '', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': ''}
+2026-02-05 02:13:07.069411: Attempting save (try 1). Pages: 0
+2026-02-05 02:13:07.305532: Attempting save (try 2). Pages: 0
+2026-02-05 02:13:07.696157: Attempting save (try 3). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770239585.295, 'forced_capture': {'_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'user_name': '101296', 'password': '95858260', 'captcha_code': '71951'}}}
+2026-02-05 02:13:07.719771: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:13:07.734172 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'user_name': '101296', 'password': '95858260', 'captcha_code': '71951'}}
+Mapped Data: {}
+2026-02-05 02:13:07.831534: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770239600.404}
+2026-02-05 02:13:20.430009: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770239600.407}
+2026-02-05 02:13:20.453390: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770239600.408}
+2026-02-05 02:13:20.476703: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770239600.41}
+2026-02-05 02:13:20.500274: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239600.413}
+2026-02-05 02:13:20.526215: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770239600.415}
+2026-02-05 02:13:20.550379: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770239600.416}
+2026-02-05 02:13:20.572327: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239600.417}
+2026-02-05 02:13:20.596527: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770239600.418}
+2026-02-05 02:13:21.210980: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770239601.7}
+2026-02-05 02:13:21.910804: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB631305', 'type': 'text', 'timestamp': 1770239603.772}
+2026-02-05 02:13:23.825745: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB631305', 'type': 'text', 'timestamp': 1770239604.61}
+2026-02-05 02:13:24.751925: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB631305', 'type': 'text', 'timestamp': 1770239604.612}
+2026-02-05 02:13:24.803294: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB631305', 'type': 'text', 'timestamp': 1770239604.614}
+2026-02-05 02:13:24.826218: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB631305', 'type': 'text', 'timestamp': 1770239605.35}
+2026-02-05 02:13:25.462839: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239607.177}
+2026-02-05 02:13:27.187135: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': 'shah', 'type': 'text', 'timestamp': 1770239609.359}
+2026-02-05 02:13:29.412118: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': 'shah', 'type': 'text', 'timestamp': 1770239609.592}
+2026-02-05 02:13:29.615067: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': 'sh', 'type': 'text', 'timestamp': 1770239610.26}
+2026-02-05 02:13:30.282473: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239611.129}
+2026-02-05 02:13:31.383034: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239611.36}
+2026-02-05 02:13:31.419406: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33333', 'type': 'text', 'timestamp': 1770239613.134}
+2026-02-05 02:13:33.151132: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33333', 'type': 'text', 'timestamp': 1770239613.136}
+2026-02-05 02:13:33.180509: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33333', 'type': 'text', 'timestamp': 1770239613.137}
+2026-02-05 02:13:33.216122: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33333', 'type': 'text', 'timestamp': 1770239613.337}
+2026-02-05 02:13:33.351021: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33333', 'type': 'text', 'timestamp': 1770239613.364}
+2026-02-05 02:13:33.377373: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3', 'type': 'text', 'timestamp': 1770239613.368}
+2026-02-05 02:13:33.405210: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3', 'type': 'text', 'timestamp': 1770239613.523}
+2026-02-05 02:13:33.553540: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '324', 'type': 'text', 'timestamp': 1770239614.379}
+2026-02-05 02:13:34.590762: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3245221', 'type': 'text', 'timestamp': 1770239614.732}
+2026-02-05 02:13:34.747580: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3245221', 'type': 'text', 'timestamp': 1770239614.734}
+2026-02-05 02:13:34.779895: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3245221', 'type': 'text', 'timestamp': 1770239614.737}
+2026-02-05 02:13:34.802276: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3245221', 'type': 'text', 'timestamp': 1770239615.01}
+2026-02-05 02:13:35.063679: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770239615.189}
+2026-02-05 02:13:35.553081: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '3245221', 'type': 'text', 'timestamp': 1770239615.412}
+2026-02-05 02:13:35.588877: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770239615.413}
+2026-02-05 02:13:35.620467: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770239616.086}
+2026-02-05 02:13:36.324151: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770239616.087}
+2026-02-05 02:13:36.355892: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '1', 'type': 'text', 'timestamp': 1770239616.09}
+2026-02-05 02:13:36.378285: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770239617.223, 'forced_capture': {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:13:37.993807: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:13:38.012426 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB631305', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33333', 'input#nic2': '3245221', 'input#nic3': '1', 'input#txt_address': '', 'input#txt_cell_no': '', '#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB631305', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33333', 'buyer_cnic_part2': '3245221', 'buyer_cnic_part3': '1', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '33333-3245221-1'}
+2026-02-05 02:13:38.413109: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770239617.309, 'forced_capture': {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:13:39.330085: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:13:39.938806 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB631305', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33333', 'buyer_cnic_part2': '3245221', 'buyer_cnic_part3': '1', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '33333-3245221-1'}
+2026-02-05 02:13:40.023576: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_full_name', 'value': '', 'type': 'text', 'timestamp': 1770239621.948}
+2026-02-05 02:13:42.042639: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanv', 'type': 'text', 'timestamp': 1770239627.359}
+2026-02-05 02:13:47.390275: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver', 'type': 'text', 'timestamp': 1770239627.988}
+2026-02-05 02:13:48.060796: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver ', 'type': 'text', 'timestamp': 1770239628.59}
+2026-02-05 02:13:48.623732: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver sha', 'type': 'text', 'timestamp': 1770239629.359}
+2026-02-05 02:13:49.388584: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver shahid', 'type': 'text', 'timestamp': 1770239630.14}
+2026-02-05 02:13:50.150193: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver shahid', 'type': 'text', 'timestamp': 1770239630.176}
+2026-02-05 02:13:50.224443: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver shahid', 'type': 'text', 'timestamp': 1770239630.177}
+2026-02-05 02:13:50.262829: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver shahid', 'type': 'text', 'timestamp': 1770239630.18}
+2026-02-05 02:13:50.287250: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'tanver shahid', 'type': 'text', 'timestamp': 1770239631.355}
+2026-02-05 02:13:51.412781: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ama', 'type': 'text', 'timestamp': 1770239631.357}
+2026-02-05 02:13:51.439975: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ', 'type': 'text', 'timestamp': 1770239632.457}
+2026-02-05 02:13:52.469300: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat a', 'type': 'text', 'timestamp': 1770239632.939}
+2026-02-05 02:13:52.982549: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ai', 'type': 'text', 'timestamp': 1770239633.267}
+2026-02-05 02:13:53.276728: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ai', 'type': 'text', 'timestamp': 1770239633.361}
+2026-02-05 02:13:53.372173: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat a', 'type': 'text', 'timestamp': 1770239633.938}
+2026-02-05 02:13:53.948317: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat al', 'type': 'text', 'timestamp': 1770239634.541}
+2026-02-05 02:13:54.550957: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ali', 'type': 'text', 'timestamp': 1770239634.948}
+2026-02-05 02:13:54.960088: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ali', 'type': 'text', 'timestamp': 1770239635.346}
+2026-02-05 02:13:55.356773: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ali', 'type': 'text', 'timestamp': 1770239637.38}
+2026-02-05 02:13:57.463781: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ali', 'type': 'text', 'timestamp': 1770239637.381}
+2026-02-05 02:13:57.487830: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'amanat ali', 'type': 'text', 'timestamp': 1770239637.383}
+2026-02-05 02:13:57.508832: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239638.602}
+2026-02-05 02:13:58.618637: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239638.604}
+2026-02-05 02:13:58.639448: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770239638.778}
+2026-02-05 02:13:58.793239: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770239638.78}
+2026-02-05 02:13:58.821739: Attempting save (try 1). Pages: 1
+2026-02-05 02:13:59.034358: Attempting save (try 2). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239643.951}
+2026-02-05 02:14:03.980891: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770239647.021}
+2026-02-05 02:14:07.891109: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770239647.365}
+2026-02-05 02:14:07.916197: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 7100', 'type': 'text', 'timestamp': 1770239648.649}
+2026-02-05 02:14:09.684378: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 7100', 'type': 'text', 'timestamp': 1770239649.385}
+2026-02-05 02:14:10.019811: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239650.523}
+2026-02-05 02:14:10.968474: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gbq', 'type': 'text', 'timestamp': 1770239650.88}
+2026-02-05 02:14:10.993441: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gbq', 'type': 'text', 'timestamp': 1770239651.364}
+2026-02-05 02:14:11.485117: Attempting save (try 1). Pages: 1
+2026-02-05 02:14:11.726629: Attempting save (try 2). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239652.211}
+2026-02-05 02:14:12.638158: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239652.863}
+2026-02-05 02:14:13.317550: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239652.865}
+2026-02-05 02:14:13.340899: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239652.866}
+2026-02-05 02:14:13.370987: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 710gb', 'type': 'text', 'timestamp': 1770239653.357}
+2026-02-05 02:14:13.415516: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '030221441', 'type': 'text', 'timestamp': 1770239655.347}
+2026-02-05 02:14:15.378068: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '030221441', 'type': 'text', 'timestamp': 1770239655.607}
+2026-02-05 02:14:15.637426: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03022144111', 'type': 'text', 'timestamp': 1770239656.08}
+2026-02-05 02:14:16.090160: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03022144111', 'type': 'text', 'timestamp': 1770239657.357}
+2026-02-05 02:14:17.390575: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03022144111', 'type': 'text', 'timestamp': 1770239658.026}
+2026-02-05 02:14:18.241402: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03022144111', 'type': 'text', 'timestamp': 1770239658.027}
+2026-02-05 02:14:18.289589: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03022144111', 'type': 'text', 'timestamp': 1770239658.029}
+2026-02-05 02:14:18.316957: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Kamalia', 'type': 'span', 'timestamp': 1770239665.381}
+2026-02-05 02:14:25.415958: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770239666.243, 'forced_capture': {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '2026-12-31', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:14:26.778645: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:14:26.953391 ---
+Flat Data Keys: ['input#txt_full_name', 'input#txt_father_name', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_full_name': 'tanver shahid', 'input#txt_father_name': 'amanat ali', 'input#txt_address': 'chak no 710gb', 'input#txt_cell_no': '03022144111', 'span#select2-cmb_city-container': 'Kamalia', '#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '2026-12-31', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'buyer_name': 'tanver shahid', 'buyer_father_name': 'amanat ali', 'buyer_address': 'chak no 710gb, Kamalia', 'buyer_phone': '03022144111', 'city': 'Kamalia', 'chassis_number': 'JB631305', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33333', 'buyer_cnic_part2': '3245221', 'buyer_cnic_part3': '1', 'buyer_cnic': '33333-3245221-1'}
+2026-02-05 02:14:27.035334: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770239677.338, 'forced_capture': {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '1977-12-29', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:14:37.466404: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:14:37.480863 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '1977-12-29', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB631305', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33333', 'buyer_cnic_part2': '3245221', 'buyer_cnic_part3': '1', 'buyer_name': 'tanver shahid', 'buyer_father_name': 'amanat ali', 'buyer_address': 'chak no 710gb, Kamalia', 'buyer_phone': '03022144111', 'city': 'Kamalia', 'buyer_cnic': '33333-3245221-1'}
+2026-02-05 02:14:37.579548: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770239677.436, 'forced_capture': {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '1977-12-29', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:14:38.479814: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:14:38.530854 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB631305', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33333', '#nic2': '3245221', '#nic3': '1', '#txt_full_name': 'tanver shahid', '#txt_father_name': 'amanat ali', '#txt_address': 'chak no 710gb', '#txt_cell_no': '03022144111', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB631305', 'engine_no': 'B848785', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB631305', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33333', 'nic2': '3245221', 'nic3': '1', 'customer_id': '4947712', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3333332452211', 'txt_full_name': 'tanver shahid', 'txt_father_name': 'amanat ali', 'cmbGender': 'M', 'txt_date_of_birth': '1977-12-29', 'txt_address': 'chak no 710gb', 'txt_cell_no': '03022144111', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB631305', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33333', 'buyer_cnic_part2': '3245221', 'buyer_cnic_part3': '1', 'buyer_name': 'tanver shahid', 'buyer_father_name': 'amanat ali', 'buyer_address': 'chak no 710gb, Kamalia', 'buyer_phone': '03022144111', 'city': 'Kamalia', 'buyer_cnic': '33333-3245221-1'}
+2026-02-05 02:14:39.543253: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770239680.107}
+2026-02-05 02:14:40.428115: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770239680.112}
+2026-02-05 02:14:40.460721: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770239680.115}
+2026-02-05 02:14:40.493126: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770239680.116}
+2026-02-05 02:14:40.519142: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239680.12}
+2026-02-05 02:14:40.555926: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770239680.122}
+2026-02-05 02:14:40.595409: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770239680.123}
+2026-02-05 02:14:40.630658: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239680.126}
+2026-02-05 02:14:40.676251: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770239680.128}
+2026-02-05 02:14:40.702733: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770239680.139}
+2026-02-05 02:14:40.726845: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB680847', 'type': 'text', 'timestamp': 1770239730.688}
+2026-02-05 02:15:30.699549: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB680847', 'type': 'text', 'timestamp': 1770239731.034}
+2026-02-05 02:15:31.052702: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB680847', 'type': 'text', 'timestamp': 1770239731.399}
+2026-02-05 02:15:31.409758: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB680847', 'type': 'text', 'timestamp': 1770239731.4}
+2026-02-05 02:15:31.434583: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB680847', 'type': 'text', 'timestamp': 1770239731.401}
+2026-02-05 02:15:31.458078: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239733.861}
+2026-02-05 02:15:33.871213: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239736.867}
+2026-02-05 02:15:36.879146: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239736.868}
+2026-02-05 02:15:36.902483: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239736.869}
+2026-02-05 02:15:36.926433: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239737.046}
+2026-02-05 02:15:37.056272: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6', 'type': 'text', 'timestamp': 1770239737.047}
+2026-02-05 02:15:37.079895: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239737.103}
+2026-02-05 02:15:37.160788: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6', 'type': 'text', 'timestamp': 1770239737.326}
+2026-02-05 02:15:37.336718: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789', 'type': 'text', 'timestamp': 1770239738.18}
+2026-02-05 02:15:38.189592: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '67891', 'type': 'text', 'timestamp': 1770239738.692}
+2026-02-05 02:15:38.700984: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239739.034}
+2026-02-05 02:15:39.043758: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239739.045}
+2026-02-05 02:15:39.071855: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239739.047}
+2026-02-05 02:15:39.097425: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239739.049}
+2026-02-05 02:15:39.117510: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239739.251}
+2026-02-05 02:15:39.260342: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239741.042}
+2026-02-05 02:15:41.051916: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239741.211}
+2026-02-05 02:15:41.220620: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239742.395}
+2026-02-05 02:15:42.405573: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239742.396}
+2026-02-05 02:15:42.430791: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239742.398}
+2026-02-05 02:15:42.454942: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4947712', 'timestamp': 1770239743.558, 'forced_capture': {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:15:43.605284: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:15:43.621550 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB680847', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '12345', 'input#nic2': '6789123', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB680847', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:15:43.656936: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4947712', 'timestamp': 1770239743.651, 'forced_capture': {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:15:43.725014: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:15:43.737788 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB680847', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:15:43.753477: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_address', 'value': 'CHAK NO 269 GB', 'type': 'text', 'timestamp': 1770239745.038}
+2026-02-05 02:15:45.051382: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03315270408', 'type': 'text', 'timestamp': 1770239745.04}
+2026-02-05 02:15:45.076396: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Kamalia', 'type': 'span', 'timestamp': 1770239745.042}
+2026-02-05 02:15:45.101599: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_full_name', 'value': 'MUSAA', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Full Name', 'timestamp': 1770239745.048}
+2026-02-05 02:15:45.125654: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_father_name', 'value': 'M BAKHSH', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Father / Husband Name', 'timestamp': 1770239745.057}
+2026-02-05 02:15:45.190029: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4947712', 'timestamp': 1770239756.71, 'forced_capture': {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:15:56.739156: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:15:56.748642 ---
+Flat Data Keys: ['input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_address': 'CHAK NO 269 GB', 'input#txt_cell_no': '03315270408', 'span#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'buyer_address': 'CHAK NO 269 GB, Kamalia', 'buyer_phone': '03315270408', 'city': 'Kamalia', 'buyer_name': 'MUSAA', 'buyer_father_name': 'M BAKHSH', 'chassis_number': 'JB680847', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:15:56.765692: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4947712', 'timestamp': 1770239756.803, 'forced_capture': {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:15:56.832517: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:15:56.841037 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB680847', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'JB680847', 'engine_no': 'B888450', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB680847', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939379', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB680847', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': 'CHAK NO 269 GB, Kamalia', 'buyer_phone': '03315270408', 'city': 'Kamalia', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:15:56.857854: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770239759.055}
+2026-02-05 02:15:59.062835: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770239759.057}
+2026-02-05 02:15:59.078387: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770239759.058}
+2026-02-05 02:15:59.094932: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770239759.058}
+2026-02-05 02:15:59.109523: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239759.059}
+2026-02-05 02:15:59.131384: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770239759.06}
+2026-02-05 02:15:59.146651: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770239759.061}
+2026-02-05 02:15:59.162788: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770239759.062}
+2026-02-05 02:15:59.179788: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770239759.062}
+2026-02-05 02:15:59.198846: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770239759.064}
+2026-02-05 02:15:59.215722: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770239843.743}
+2026-02-05 02:17:23.750015: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH283713', 'type': 'text', 'timestamp': 1770239845.012}
+2026-02-05 02:17:25.017730: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH283713', 'type': 'text', 'timestamp': 1770239845.903}
+2026-02-05 02:17:25.909636: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH283713', 'type': 'text', 'timestamp': 1770239845.903}
+2026-02-05 02:17:25.926818: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH283713', 'type': 'text', 'timestamp': 1770239845.904}
+2026-02-05 02:17:25.943278: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'BH283713', 'type': 'text', 'timestamp': 1770239846.046}
+2026-02-05 02:17:26.053517: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770239848.669}
+2026-02-05 02:17:28.676373: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12', 'type': 'text', 'timestamp': 1770239850.052}
+2026-02-05 02:17:30.058970: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239850.815}
+2026-02-05 02:17:30.824556: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239850.816}
+2026-02-05 02:17:30.842210: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239850.817}
+2026-02-05 02:17:30.860141: Attempting save (try 1). Pages: 1
+2026-02-05 02:17:31.074980: Attempting save (try 2). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239851.02}
+2026-02-05 02:17:31.090668: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6', 'type': 'text', 'timestamp': 1770239851.269}
+2026-02-05 02:17:31.274167: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '678', 'type': 'text', 'timestamp': 1770239851.891}
+2026-02-05 02:17:31.896457: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770239852.046}
+2026-02-05 02:17:32.054286: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789', 'type': 'text', 'timestamp': 1770239852.047}
+2026-02-05 02:17:32.069280: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789', 'type': 'text', 'timestamp': 1770239852.216}
+2026-02-05 02:17:32.222972: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '678912', 'type': 'text', 'timestamp': 1770239853.055}
+2026-02-05 02:17:33.061815: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239853.907}
+2026-02-05 02:17:33.914981: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239853.908}
+2026-02-05 02:17:33.933076: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239853.909}
+2026-02-05 02:17:33.947326: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239854.057}
+2026-02-05 02:17:34.064063: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770239854.118}
+2026-02-05 02:17:34.123906: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239854.931}
+2026-02-05 02:17:34.936463: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239855.937}
+2026-02-05 02:17:35.944703: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239855.938}
+2026-02-05 02:17:35.960640: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239855.939}
+2026-02-05 02:17:35.977926: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770239856.045}
+2026-02-05 02:17:36.052102: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939379', 'timestamp': 1770239857.12, 'forced_capture': {'#txt_chassis_no': 'BH283713', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'BH283713', 'engine_no': '7283845', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH283713', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939367', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:17:37.149431: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:17:37.160935 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'BH283713', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '12345', 'input#nic2': '6789123', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'BH283713', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'BH283713', 'engine_no': '7283845', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH283713', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939367', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'BH283713', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:17:37.182461: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939379', 'timestamp': 1770239857.227, 'forced_capture': {'#txt_chassis_no': 'BH283713', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'BH283713', 'engine_no': '7283845', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH283713', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939367', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:17:37.262230: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:17:37.272888 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'BH283713', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '6nLGahEI6FsFLBplxFyVMiBwIE4U7giWFcu7phRx', 'chassis_no': 'BH283713', 'engine_no': '7283845', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'BH283713', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939367', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'BH283713', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:17:37.285492: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_address', 'value': 'CHAK NO 269 GB', 'type': 'text', 'timestamp': 1770239858.059}
+2026-02-05 02:17:38.065973: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03315270408', 'type': 'text', 'timestamp': 1770239858.06}
+2026-02-05 02:17:38.084478: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Kamalia', 'type': 'span', 'timestamp': 1770239858.062}
+2026-02-05 02:17:38.101379: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_full_name', 'value': 'MUSAA', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Full Name', 'timestamp': 1770239858.067}
+2026-02-05 02:17:38.119012: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_father_name', 'value': 'M BAKHSH', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Father / Husband Name', 'timestamp': 1770239858.072}
+2026-02-05 02:17:38.134834: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770240357.36, 'forced_capture': {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '82993'}}}
+2026-02-05 02:25:57.381098: Attempting save (try 1). Pages: 2
+
+--- SUBMISSION START 2026-02-05 02:25:57.403478 ---
+Flat Data Keys: ['input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_address': 'CHAK NO 269 GB', 'input#txt_cell_no': '03315270408', 'span#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '82993'}}
+Mapped Data: {'buyer_address': 'CHAK NO 269 GB, Kamalia', 'buyer_phone': '03315270408', 'city': 'Kamalia', 'buyer_name': 'MUSAA', 'buyer_father_name': 'M BAKHSH'}
+2026-02-05 02:25:57.482405: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770240357.463, 'forced_capture': {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '82993'}}}
+2026-02-05 02:25:57.514639: Attempting save (try 1). Pages: 1
+2026-02-05 02:25:57.732186: Attempting save (try 2). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:25:57.797621 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '82993'}}
+Mapped Data: {}
+2026-02-05 02:25:57.839705: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770240372.873, 'forced_capture': {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '78313'}}}
+2026-02-05 02:26:12.882413: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:12.894926 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '78313'}}
+Mapped Data: {}
+2026-02-05 02:26:12.930408: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770240372.981, 'forced_capture': {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '78313'}}}
+2026-02-05 02:26:12.990037: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:13.144919 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'user_name': '101296', 'password': '95858260', 'captcha_code': '78313'}}
+Mapped Data: {}
+2026-02-05 02:26:13.217408: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770240378.586}
+2026-02-05 02:26:18.605144: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770240378.589}
+2026-02-05 02:26:18.630277: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770240378.59}
+2026-02-05 02:26:18.658745: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770240378.591}
+2026-02-05 02:26:18.681959: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770240378.592}
+2026-02-05 02:26:18.708496: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770240378.594}
+2026-02-05 02:26:18.734264: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240378.595}
+2026-02-05 02:26:18.757560: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770240378.596}
+2026-02-05 02:26:18.779491: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770240378.599}
+2026-02-05 02:26:18.805303: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770240378.604}
+2026-02-05 02:26:18.829099: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689646', 'type': 'text', 'timestamp': 1770240380.892}
+2026-02-05 02:26:20.902500: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689646', 'type': 'text', 'timestamp': 1770240381.387}
+2026-02-05 02:26:21.398999: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689646', 'type': 'text', 'timestamp': 1770240381.388}
+2026-02-05 02:26:21.464728: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689646', 'type': 'text', 'timestamp': 1770240381.39}
+2026-02-05 02:26:21.489401: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689646', 'type': 'text', 'timestamp': 1770240381.594}
+2026-02-05 02:26:21.605058: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770240383.712}
+2026-02-05 02:26:23.748360: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '3363', 'type': 'text', 'timestamp': 1770240385.585}
+2026-02-05 02:26:25.599847: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240385.845}
+2026-02-05 02:26:25.857161: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240385.846}
+2026-02-05 02:26:25.882467: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240385.848}
+2026-02-05 02:26:25.902366: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240386.085}
+2026-02-05 02:26:26.095750: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240387.342}
+2026-02-05 02:26:27.357921: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240387.344}
+2026-02-05 02:26:27.380767: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240387.345}
+2026-02-05 02:26:27.405937: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240387.551}
+2026-02-05 02:26:27.559894: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240387.598}
+2026-02-05 02:26:27.612690: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240387.599}
+2026-02-05 02:26:27.636378: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '2', 'type': 'text', 'timestamp': 1770240387.601}
+2026-02-05 02:26:27.661386: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '2', 'type': 'text', 'timestamp': 1770240387.767}
+2026-02-05 02:26:27.779742: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '2', 'type': 'text', 'timestamp': 1770240389.269}
+2026-02-05 02:26:29.282530: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '2', 'type': 'text', 'timestamp': 1770240389.271}
+2026-02-05 02:26:29.306504: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '2', 'type': 'text', 'timestamp': 1770240389.273}
+2026-02-05 02:26:29.329290: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240390.468, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33635', '#nic2': '2412563', '#nic3': '2', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33635', 'nic2': '2412563', 'nic3': '2', 'customer_id': '4939262', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:26:30.518281: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:30.551007 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689646', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33635', 'input#nic2': '2412563', 'input#nic3': '2', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33635', '#nic2': '2412563', '#nic3': '2', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33635', 'nic2': '2412563', 'nic3': '2', 'customer_id': '4939262', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33635', 'buyer_cnic_part2': '2412563', 'buyer_cnic_part3': '2', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '33635-2412563-2'}
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240390.543, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33635', '#nic2': '2412563', '#nic3': '2', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33635', 'nic2': '2412563', 'nic3': '2', 'customer_id': '4939262', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:26:30.700664: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:30.726701 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689646', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33635', 'input#nic2': '2412563', 'input#nic3': '2', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33635', '#nic2': '2412563', '#nic3': '2', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33635', 'nic2': '2412563', 'nic3': '2', 'customer_id': '4939262', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33635', 'buyer_cnic_part2': '2412563', 'buyer_cnic_part3': '2', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '33635-2412563-2'}
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240395.644}
+2026-02-05 02:26:35.655597: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240396.878}
+2026-02-05 02:26:36.890386: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412563', 'type': 'text', 'timestamp': 1770240396.88}
+2026-02-05 02:26:36.921419: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33635', 'type': 'text', 'timestamp': 1770240397.512}
+2026-02-05 02:26:37.522406: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '123', 'type': 'text', 'timestamp': 1770240399.224}
+2026-02-05 02:26:39.274014: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '1234', 'type': 'text', 'timestamp': 1770240399.545}
+2026-02-05 02:26:39.558611: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770240399.594}
+2026-02-05 02:26:39.607893: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770240399.619}
+2026-02-05 02:26:39.639236: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770240399.621}
+2026-02-05 02:26:39.665739: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770240399.622}
+2026-02-05 02:26:39.691611: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '12345', 'type': 'text', 'timestamp': 1770240399.857}
+2026-02-05 02:26:39.868151: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240399.931}
+2026-02-05 02:26:39.944182: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240399.933}
+2026-02-05 02:26:39.976220: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240399.935}
+2026-02-05 02:26:40.004204: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240400.137}
+2026-02-05 02:26:40.149653: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240401.262}
+2026-02-05 02:26:41.270944: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240401.584}
+2026-02-05 02:26:41.596560: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240401.585}
+2026-02-05 02:26:41.625914: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240403.702}
+2026-02-05 02:26:43.713266: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240403.703}
+2026-02-05 02:26:43.751445: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240403.705}
+2026-02-05 02:26:43.777471: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '2412566', 'type': 'text', 'timestamp': 1770240404.478}
+2026-02-05 02:26:44.487332: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6', 'type': 'text', 'timestamp': 1770240406.744}
+2026-02-05 02:26:46.754326: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789', 'type': 'text', 'timestamp': 1770240407.587}
+2026-02-05 02:26:47.600127: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789', 'type': 'text', 'timestamp': 1770240407.879}
+2026-02-05 02:26:47.897613: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '67891', 'type': 'text', 'timestamp': 1770240408.334}
+2026-02-05 02:26:48.346673: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770240408.722}
+2026-02-05 02:26:48.734090: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770240408.723}
+2026-02-05 02:26:48.762819: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770240408.725}
+2026-02-05 02:26:48.788960: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770240408.927}
+2026-02-05 02:26:48.936233: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '6789123', 'type': 'text', 'timestamp': 1770240409.583}
+2026-02-05 02:26:49.591256: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240411.167}
+2026-02-05 02:26:51.176314: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240411.587}
+2026-02-05 02:26:51.596492: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240412.314}
+2026-02-05 02:26:52.322279: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240412.315}
+2026-02-05 02:26:52.341420: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240412.316}
+2026-02-05 02:26:52.361075: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240413.483, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3363524125632', 'txt_full_name': '', 'txt_father_name': '', 'cmbGender': '', 'txt_date_of_birth': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:26:53.523374: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:53.535091 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689646', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '12345', 'input#nic2': '6789123', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3363524125632', 'txt_full_name': '', 'txt_father_name': '', 'cmbGender': '', 'txt_date_of_birth': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '12345-6789123-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240413.59, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3363524125632', 'txt_full_name': '', 'txt_father_name': '', 'cmbGender': '', 'txt_date_of_birth': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:26:53.634749: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:26:53.646049 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689646', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '12345', 'input#nic2': '6789123', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3363524125632', 'txt_full_name': '', 'txt_father_name': '', 'cmbGender': '', 'txt_date_of_birth': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :\xa0\n                                        --- Select ---MALEFEMALE', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '12345-6789123-5'}
+RAW DATA: {'selector': 'input#txt_address', 'value': 'CHAK NO 269 GB', 'type': 'text', 'timestamp': 1770240415.586}
+2026-02-05 02:26:55.597356: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03315270408', 'type': 'text', 'timestamp': 1770240415.587}
+2026-02-05 02:26:55.617287: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Kamalia', 'type': 'span', 'timestamp': 1770240415.589}
+2026-02-05 02:26:55.636470: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_full_name', 'value': 'MUSAA', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Full Name', 'timestamp': 1770240415.593}
+2026-02-05 02:26:55.654468: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': '#txt_father_name', 'value': 'M BAKHSH', 'type': 'label_inference', 'method': 'parent_td_sibling', 'label_found': 'Father / Husband Name', 'timestamp': 1770240415.597}
+2026-02-05 02:26:55.673142: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240425.889, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:27:05.923990: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:27:05.933937 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689646', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '12345', 'input#nic2': '6789123', 'input#nic3': '5', 'input#txt_address': 'CHAK NO 269 GB', 'input#txt_cell_no': '03315270408', 'span#select2-cmb_city-container': 'Kamalia', '#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': 'CHAK NO 269 GB, Kamalia', 'buyer_phone': '03315270408', 'city': 'Kamalia', 'buyer_name': 'MUSAA', 'buyer_father_name': 'M BAKHSH', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:27:05.950215: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile', 'timestamp': 1770240425.987, 'forced_capture': {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:27:06.018782: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:27:06.029198 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB689646', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '12345', '#nic2': '6789123', '#nic3': '5', '#txt_address': 'CHAK NO 269 GB', '#txt_cell_no': '03315270408', '#select2-cmb_city-container': 'Kamalia', '#txt_full_name': 'MUSAA', '#txt_father_name': 'M BAKHSH', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689646', 'engine_no': 'B897141', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689646', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '12345', 'nic2': '6789123', 'nic3': '5', 'customer_id': '4939262', 'profile_id': '562585', 'operation': '2', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '0', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': 'CHAK NO 269 GB', 'txt_cell_no': '03315270408', 'cmb_city': '475', 'cmb_profession': '181', 'cmb_personal_income': '142', 'cmb_purch_mode': '121', 'cmb_info_source': '9', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB689646', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '12345', 'buyer_cnic_part2': '6789123', 'buyer_cnic_part3': '5', 'buyer_address': 'CHAK NO 269 GB, Kamalia', 'buyer_phone': '03315270408', 'city': 'Kamalia', 'buyer_name': 'MUSAA', 'buyer_father_name': 'M BAKHSH', 'buyer_cnic': '12345-6789123-5'}
+2026-02-05 02:27:06.043683: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770240428.268}
+2026-02-05 02:27:08.275375: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770240428.269}
+2026-02-05 02:27:08.345312: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770240428.27}
+2026-02-05 02:27:08.388606: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770240428.271}
+2026-02-05 02:27:08.408007: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770240428.272}
+2026-02-05 02:27:08.428109: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770240428.273}
+2026-02-05 02:27:08.453265: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240428.273}
+2026-02-05 02:27:08.474386: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770240428.274}
+2026-02-05 02:27:08.491263: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770240428.275}
+2026-02-05 02:27:08.506827: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770240428.279}
+2026-02-05 02:27:08.524955: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770240453.47}
+2026-02-05 02:27:33.479751: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689762', 'type': 'text', 'timestamp': 1770240454.97}
+2026-02-05 02:27:34.975229: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689762', 'type': 'text', 'timestamp': 1770240455.268}
+2026-02-05 02:27:35.274886: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689762', 'type': 'text', 'timestamp': 1770240456.362}
+2026-02-05 02:27:36.368447: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689762', 'type': 'text', 'timestamp': 1770240456.362}
+2026-02-05 02:27:36.385626: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'JB689762', 'type': 'text', 'timestamp': 1770240456.364}
+2026-02-05 02:27:36.401818: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770240485.118}
+2026-02-05 02:28:05.139397: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33302', 'type': 'text', 'timestamp': 1770240488.818}
+2026-02-05 02:28:08.829718: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33302', 'type': 'text', 'timestamp': 1770240488.819}
+2026-02-05 02:28:08.858463: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33302', 'type': 'text', 'timestamp': 1770240488.821}
+2026-02-05 02:28:08.883598: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33302', 'type': 'text', 'timestamp': 1770240489.053}
+2026-02-05 02:28:09.061797: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '33302', 'type': 'text', 'timestamp': 1770240489.271}
+2026-02-05 02:28:09.282164: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '56', 'type': 'text', 'timestamp': 1770240489.275}
+2026-02-05 02:28:09.307280: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '5663222', 'type': 'text', 'timestamp': 1770240490.153}
+2026-02-05 02:28:10.166365: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '5663222', 'type': 'text', 'timestamp': 1770240490.155}
+2026-02-05 02:28:10.202394: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '5663222', 'type': 'text', 'timestamp': 1770240490.156}
+2026-02-05 02:28:10.229929: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '5663222', 'type': 'text', 'timestamp': 1770240490.363}
+2026-02-05 02:28:10.374245: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '5663222', 'type': 'text', 'timestamp': 1770240491.27}
+2026-02-05 02:28:11.280627: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240491.737}
+2026-02-05 02:28:11.748083: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240492.628}
+2026-02-05 02:28:12.644393: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240492.629}
+2026-02-05 02:28:12.686030: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240492.631}
+2026-02-05 02:28:12.766919: Attempting save (try 1). Pages: 1
+2026-02-05 02:28:13.023947: Attempting save (try 2). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '5', 'type': 'text', 'timestamp': 1770240493.276}
+2026-02-05 02:28:13.288340: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939262', 'timestamp': 1770240493.825, 'forced_capture': {'#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:28:13.863908: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:28:13.899982 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689762', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33302', 'input#nic2': '5663222', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689762', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '5663222', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '33302-5663222-5'}
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939262', 'timestamp': 1770240493.895, 'forced_capture': {'#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}}
+2026-02-05 02:28:14.009037: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:28:14.027558 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs']
+Flat Data Content: {'input#txt_chassis_no': 'JB689762', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33302', 'input#nic2': '5663222', 'input#nic3': '5', 'input#txt_address': '', 'input#txt_cell_no': '', 'span#select2-cmb_city-container': 'Search or Select City', '#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_address': '', '#txt_cell_no': '', '#select2-cmb_city-container': 'Search or Select City', '#txt_full_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', '#txt_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'txt_address': '', 'txt_cell_no': '', 'cmb_city': '', 'cmb_profession': '', 'cmb_personal_income': '', 'cmb_purch_mode': '', 'cmb_info_source': '', 'cmb_purchase_type': '', 'cmb_mc_usage': '', 'cmb_pdsa': ''}}
+Mapped Data: {'chassis_number': 'JB689762', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '5663222', 'buyer_cnic_part3': '5', 'buyer_address': '', 'buyer_phone': '', 'city': 'Search or Select City', 'buyer_name': '* Father / Husband Name :\xa0\n                                        \n                                        \xa0\n                                        * Gender :', 'buyer_father_name': '* Date of Birth :\xa0\n                                        \n                                        \xa0\n                                        * Age Group :', 'buyer_cnic': '33302-5663222-5'}
+RAW DATA: {'selector': 'input#txt_full_name', 'value': '', 'type': 'text', 'timestamp': 1770240501.675}
+2026-02-05 02:28:21.688888: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'ra', 'type': 'text', 'timestamp': 1770240503.263}
+2026-02-05 02:28:23.273008: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'ra', 'type': 'text', 'timestamp': 1770240503.53}
+2026-02-05 02:28:23.538918: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240504.72}
+2026-02-05 02:28:24.728229: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240504.902}
+2026-02-05 02:28:24.912525: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240504.903}
+2026-02-05 02:28:24.942703: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240504.904}
+2026-02-05 02:28:24.972384: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_full_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240505.269}
+2026-02-05 02:28:25.277861: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ra', 'type': 'text', 'timestamp': 1770240505.999}
+2026-02-05 02:28:26.009634: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'ras', 'type': 'text', 'timestamp': 1770240507.271}
+2026-02-05 02:28:27.285561: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240508.028}
+2026-02-05 02:28:28.037924: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240508.462}
+2026-02-05 02:28:28.472189: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240508.463}
+2026-02-05 02:28:28.500399: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240508.465}
+2026-02-05 02:28:28.528082: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_father_name', 'value': 'rashid', 'type': 'text', 'timestamp': 1770240509.274}
+2026-02-05 02:28:29.283401: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'c', 'type': 'text', 'timestamp': 1770240513.263}
+2026-02-05 02:28:33.268750: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak', 'type': 'text', 'timestamp': 1770240513.831}
+2026-02-05 02:28:33.836444: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770240515.154}
+2026-02-05 02:28:35.159710: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no ', 'type': 'text', 'timestamp': 1770240515.264}
+2026-02-05 02:28:35.271964: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742', 'type': 'text', 'timestamp': 1770240516.515}
+2026-02-05 02:28:36.521089: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742 gb', 'type': 'text', 'timestamp': 1770240517.264}
+2026-02-05 02:28:37.270216: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742 gb', 'type': 'text', 'timestamp': 1770240517.542}
+2026-02-05 02:28:37.548091: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742 gb', 'type': 'text', 'timestamp': 1770240517.548}
+2026-02-05 02:28:37.570743: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742 gb', 'type': 'text', 'timestamp': 1770240517.549}
+2026-02-05 02:28:37.590732: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': 'chak no 742 gb', 'type': 'text', 'timestamp': 1770240517.55}
+2026-02-05 02:28:37.612878: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '030214', 'type': 'text', 'timestamp': 1770240519.264}
+2026-02-05 02:28:39.270801: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '030214', 'type': 'text', 'timestamp': 1770240519.562}
+2026-02-05 02:28:39.567701: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '0302142', 'type': 'text', 'timestamp': 1770240519.967}
+2026-02-05 02:28:39.972097: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03021422222', 'type': 'text', 'timestamp': 1770240520.56}
+2026-02-05 02:28:40.565318: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03021422222', 'type': 'text', 'timestamp': 1770240521.238}
+2026-02-05 02:28:41.245460: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03021422222', 'type': 'text', 'timestamp': 1770240521.239}
+2026-02-05 02:28:41.265071: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03021422222', 'type': 'text', 'timestamp': 1770240521.24}
+2026-02-05 02:28:41.283470: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '03021422222', 'type': 'text', 'timestamp': 1770240521.263}
+2026-02-05 02:28:41.306923: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Toba Tek Singh', 'type': 'span', 'timestamp': 1770240529.275}
+2026-02-05 02:28:49.281816: Attempting save (try 1). Pages: 1
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939262', 'timestamp': 1770240531.659, 'forced_capture': {'#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_full_name': 'rashid', '#txt_father_name': 'rashid', '#txt_address': 'chak no 742 gb', '#txt_cell_no': '03021422222', '#select2-cmb_city-container': 'Toba Tek Singh', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3330256632225', 'txt_full_name': 'rashid', 'txt_father_name': 'rashid', 'cmbGender': 'M', 'txt_date_of_birth': '1976-12-30', 'txt_address': 'chak no 742 gb', 'txt_cell_no': '03021422222', 'cmb_city': '522', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:28:51.679258: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:28:51.688851 ---
+Flat Data Keys: ['input#txt_chassis_no', 'input#txt_engine_no', 'input#txt_color', 'input#txt_model', 'input#nic1', 'input#nic2', 'input#nic3', 'input#txt_address', 'input#txt_cell_no', 'span#select2-cmb_city-container', '#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '#txt_full_name', '#txt_father_name', '_debug_all_inputs', 'input#txt_full_name', 'input#txt_father_name']
+Flat Data Content: {'input#txt_chassis_no': 'JB689762', 'input#txt_engine_no': '', 'input#txt_color': '', 'input#txt_model': '', 'input#nic1': '33302', 'input#nic2': '5663222', 'input#nic3': '5', 'input#txt_address': 'chak no 742 gb', 'input#txt_cell_no': '03021422222', 'span#select2-cmb_city-container': 'Toba Tek Singh', '#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_address': 'chak no 742 gb', '#txt_cell_no': '03021422222', '#select2-cmb_city-container': 'Toba Tek Singh', '#txt_full_name': 'rashid', '#txt_father_name': 'rashid', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3330256632225', 'txt_full_name': 'rashid', 'txt_father_name': 'rashid', 'cmbGender': 'M', 'txt_date_of_birth': '1976-12-30', 'txt_address': 'chak no 742 gb', 'txt_cell_no': '03021422222', 'cmb_city': '522', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}, 'input#txt_full_name': 'rashid', 'input#txt_father_name': 'rashid'}
+Mapped Data: {'chassis_number': 'JB689762', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '5663222', 'buyer_cnic_part3': '5', 'buyer_address': 'chak no 742 gb, Toba Tek Singh', 'buyer_phone': '03021422222', 'city': 'Toba Tek Singh', 'buyer_name': 'rashid', 'buyer_father_name': 'rashid', 'buyer_cnic': '33302-5663222-5'}
+2026-02-05 02:28:51.703767: Attempting save (try 1). Pages: 0
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/customer_profile/1/4939262', 'timestamp': 1770240531.745, 'forced_capture': {'#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_full_name': 'rashid', '#txt_father_name': 'rashid', '#txt_address': 'chak no 742 gb', '#txt_cell_no': '03021422222', '#select2-cmb_city-container': 'Toba Tek Singh', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3330256632225', 'txt_full_name': 'rashid', 'txt_father_name': 'rashid', 'cmbGender': 'M', 'txt_date_of_birth': '1976-12-30', 'txt_address': 'chak no 742 gb', 'txt_cell_no': '03021422222', 'cmb_city': '522', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}}
+2026-02-05 02:28:51.771875: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-05 02:28:51.780808 ---
+Flat Data Keys: ['#txt_chassis_no', '#txt_engine_no', '#txt_color', '#txt_model', '#nic1', '#nic2', '#nic3', '#txt_full_name', '#txt_father_name', '#txt_address', '#txt_cell_no', '#select2-cmb_city-container', '_debug_all_inputs']
+Flat Data Content: {'#txt_chassis_no': 'JB689762', '#txt_engine_no': '', '#txt_color': '', '#txt_model': '', '#nic1': '33302', '#nic2': '5663222', '#nic3': '5', '#txt_full_name': 'rashid', '#txt_father_name': 'rashid', '#txt_address': 'chak no 742 gb', '#txt_cell_no': '03021422222', '#select2-cmb_city-container': 'Toba Tek Singh', '_debug_all_inputs': {'_token': '8vBbc1tgVgBksam44vi5tgTyp8DPmoxMIvUjT2N6', 'chassis_no': 'JB689762', 'engine_no': 'B897118', 'product_id': '', 'model_id': '', 'sub_model_id': '', 'dealer_code': '', 'stock_type': 'stock', 'txt_chassis_no': 'JB689762', 'txt_sale_dealer': '101296', 'txt_model': '', 'txt_color': '', 'txt_purchase_date': '05-FEB-2026', 'txt_engine_no': '', 'txt_regd_name': '', 'txt_inv_number': '', 'nic1': '33302', 'nic2': '5663222', 'nic3': '5', 'customer_id': '4939233', 'profile_id': '', 'operation': '1', 'profile_source_id': '1', 'profile_made_by': '4942', 'cmb_agegroup': '12', 'txt_email_address': '', 'cmb_education': '', 'cmb_purch_reason': '0', 'cmb_family_others': '', 'cmb_colour_reason': '', 'cmb_prev_mc_brand': '', 'cmb_family_bike_id': '', 'family_bike_year': '', 'cmb_mc_id': '', 'prev_mc_year': '', 'prev_mc_colour': '', 'cmb_prev_mc_sold': '', 'cmb_selling_area': '', 'prev_mc_sold_amount': '', 'cnic': '3330256632225', 'txt_full_name': 'rashid', 'txt_father_name': 'rashid', 'cmbGender': 'M', 'txt_date_of_birth': '1976-12-30', 'txt_address': 'chak no 742 gb', 'txt_cell_no': '03021422222', 'cmb_city': '522', 'cmb_profession': '181', 'cmb_personal_income': '141', 'cmb_purch_mode': '121', 'cmb_info_source': '3', 'cmb_purchase_type': '1', 'cmb_mc_usage': '4', 'cmb_pdsa': '1'}}
+Mapped Data: {'chassis_number': 'JB689762', 'engine_number': '', 'color': '', 'model_name': '', 'buyer_cnic_part1': '33302', 'buyer_cnic_part2': '5663222', 'buyer_cnic_part3': '5', 'buyer_name': 'rashid', 'buyer_father_name': 'rashid', 'buyer_address': 'chak no 742 gb, Toba Tek Singh', 'buyer_phone': '03021422222', 'city': 'Toba Tek Singh', 'buyer_cnic': '33302-5663222-5'}
+2026-02-05 02:28:51.792258: Attempting save (try 1). Pages: 0
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770240534.198}
+2026-02-05 02:28:54.209131: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770240534.2}
+2026-02-05 02:28:54.226743: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770240534.201}
+2026-02-05 02:28:54.246543: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770240534.203}
+2026-02-05 02:28:54.265183: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770240534.204}
+2026-02-05 02:28:54.280222: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770240534.204}
+2026-02-05 02:28:54.300128: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770240534.205}
+2026-02-05 02:28:54.319456: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770240534.205}
+2026-02-05 02:28:54.335897: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770240534.206}
+2026-02-05 02:28:54.352865: Attempting save (try 1). Pages: 1
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770240534.207}
+2026-02-05 02:28:54.373793: Attempting save (try 1). Pages: 1
