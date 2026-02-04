@@ -17,7 +17,7 @@ logging.basicConfig(
 
 class FormCaptureService:
     _instance = None
-    _lock = threading.Lock()
+    _lock = threading.RLock()
 
     def __new__(cls):
         with cls._lock:
