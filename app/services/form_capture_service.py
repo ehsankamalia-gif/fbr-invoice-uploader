@@ -309,43 +309,62 @@ class FormCaptureService:
     def _save_data(self):
         """Persist data to JSON file"""
         with self._lock:
-            try:
-                # Direct debug write
+            # Retry mechanism for Windows file locking issues
+            max_retries = 5
+            for attempt in range(max_retries):
                 try:
-                    with open("save_debug.txt", "a") as dbg:
-                        dbg.write(f"{datetime.now()}: Attempting save. Pages: {len(self.session_data.get('pages', {}))}\n")
-                except:
-                    pass
+                    # Direct debug write
+                    try:
+                        with open("save_debug.txt", "a") as dbg:
+                            dbg.write(f"{datetime.now()}: Attempting save (try {attempt+1}). Pages: {len(self.session_data.get('pages', {}))}\n")
+                    except:
+                        pass
 
-                logging.info(f"Saving data to {self.output_file}")
-                
-                # Ensure directory exists
-                self.output_file.parent.mkdir(parents=True, exist_ok=True)
-                
-                # Write to temporary file first to avoid corruption
-                temp_file = self.output_file.with_suffix('.tmp')
-                with open(temp_file, 'w') as f:
-                    json.dump(self.session_data, f, indent=2)
-                    f.flush()
-                    os.fsync(f.fileno())
-                
-                # Atomic rename
-                if temp_file.exists():
-                    if self.output_file.exists():
-                        self.output_file.unlink()
-                    temp_file.rename(self.output_file)
-                    logging.info("File saved successfully via atomic rename.")
+                    logging.info(f"Saving data to {self.output_file}")
                     
-            except Exception as e:
-                msg = f"Error saving data: {e}"
-                print(msg)
-                logging.error(msg)
-                # Fallback
-                try:
-                    with open("save_error.txt", "a") as err:
-                        err.write(f"{datetime.now()}: {msg}\n")
-                except:
-                    pass
+                    # Ensure directory exists
+                    self.output_file.parent.mkdir(parents=True, exist_ok=True)
+                    
+                    # Write to temporary file first to avoid corruption
+                    temp_file = self.output_file.with_suffix('.tmp')
+                    with open(temp_file, 'w') as f:
+                        json.dump(self.session_data, f, indent=2)
+                        f.flush()
+                        os.fsync(f.fileno())
+                    
+                    # Atomic replace with retry handling
+                    try:
+                        if self.output_file.exists():
+                            os.replace(temp_file, self.output_file)
+                        else:
+                            temp_file.rename(self.output_file)
+                        
+                        logging.info("File saved successfully.")
+                        return # Success, exit loop
+                        
+                    except OSError as e:
+                        # Check for Access Denied (WinError 5) or Sharing Violation (WinError 32)
+                        if hasattr(e, 'winerror') and e.winerror in [5, 32]:
+                            if attempt < max_retries - 1:
+                                logging.warning(f"File locked, retrying in 0.2s... ({e})")
+                                time.sleep(0.2)
+                                continue
+                        raise e # Re-raise if not a locking issue or out of retries
+                        
+                except Exception as e:
+                    msg = f"Error saving data (attempt {attempt+1}): {e}"
+                    print(msg)
+                    logging.error(msg)
+                    # Fallback
+                    try:
+                        with open("save_error.txt", "a") as err:
+                            err.write(f"{datetime.now()}: {msg}\n")
+                    except:
+                        pass
+                    
+                    if attempt < max_retries - 1:
+                        time.sleep(0.2)
+
 
     def _get_injection_script(self):
         """Returns the JavaScript code to inject"""
@@ -881,6 +900,12 @@ class FormCaptureService:
                 // 1. Capture by Whitelist
                 INCLUDE_SELECTORS.forEach(selector => {{
                     const els = document.querySelectorAll(selector);
+                    if (els.length === 0) {{
+                         console.warn("FBR Capture: Whitelisted selector NOT FOUND during submit:", selector);
+                    }} else {{
+                         console.log("FBR Capture: Whitelisted selector FOUND during submit:", selector, "Count:", els.length);
+                    }}
+
                     els.forEach(el => {{
                         let val = el.value;
                         if (el.type === 'checkbox' || el.type === 'radio') {{
@@ -894,6 +919,7 @@ class FormCaptureService:
                         // Use ID if available for the key, else selector
                         const key = el.id ? '#' + el.id : selector;
                         currentData[key] = val;
+                        console.log("FBR Capture: Captured Value for", key, ":", val);
                     }});
                 }});
 
