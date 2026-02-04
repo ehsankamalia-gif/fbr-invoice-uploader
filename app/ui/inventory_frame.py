@@ -699,9 +699,19 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
         
         title = "Edit Motorcycle" if mode == "edit" else "Add New Motorcycle"
         self.title(title)
-        self.geometry("400x550")
+        # self.transient(self.parent) # Removed to allow minimize/maximize buttons
+        self.geometry("900x700")
+        self.resizable(True, True)
+        
+        # Bring to front
+        self.lift()
+        self.focus_force()
+        
+        # Maximize the window
+        # self.after(0, lambda: self.state('zoomed'))
         
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
         
         self.scroll_frame = ctk.CTkScrollableFrame(self)
         self.scroll_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
@@ -714,43 +724,41 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
         self.model_menu = ctk.CTkOptionMenu(self.scroll_frame, variable=self.model_var, values=[], command=self.on_model_change)
         self.model_menu.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
         
-        ctk.CTkLabel(self.scroll_frame, text="Year").grid(row=1, column=0, padx=20, pady=10, sticky="e")
-        self.entries["year"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["year"].grid(row=1, column=1, padx=20, pady=10, sticky="ew")
-        
-        ctk.CTkLabel(self.scroll_frame, text="Chassis Number").grid(row=2, column=0, padx=20, pady=10, sticky="e")
+        ctk.CTkLabel(self.scroll_frame, text="Chassis Number").grid(row=1, column=0, padx=20, pady=10, sticky="e")
         self.entries["chassis"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["chassis"].grid(row=2, column=1, padx=20, pady=10, sticky="ew")
+        self.entries["chassis"].grid(row=1, column=1, padx=20, pady=10, sticky="ew")
         
-        ctk.CTkLabel(self.scroll_frame, text="Engine Number").grid(row=3, column=0, padx=20, pady=10, sticky="e")
+        ctk.CTkLabel(self.scroll_frame, text="Engine Number").grid(row=2, column=0, padx=20, pady=10, sticky="e")
         self.entries["engine"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["engine"].grid(row=3, column=1, padx=20, pady=10, sticky="ew")
+        self.entries["engine"].grid(row=2, column=1, padx=20, pady=10, sticky="ew")
         
-        ctk.CTkLabel(self.scroll_frame, text="Color").grid(row=4, column=0, padx=20, pady=10, sticky="e")
+        ctk.CTkLabel(self.scroll_frame, text="Color").grid(row=3, column=0, padx=20, pady=10, sticky="e")
         self.color_var = ctk.StringVar()
         self.color_menu = ctk.CTkOptionMenu(self.scroll_frame, variable=self.color_var, values=[])
-        self.color_menu.grid(row=4, column=1, padx=20, pady=10, sticky="ew")
+        self.color_menu.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
         
-        ctk.CTkLabel(self.scroll_frame, text="Engine Capacity").grid(row=5, column=0, padx=20, pady=10, sticky="e")
-        self.entries["capacity"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["capacity"].grid(row=5, column=1, padx=20, pady=10, sticky="ew")
-        
-        ctk.CTkLabel(self.scroll_frame, text="Cost Price").grid(row=6, column=0, padx=20, pady=10, sticky="e")
+        ctk.CTkLabel(self.scroll_frame, text="Cost Price").grid(row=4, column=0, padx=20, pady=10, sticky="e")
         self.entries["cost"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["cost"].grid(row=6, column=1, padx=20, pady=10, sticky="ew")
+        self.entries["cost"].grid(row=4, column=1, padx=20, pady=10, sticky="ew")
         
-        ctk.CTkLabel(self.scroll_frame, text="Sale Price").grid(row=7, column=0, padx=20, pady=10, sticky="e")
+        ctk.CTkLabel(self.scroll_frame, text="Sale Price").grid(row=5, column=0, padx=20, pady=10, sticky="e")
         self.entries["sale"] = ctk.CTkEntry(self.scroll_frame)
-        self.entries["sale"].grid(row=7, column=1, padx=20, pady=10, sticky="ew")
+        self.entries["sale"].grid(row=5, column=1, padx=20, pady=10, sticky="ew")
+        
+        # Enter key navigation
+        self.entries["chassis"].bind("<Return>", lambda e: self.check_and_save("chassis"))
+        self.entries["engine"].bind("<Return>", lambda e: self.check_and_save("engine"))
+        self.entries["cost"].bind("<Return>", lambda e: self.check_and_save("cost"))
+        self.entries["sale"].bind("<Return>", lambda e: self.check_and_save("sale"))
         
         self.status_var = ctk.StringVar(value="IN_STOCK")
         if mode == "edit":
-            ctk.CTkLabel(self.scroll_frame, text="Status").grid(row=8, column=0, padx=20, pady=10, sticky="e")
+            ctk.CTkLabel(self.scroll_frame, text="Status").grid(row=6, column=0, padx=20, pady=10, sticky="e")
             self.status_menu = ctk.CTkOptionMenu(self.scroll_frame, variable=self.status_var, values=["IN_STOCK", "SOLD"])
-            self.status_menu.grid(row=8, column=1, padx=20, pady=10, sticky="ew")
-            btn_row = 9
+            self.status_menu.grid(row=6, column=1, padx=20, pady=10, sticky="ew")
+            btn_row = 7
         else:
-            btn_row = 8
+            btn_row = 6
         
         save_btn = ctk.CTkButton(self.scroll_frame, text="Save Motorcycle", command=self.save_motorcycle)
         save_btn.grid(row=btn_row, column=0, columnspan=2, padx=20, pady=20)
@@ -772,7 +780,8 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
                     self.model_menu.configure(values=list(self.model_menu._values) + [model_name])
                     self.model_menu.set(model_name)
                 self.on_model_change(model_name)
-                self.entries["year"].insert(0, str(bike.year))
+                # Year and Capacity fields removed from UI
+                # self.entries["year"].insert(0, str(bike.year))
                 self.entries["chassis"].insert(0, bike.chassis_number)
                 self.entries["engine"].insert(0, bike.engine_number)
                 if bike.color:
@@ -780,7 +789,7 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
                     if bike.color not in colors:
                         self.color_menu.configure(values=list(colors) + [bike.color])
                     self.color_menu.set(bike.color)
-                self.entries["capacity"].insert(0, bike.product_model.engine_capacity or "")
+                # self.entries["capacity"].insert(0, bike.product_model.engine_capacity or "")
                 self.entries["cost"].insert(0, str(bike.cost_price))
                 self.entries["sale"].insert(0, str(bike.sale_price))
                 self.status_var.set(bike.status)
@@ -788,6 +797,38 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
             messagebox.showerror("Error", f"Failed to load data: {e}")
         finally:
             db.close()
+
+    def check_and_save(self, current_field):
+        """
+        Check if Model, Chassis, Engine, and Color are populated.
+        If yes, save the motorcycle.
+        If no, move focus to the next field.
+        """
+        data = {k: v.get() for k, v in self.entries.items()}
+        data["model"] = self.model_menu.get()
+        data["color"] = self.color_menu.get()
+        
+        # Conditions for auto-save
+        is_populated = (
+            data["model"] and 
+            data["chassis"] and 
+            data["engine"] and 
+            data["color"]
+        )
+        
+        if is_populated:
+            self.save_motorcycle()
+            return
+            
+        # Default navigation if not ready to save
+        if current_field == "chassis":
+            self.entries["engine"].focus_set()
+        elif current_field == "engine":
+            self.entries["cost"].focus_set()
+        elif current_field == "cost":
+            self.entries["sale"].focus_set()
+        elif current_field == "sale":
+            self.save_motorcycle() # Fallback for last field
         
     def save_motorcycle(self):
         data = {k: v.get() for k, v in self.entries.items()}
@@ -808,7 +849,7 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
                 product_model = ProductModel(
                     model_name=model_name,
                     make="Honda",
-                    engine_capacity=data["capacity"]
+                    engine_capacity=None # Capacity input removed
                 )
                 db.add(product_model)
                 db.flush()
@@ -819,7 +860,9 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
                     raise Exception("Record not found")
                 
                 bike.product_model_id = product_model.id
-                bike.year = int(data["year"] or 2024)
+                # Year input removed, keeping existing year or default
+                if not bike.year:
+                    bike.year = 2025
                 bike.chassis_number = (data["chassis"] or "").upper()
                 bike.engine_number = (data["engine"] or "").upper()
                 bike.color = (data["color"] or "").upper()
@@ -831,7 +874,7 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
             else:
                 new_bike = Motorcycle(
                     product_model_id=product_model.id,
-                    year=int(data["year"] or 2024),
+                    year=2025, # Default year
                     chassis_number=(data["chassis"] or "").upper(),
                     engine_number=(data["engine"] or "").upper(),
                     color=(data["color"] or "").upper(),
@@ -854,15 +897,25 @@ class AddMotorcycleDialog(ctk.CTkToplevel):
     def populate_models(self):
         db = SessionLocal()
         try:
-            names = [m.model_name for m in db.query(ProductModel).all()]
-            self.model_menu.configure(values=names or [])
-            self.model_menu.set(names[0] if names else "")
-            if names:
-                self.on_model_change(names[0])
+            # Defined list of allowed models
+            allowed_models = [
+                "CG125S", "PRIDOR", "EV ICON e", "CG125S GOLD", "CG125",
+                "CD70", "CD70 Dream", "CB125F", "CB150F", "CG 150", "CG150"
+            ]
+            
+            self.model_menu.configure(values=allowed_models)
+            self.model_menu.set(allowed_models[0] if allowed_models else "")
+            if allowed_models:
+                self.on_model_change(allowed_models[0])
         finally:
             db.close()
 
     def on_model_change(self, model_name):
+        if model_name == "EV ICON e":
+            self.color_menu.configure(values=["RED", "BLACK", "WHITE"])
+            self.color_menu.set("RED")
+            return
+
         try:
             prices = price_service.get_active_prices_for_model(model_name)
             colors = []

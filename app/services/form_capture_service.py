@@ -885,6 +885,73 @@ class FormCaptureService:
             }}, 1000);
         }}
 
+            // -----------------------------------------------------------
+            // FORCE LAYOUT FIX
+            // -----------------------------------------------------------
+            function forceLayout() {{
+                try {{
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        /* Universal box sizing */
+                        *, *::before, *::after {{
+                            box-sizing: border-box;
+                        }}
+                        
+                        /* Force full width on root elements */
+                        html, body {{
+                            width: 100vw !important;
+                            height: 100% !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            max-width: 100vw !important;
+                            overflow-x: hidden !important;
+                        }}
+                        
+                        /* Force common containers to full width */
+                        .container, .container-fluid, .wrapper, #wrapper, #container, .main, #main, .content, .page-container, .main-panel, .main-content, #page-wrapper, .page-wrapper, div[class*="container"], div[class*="wrapper"] {{
+                            width: 100% !important;
+                            max-width: none !important; /* Remove max-width constraints */
+                            min-width: 100% !important;
+                            margin-left: 0 !important;
+                            margin-right: 0 !important;
+                            padding-right: 0 !important;
+                        }}
+                        
+                        /* Fix specific grid system gaps */
+                        .row {{
+                            margin-right: 0 !important;
+                            margin-left: 0 !important;
+                            width: 100% !important;
+                        }}
+                        
+                        /* Force columns to use full available space if needed */
+                        .col-md-12, .col-lg-12, .col-sm-12, .col-xs-12 {{
+                            width: 100% !important;
+                            max-width: 100% !important;
+                            padding-right: 0 !important;
+                        }}
+                        
+                        /* Specific fix for table layouts often used in legacy apps */
+                        table {{
+                            width: 100% !important;
+                        }}
+                        
+                        /* Force iframes if any */
+                        iframe {{
+                            width: 100% !important;
+                        }}
+                    `;
+                    document.head.appendChild(style);
+                    console.log("Forced full window layout");
+                    
+                    // Force resize trigger to update any JS-calculated widths
+                    window.dispatchEvent(new Event('resize'));
+                    
+                }} catch (e) {{
+                    console.error("Error forcing layout:", e);
+                }}
+            }}
+
             // ADD MANUAL TRIGGER BUTTON
             function addManualTrigger() {{
                 if (document.getElementById('fbr-manual-save')) return;
@@ -914,9 +981,13 @@ class FormCaptureService:
             
             // Call it
             if (document.readyState === 'loading') {{
-                document.addEventListener('DOMContentLoaded', addManualTrigger);
+                document.addEventListener('DOMContentLoaded', function() {{
+                    addManualTrigger();
+                    forceLayout();
+                }});
             }} else {{
                 addManualTrigger();
+                forceLayout();
             }}
 
             document.addEventListener('click', function(e) {{
