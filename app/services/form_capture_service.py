@@ -1013,6 +1013,19 @@ class FormCaptureService:
                     console.log("FBR Capture: Recovered Father Name via text fallback:", fatherFromFallback);
                 }}
 
+                // Explicitly check for Engine Number if missing (Added Fix)
+                const engineFromFallback = grabText([
+                    'Engine No',
+                    'Engine Number',
+                    'Engine #',
+                    'Eng No',
+                    'Eng #'
+                ]);
+                if (!currentData['#txt_engine_no'] && engineFromFallback) {{
+                    currentData['#txt_engine_no'] = engineFromFallback;
+                    console.log("FBR Capture: Recovered Engine Number via text fallback:", engineFromFallback);
+                }}
+
                 // 3. DIAGNOSTIC: Capture ALL inputs on page to debug missing fields
                 const debugInputs = {{}};
                 document.querySelectorAll('input, select, textarea').forEach(el => {{

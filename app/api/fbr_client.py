@@ -185,13 +185,20 @@ class FBRClient:
         except (ValueError, TypeError):
              pass
 
+        # Format CNIC (Strip dashes for FBR compliance)
+        buyer_cnic = data.get("buyer_cnic")
+        if buyer_cnic:
+            buyer_cnic = str(buyer_cnic).replace("-", "").strip()
+        else:
+            buyer_cnic = "1234512345678" # Sample fallback (13 digits)
+
         return {
             "InvoiceNumber": data.get("invoice_number", ""), # Use the generated Invoice Number
             "POSID": pos_id,
             "USIN": data.get("invoice_number", ""), # User Req: Invoice number should also go into USIN column (and payload likely)
             "DateTime": dt_str,
             "BuyerNTN": data.get("buyer_ntn") or "1234567-8", # Sample fallback
-            "BuyerCNIC": data.get("buyer_cnic") or "12345-1234567-8", # Sample fallback
+            "BuyerCNIC": buyer_cnic,
             "BuyerName": data.get("buyer_name") or "Buyer Name",
             "BuyerPhoneNumber": data.get("buyer_phone") or "0000-0000000",
             "items": items, # Lowercase 'items' per sample

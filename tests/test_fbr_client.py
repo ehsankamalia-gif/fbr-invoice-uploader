@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
+from datetime import datetime
 from app.api.fbr_client import FBRClient
 from app.api.schemas import InvoiceCreate, InvoiceItemCreate
 
@@ -7,8 +8,13 @@ from app.api.schemas import InvoiceCreate, InvoiceItemCreate
 def invoice_data():
     return {
         "invoice_number": "INV-001",
-        "datetime": None,
+        "datetime": datetime.now(), 
         "buyer_name": "John Doe",
+        "total_amount": 117.0, # Added missing field
+        "total_quantity": 1,   # Added missing field
+        "total_sale_value": 100.0, # Added missing field
+        "total_tax_charged": 17.0, # Added missing field
+        "payment_mode": "Cash", # Added missing field
         "items": [
             {
                 "item_code": "1",
@@ -16,18 +22,21 @@ def invoice_data():
                 "quantity": 1,
                 "tax_rate": 17.0,
                 "sale_value": 100.0,
-                "total_amount": 117.0
+                "total_amount": 117.0,
+                "tax_charged": 17.0,
+                "pct_code": "11001010"
             }
         ]
     }
 
 def test_transform_to_fbr_format(invoice_data):
     client = FBRClient()
-    fbr_data = client._transform_to_fbr_format(invoice_data)
+    settings = {"pos_id": 123, "pct_code": "11001010"}
+    fbr_data = client._transform_to_fbr_format(invoice_data, settings)
     
     assert fbr_data["InvoiceNumber"] == "INV-001"
-    assert len(fbr_data["Items"]) == 1
-    assert fbr_data["Items"][0]["ItemCode"] == "1"
+    assert len(fbr_data["items"]) == 1 # Was "Items"
+    assert fbr_data["items"][0]["ItemCode"] == "1" # Was "Items"
 
 @patch("requests.post")
 def test_post_invoice_success(mock_post, invoice_data):

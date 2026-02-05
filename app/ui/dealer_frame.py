@@ -6,6 +6,7 @@ from app.services.dealer_service import dealer_service
 class DealerFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+        self._cnic_cursor_job = None
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
@@ -160,6 +161,13 @@ class DealerFrame(ctk.CTkFrame):
 
     def validate_cnic(self, *args):
         value = self.cnic_var.get()
+        
+        # Get current cursor position (safe fallback)
+        try:
+            cursor_pos = self.cnic_entry.index("insert")
+        except:
+            cursor_pos = len(value)
+
         # Auto-format: XXXXX-XXXXXXX-X
         clean_digits = ''.join(filter(str.isdigit, value))
         
@@ -173,7 +181,36 @@ class DealerFrame(ctk.CTkFrame):
             formatted = formatted[:15]
             
         if value != formatted:
+            # Adjust cursor position
+            # Calculate clean cursor position (relative to digits only)
+            non_digits_before = sum(1 for c in value[:cursor_pos] if not c.isdigit())
+            clean_pos = cursor_pos - non_digits_before
+            
+            # Map to formatted position based on fixed dashes
+            new_cursor = clean_pos
+            if clean_pos > 5:
+                new_cursor += 1
+            if clean_pos > 12:
+                new_cursor += 1
+                
             self.cnic_var.set(formatted)
+            
+            # Restore cursor with slight delay to ensure UI update is complete
+            # and cancel any pending cursor updates to prevent race conditions
+            if hasattr(self, '_cnic_cursor_job') and self._cnic_cursor_job:
+                try:
+                    self.after_cancel(self._cnic_cursor_job)
+                except:
+                    pass
+            
+            def set_cursor():
+                try:
+                    self.cnic_entry.icursor(new_cursor)
+                except:
+                    pass
+                self._cnic_cursor_job = None
+
+            self._cnic_cursor_job = self.after(1, set_cursor)
 
     def validate_phone(self, *args):
         val = self.phone_var.get()

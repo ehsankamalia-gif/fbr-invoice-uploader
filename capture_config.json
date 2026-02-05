@@ -5,6 +5,8 @@
   "include_selectors": [
     "#txt_chassis_no",
     "#txt_engine_no",
+    "input[id*='engine']",
+    "input[name*='engine']",
     "#txt_color",
     "#txt_model",
     "#nic1",
@@ -33,6 +35,8 @@
   "field_mapping": {
     "#txt_chassis_no": "chassis_number",
     "#txt_engine_no": "engine_number",
+    "input[id*='engine']": "engine_number",
+    "input[name*='engine']": "engine_number",
     "#txt_color": "color",
     "#txt_model": "model_name",
     "#nic1": "buyer_cnic_part1",

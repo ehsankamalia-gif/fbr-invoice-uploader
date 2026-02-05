@@ -71,13 +71,26 @@ class CapturedFormProcessor:
                     existing.cnic = mapped_data.get("buyer_cnic")
                     existing.cell = mapped_data.get("buyer_phone")
                     existing.address = (mapped_data.get("buyer_address") or "").upper()
-                    existing.engine_number = (mapped_data.get("engine_number") or "").upper()
+                    
+                    # Handle engine number (optional)
+                    engine_val = mapped_data.get("engine_number")
+                    if engine_val:
+                        existing.engine_number = engine_val.upper()
+                    else:
+                        # If explicitly None or empty, allow it to be nullable/optional
+                        # But if key is missing from map, we might want to preserve existing?
+                        # Assuming map contains all current form data, if it's empty here, it's empty on form.
+                        existing.engine_number = None
+
                     existing.color = (mapped_data.get("color") or "").upper()
                     existing.model = (mapped_data.get("model_name") or "").upper()
                     existing.created_at = datetime.utcnow() # Update timestamp?
                 else:
                     # Create new record
                     logger.info(f"Creating new record for chassis {chassis}")
+                    
+                    engine_val = mapped_data.get("engine_number")
+                    
                     new_record = CapturedData(
                         name=(mapped_data.get("buyer_name") or "").upper(),
                         father=(mapped_data.get("buyer_father_name") or "").upper(),
@@ -85,7 +98,7 @@ class CapturedFormProcessor:
                         cell=mapped_data.get("buyer_phone"),
                         address=(mapped_data.get("buyer_address") or "").upper(),
                         chassis_number=(chassis or "").upper(),
-                        engine_number=(mapped_data.get("engine_number") or "").upper(),
+                        engine_number=engine_val.upper() if engine_val else None,
                         color=(mapped_data.get("color") or "").upper(),
                         model=(mapped_data.get("model_name") or "").upper()
                     )
@@ -163,6 +176,12 @@ class CapturedFormProcessor:
                  # Fallback if keys don't match exactly but we have parts
                  # Assuming sorted order is correct
                  result["buyer_cnic"] = "-".join([p[1] for p in cnic_parts if p[1]])
+
+        # DEBUG: Check engine number mapping
+        if "engine_number" in result:
+            logger.info(f"Mapped engine_number: {result['engine_number']}")
+        else:
+            logger.warning("engine_number missing in mapped data.")
 
         # Append City to Address
         if "city" in result and "buyer_address" in result:
