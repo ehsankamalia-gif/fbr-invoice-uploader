@@ -70,6 +70,22 @@ def create_price(price: PriceCreate, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.get("/invoices/check-chassis/{chassis_number}")
+def check_chassis_duplication(chassis_number: str, db: Session = Depends(get_db)):
+    """
+    Check if a chassis number has already been used in a posted invoice.
+    """
+    from app.services.invoice_service import InvoiceService
+    service = InvoiceService()
+    is_duplicate = service.is_chassis_used_in_posted_invoice(db, chassis_number)
+    
+    if is_duplicate:
+        return {
+            "exists": True, 
+            "message": f"Invoice with chassis number {chassis_number} has already been posted"
+        }
+    return {"exists": False, "message": "Chassis number is available"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -11,12 +11,16 @@ class CustomerType(str, enum.Enum):
 
 class Customer(Base):
     __tablename__ = "customers"
+    __table_args__ = (
+        Index('uq_business_cnic', 'business_name', 'cnic', unique=True),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
-    cnic = Column(String(20), unique=True, nullable=True) 
+    cnic = Column(String(20), nullable=True, unique=True, index=True) 
     name = Column(String(100), nullable=False)
     father_name = Column(String(100), nullable=True)
     business_name = Column(String(100), nullable=True)
+    normalized_business_name = Column(String(100), nullable=True, unique=True, index=True) # Enforce strict uniqueness
     ntn = Column(String(20), nullable=True)
     phone = Column(String(20), nullable=True)
     address = Column(String(255), nullable=True)

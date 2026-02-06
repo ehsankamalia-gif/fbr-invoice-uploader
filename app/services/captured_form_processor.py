@@ -2,6 +2,8 @@ import logging
 from typing import Dict, Any, Optional
 from datetime import datetime
 import uuid
+import re
+import time
 
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
@@ -57,64 +59,73 @@ class CapturedFormProcessor:
 
             logger.info("Validation passed. Attempting to save to database...")
 
-            # 4. Save to CapturedData Table
-            with SessionLocal() as db:
-                # Check uniqueness of chassis
-                chassis = mapped_data.get("chassis_number")
-                existing = db.query(CapturedData).filter(CapturedData.chassis_number == chassis).first()
-                
-                if existing:
-                    # Update existing record
-                    logger.info(f"Updating existing record for chassis {chassis}")
-                    existing.name = (mapped_data.get("buyer_name") or "").upper()
-                    existing.father = (mapped_data.get("buyer_father_name") or "").upper()
-                    existing.cnic = mapped_data.get("buyer_cnic")
-                    existing.cell = mapped_data.get("buyer_phone")
-                    existing.address = (mapped_data.get("buyer_address") or "").upper()
-                    
-                    # Handle engine number (optional)
-                    engine_val = mapped_data.get("engine_number")
-                    if engine_val:
-                        existing.engine_number = engine_val.upper()
-                    else:
-                        # If explicitly None or empty, allow it to be nullable/optional
-                        # But if key is missing from map, we might want to preserve existing?
-                        # Assuming map contains all current form data, if it's empty here, it's empty on form.
-                        existing.engine_number = None
+            # 4. Save to CapturedData Table with Retry Logic
+            max_retries = 3
+            
+            for attempt in range(max_retries):
+                try:
+                    with SessionLocal() as db:
+                        # Check uniqueness of chassis
+                        chassis = mapped_data.get("chassis_number")
+                        existing = db.query(CapturedData).filter(CapturedData.chassis_number == chassis).first()
+                        
+                        if existing:
+                            # Update existing record
+                            logger.info(f"Updating existing record for chassis {chassis}")
+                            existing.name = (mapped_data.get("buyer_name") or "").upper()
+                            existing.father = (mapped_data.get("buyer_father_name") or "").upper()
+                            existing.cnic = mapped_data.get("buyer_cnic")
+                            existing.cell = mapped_data.get("buyer_phone")
+                            existing.address = (mapped_data.get("buyer_address") or "").upper()
+                            
+                            # Handle engine number (optional)
+                            engine_val = mapped_data.get("engine_number")
+                            if engine_val:
+                                existing.engine_number = engine_val.upper()
+                            else:
+                                existing.engine_number = None
 
-                    existing.color = (mapped_data.get("color") or "").upper()
-                    existing.model = (mapped_data.get("model_name") or "").upper()
-                    existing.created_at = datetime.utcnow() # Update timestamp?
-                else:
-                    # Create new record
-                    logger.info(f"Creating new record for chassis {chassis}")
-                    
-                    engine_val = mapped_data.get("engine_number")
-                    
-                    new_record = CapturedData(
-                        name=(mapped_data.get("buyer_name") or "").upper(),
-                        father=(mapped_data.get("buyer_father_name") or "").upper(),
-                        cnic=mapped_data.get("buyer_cnic"),
-                        cell=mapped_data.get("buyer_phone"),
-                        address=(mapped_data.get("buyer_address") or "").upper(),
-                        chassis_number=(chassis or "").upper(),
-                        engine_number=engine_val.upper() if engine_val else None,
-                        color=(mapped_data.get("color") or "").upper(),
-                        model=(mapped_data.get("model_name") or "").upper()
-                    )
-                    db.add(new_record)
-                
-                db.commit()
-                return True
-
+                            existing.color = (mapped_data.get("color") or "").upper()
+                            existing.model = (mapped_data.get("model_name") or "").upper()
+                            existing.created_at = datetime.utcnow() # Update timestamp?
+                        else:
+                            # Create new record
+                            logger.info(f"Creating new record for chassis {chassis}")
+                            
+                            engine_val = mapped_data.get("engine_number")
+                            
+                            new_record = CapturedData(
+                                name=(mapped_data.get("buyer_name") or "").upper(),
+                                father=(mapped_data.get("buyer_father_name") or "").upper(),
+                                cnic=mapped_data.get("buyer_cnic"),
+                                cell=mapped_data.get("buyer_phone"),
+                                address=(mapped_data.get("buyer_address") or "").upper(),
+                                chassis_number=chassis,
+                                engine_number=engine_val.upper() if engine_val else None,
+                                color=(mapped_data.get("color") or "").upper(),
+                                model=(mapped_data.get("model_name") or "").upper(),
+                                created_at=datetime.utcnow()
+                            )
+                            db.add(new_record)
+                        
+                        db.commit()
+                        logger.info("Successfully saved to database.")
+                        return True
+                        
+                except Exception as e:
+                    logger.error(f"Database error (attempt {attempt+1}): {e}")
+                    time.sleep(1 * (attempt + 1))
+            
+            logger.error("Failed to save to database after retries.")
+            return False
+            
         except Exception as e:
-            logger.error(f"Error processing captured form submission: {e}")
+            logger.error(f"Error processing submission: {e}")
             return False
 
     def _map_data(self, flat_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Maps flat data to schema using field_mapping config"""
         result = {}
-        
-        # specific handling for CNIC parts if they exist in mapping
         cnic_parts = []
         
         # Merge diagnostic inputs if available as fallback
@@ -196,12 +207,68 @@ class CapturedFormProcessor:
         return result
 
     def _validate(self, data: Dict[str, Any]) -> bool:
-        # Minimal validation
-        # Only require chassis number now as that's the primary key/unique identifier
-        if not data.get("chassis_number"):
-            logger.warning("Missing chassis_number in captured data. Generating temporary ID to ensure data preservation.")
-            # Generate a temporary chassis number so we can save and debug the rest of the data
-            data["chassis_number"] = f"UNKNOWN-CHASSIS-{int(datetime.now().timestamp())}"
-            # return False # Old behavior: reject
+        """
+        Validates the captured data.
+        Ensures Engine Number, Color, and Model are present and valid.
+        """
+        
+        # 1. Check Required Fields
+        required_fields = {
+            "chassis_number": "Chassis Number"
+            # "engine_number": "Engine Number", # Optional
+            # "color": "Color", # Optional
+            # "model_name": "Model" # Optional
+        }
+        
+        missing = []
+        for key, label in required_fields.items():
+            val = data.get(key)
+            if not val or not str(val).strip():
+                missing.append(label)
+        
+        if missing:
+            logger.error(f"Validation Error: Missing fields {missing}")
+            return False
+
+        # 2. Format Validation
+        
+        # Engine Number: Alphanumeric, at least 3 chars (allowing for short numbers), optionally dashes/spaces
+        if data.get("engine_number"):
+            engine = str(data.get("engine_number", "")).strip()
+            # Relaxed validation: Just warn if it looks weird, but allow saving
+            if len(engine) > 50:
+                logger.warning(f"Validation Warning: Engine Number too long ({len(engine)} chars). Truncating.")
+                data["engine_number"] = engine[:50]
+            elif not re.match(r"^[A-Za-z0-9\-\s]{3,}$", engine):
+                logger.warning(f"Validation Warning: Unusual Engine Number format: '{engine}'. Proceeding anyway.")
             
+        # Color: Alphabetic characters only (mostly), allow spaces/dashes
+        if data.get("color"):
+            color = str(data.get("color", "")).strip()
+            
+            # SANITIZATION: Check for garbage capture (newlines, labels, too long)
+            if len(color) > 30 or "\n" in color or "purchase date" in color.lower():
+                logger.warning(f"Validation: Detected garbage in Color field: '{color[:20]}...'. Setting to None.")
+                data["color"] = None
+            else:
+                # Relaxed validation
+                if not re.match(r"^[A-Za-z\s\-/]{3,}$", color) or re.search(r"\d", color):
+                     logger.warning(f"Validation Warning: Unusual Color format: '{color}'. Proceeding anyway.")
+                
+                # Explicit reject list for known bad captures
+                if color.lower() in ["submit", "cancel", "save", "button"]:
+                    logger.warning(f"Validation Warning: Potential button text captured as Color: '{color}'. Ignoring.")
+                    data["color"] = None # Ignore this specific bad value
+
+        # Model: Alphanumeric + spaces/dashes
+        if data.get("model_name"):
+            model = str(data.get("model_name", "")).strip()
+            
+            # SANITIZATION: Check for garbage capture
+            if len(model) > 50 or "\n" in model or "purchase date" in model.lower():
+                logger.warning(f"Validation: Detected garbage in Model field: '{model[:20]}...'. Setting to None.")
+                data["model_name"] = None
+            elif len(model) < 2:
+                logger.warning(f"Validation Warning: Model name very short: '{model}'. Proceeding anyway.")
+
         return True

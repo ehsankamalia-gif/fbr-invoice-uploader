@@ -5,11 +5,30 @@ from app.db.models import Invoice, InvoiceItem, Motorcycle, Customer, CustomerTy
 from app.api.schemas import InvoiceCreate
 from app.api.fbr_client import fbr_client
 from app.core.logger import logger
+from app.services.captured_data_service import captured_data_service
 from datetime import datetime
 from typing import Optional
 import json
 
 class InvoiceService:
+    def is_chassis_used_in_posted_invoice(self, db: Session, chassis_number: str) -> bool:
+        """
+        Check if a chassis number has been used in any posted invoice.
+        Returns True if the chassis number is found in any existing invoice.
+        """
+        if not chassis_number:
+            return False
+            
+        chassis_number = chassis_number.upper()
+        
+        # Check for existence in InvoiceItems linked to this chassis
+        # We join with Invoice to ensure the invoice actually exists (though integrity constraints should ensure this)
+        count = db.query(InvoiceItem).join(Motorcycle).join(Invoice).filter(
+            Motorcycle.chassis_number == chassis_number
+        ).count()
+        
+        return count > 0
+
     def create_invoice(self, db: Session, invoice_in: InvoiceCreate):
         # 1. Calculate totals
         total_sale_value = 0.0
@@ -22,13 +41,9 @@ class InvoiceService:
         for item in invoice_in.items:
             # Check for Chassis Uniqueness across all fiscalized invoices
             if item.chassis_number:
-                # Check if this chassis has already been fiscalized (successfully uploaded)
-                # Note: InvoiceItem no longer has chassis_number directly, it links to Motorcycle
-                # But we can check via Motorcycle link or logic.
-                # Since we are creating new items, we check DB.
-                # Wait, InvoiceItem lost chassis_number column in my new model.
-                # So I must find the motorcycle first.
-                pass
+                # Validate if chassis is already used in a previous invoice
+                if self.is_chassis_used_in_posted_invoice(db, item.chassis_number):
+                    raise ValueError(f"Invoice with chassis number {item.chassis_number} has already been posted")
 
             # Trust input values from price table as per user request
             sale_value = item.sale_value
@@ -67,9 +82,16 @@ class InvoiceService:
                         product_model = db.query(ProductModel).filter(ProductModel.model_name == item.model_name).first()
                         if product_model:
                             # Use 0.0 for prices as per user request (Do not save price in inventory for auto-created bikes)
+                            # Handle empty engine number by making it unique to avoid IntegrityError
+                            engine_num = (item.engine_number or "").strip()
+                            if not engine_num or engine_num.upper() == "UNKNOWN":
+                                engine_num = f"UNKNOWN-{lookup_chassis}"
+                            else:
+                                engine_num = engine_num.upper()
+
                             new_bike = Motorcycle(
                                 chassis_number=lookup_chassis,
-                                engine_number=(item.engine_number or "UNKNOWN").upper(),
+                                engine_number=engine_num,
                                 product_model_id=product_model.id,
                                 year=datetime.now().year,
                                 color=item.color.upper(),
@@ -236,6 +258,16 @@ class InvoiceService:
                 invoice.fbr_response_code = str(response.get("Code")) if response.get("Code") else None
                 invoice.fbr_response_message = "Success"
                 invoice.fbr_full_response = response
+
+                # Auto-delete captured data if chassis exists (Cleanup after successful FBR upload)
+                try:
+                    for item in invoice.items:
+                        # Access motorcycle via relationship to get chassis number
+                        if item.motorcycle and item.motorcycle.chassis_number:
+                            captured_data_service.delete_by_chassis(db, item.motorcycle.chassis_number)
+                except Exception as cleanup_err:
+                     logger.error(f"Error cleaning up captured data for invoice {invoice.invoice_number}: {cleanup_err}")
+
             else:
                 # API returned but with error (e.g. Logic Error)
                 # Keep as FAILED so user checks it.

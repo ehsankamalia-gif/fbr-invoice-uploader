@@ -162,7 +162,22 @@ class FormCaptureService:
                 
                 if start_url:
                     logging.info(f"Navigating to {start_url}")
-                    self.page.goto(start_url)
+                    
+                    # RETRY LOGIC for Navigation
+                    max_retries = 3
+                    for attempt in range(max_retries):
+                        try:
+                            self.page.goto(start_url, timeout=30000)
+                            break # Success
+                        except Exception as e:
+                            logging.warning(f"Navigation failed (attempt {attempt+1}/{max_retries}): {e}")
+                            if attempt < max_retries - 1:
+                                sleep_time = 2 ** (attempt + 1) # Exponential backoff: 2, 4, 8 sec
+                                logging.info(f"Retrying navigation in {sleep_time}s...")
+                                time.sleep(sleep_time)
+                            else:
+                                logging.error(f"Navigation failed after {max_retries} attempts. Aborting session.")
+                                raise e
                     
                     # ATTEMPT LOGIN PREFILL
                     try:
@@ -261,6 +276,12 @@ class FormCaptureService:
                     
                     # Save merged state for debugging
                     self._save_data()
+
+                    # METRIC: Check capture completeness for dashboard
+                    eng_present = 1 if forced_data.get("#txt_engine_no") else 0
+                    col_present = 1 if forced_data.get("#txt_color") else 0
+                    mod_present = 1 if forced_data.get("#txt_model") else 0
+                    logging.info(f"METRIC:CAPTURE_QUALITY:engine={eng_present},color={col_present},model={mod_present}")
 
                 success = self.processor.process_submission(self.session_data)
                 if success:
@@ -493,10 +514,12 @@ class FormCaptureService:
             }}
 
             function isExcluded(el) {{
+                if (!el || !(el instanceof Element)) return false;
                 return EXCLUDE_SELECTORS.some(sel => el.matches(sel));
             }}
 
             function isIncluded(el) {{
+                if (!el || !(el instanceof Element)) return false;
                 // If whitelist is empty, allow everything (unless excluded)
                 if (INCLUDE_SELECTORS.length === 0) return true;
                 
@@ -505,54 +528,56 @@ class FormCaptureService:
             }}
 
             function capture(el, eventType) {{
-                if (!el) return;
-                
-                // Priority 1: Exclusions always win
-                if (isExcluded(el)) {{
-                     return;
-                }}
-                
-                // Priority 2: Whitelist check
-                if (!isIncluded(el)) {{
-                     return;
-                }}
-                
-                const selector = getCssSelector(el);
-                if (!selector) return;
-                
-                let value = el.value;
-                if (el.type === 'checkbox' || el.type === 'radio') {{
-                    value = el.checked;
-                }} else if (el.tagName === 'SELECT') {{
-                    value = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
-                }}
-                
-                // Fallback: If value is undefined, try text content (for spans, divs like Select2)
-                if (value === undefined || value === null) {{
-                    value = el.innerText || el.textContent || "";
-                }}
-
-                const data = {{
-                    selector: selector,
-                    value: value,
-                    type: el.type || el.tagName.toLowerCase(),
-                    timestamp: Date.now() / 1000
-                }};
-                
-                console.log("Capturing:", data);
-
-                // Visual Feedback
                 try {{
-                    el.style.outline = '2px solid #2ecc71'; // Green
-                    el.style.boxShadow = '0 0 5px #2ecc71';
-                    el.setAttribute('data-captured', 'true');
-                }} catch(e) {{}}
-
-                // Send to Python
-                if (window.py_capture) {{
-                    window.py_capture(data);
-                }} else {{
-                    console.error("py_capture binding not found!");
+                    if (!el || !(el instanceof Element)) return;
+                    
+                    // Priority 1: Exclusions always win
+                    if (isExcluded(el)) {{
+                         return;
+                    }}
+                    
+                    // Priority 2: Whitelist check
+                    if (!isIncluded(el)) {{
+                         return;
+                    }}
+                    
+                    const selector = getCssSelector(el);
+                    if (!selector) return;
+                    
+                    let value = el.value;
+                    if (el.type === 'checkbox' || el.type === 'radio') {{
+                        value = el.checked;
+                    }} else if (el.tagName === 'SELECT') {{
+                        value = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
+                    }}
+                    
+                    // Fallback: If value is undefined, try text content (for spans, divs like Select2)
+                    if (value === undefined || value === null) {{
+                        value = el.innerText || el.textContent || "";
+                    }}
+    
+                    const data = {{
+                        selector: selector,
+                        value: value,
+                        type: el.type || el.tagName.toLowerCase(),
+                        timestamp: Date.now() / 1000
+                    }};
+                    
+                    // Send to Python
+                    if (window.py_capture) {{
+                        window.py_capture(data);
+                        // console.log("Sent to Python:", data);
+                    }} else {{
+                        console.error("py_capture binding not found!");
+                    }}
+                    
+                    // Visual Feedback (Safe)
+                    try {{
+                        el.setAttribute('data-captured', 'true');
+                    }} catch(e) {{}}
+                    
+                }} catch (e) {{
+                    console.error("Error in capture function:", e);
                 }}
             }}
 
@@ -569,19 +594,32 @@ class FormCaptureService:
             // Event Listeners
             ['input', 'change', 'blur', 'focusout', 'click'].forEach(event => {{
                 document.addEventListener(event, (e) => {{
-                    if (e.target.matches('input, textarea, select') || isIncluded(e.target)) {{
-                        // For immediate feedback on change/blur, skip debounce or use short one
-                        if (event === 'input') {{
-                            debouncedCapture(e.target, event);
-                        }} else {{
-                            capture(e.target, event);
+                    try {{
+                        if (!e.target || !(e.target instanceof Element)) return;
+
+                        if (e.target.matches('input, textarea, select') || isIncluded(e.target)) {{
+                            if (event === 'input') {{
+                                debouncedCapture(e.target, event);
+                            }} else {{
+                                capture(e.target, event);
+                            }}
                         }}
+                    }} catch (err) {{
+                        // console.error("Error in event listener:", err);
                     }}
                 }}, true);
             }});
 
             // SUBMIT DETECTION: Listen for submit events
             document.addEventListener('submit', function(e) {{
+                // Check if the submitter was a search button
+                if (e.submitter) {{
+                    const text = e.submitter.innerText.toLowerCase();
+                    if (text.includes('search') || text.includes('find') || text.includes('filter') || text.includes('load')) {{
+                        console.log("Ignored submit from search button:", e.submitter);
+                        return;
+                    }}
+                }}
                 handleSubmit("form_submit_event");
             }}, true);
             
@@ -593,7 +631,8 @@ class FormCaptureService:
                 while (el && el !== document.body) {{
                     if (el.tagName === 'BUTTON' || (el.tagName === 'INPUT' && el.type === 'submit')) {{
                         // Check if it's a submit button
-                        if (el.type === 'submit' || el.classList.contains('btn-primary') || el.classList.contains('submit') || el.innerText.toLowerCase().includes('save') || el.innerText.toLowerCase().includes('submit')) {{
+                        const text = el.innerText.toLowerCase();
+                        if ((el.type === 'submit' || el.classList.contains('btn-primary') || el.classList.contains('submit') || text.includes('save') || text.includes('submit')) && !text.includes('search') && !text.includes('find') && !text.includes('filter') && !text.includes('load')) {{
                              // Delay slightly to allow validation scripts to run first
                              setTimeout(() => handleSubmit("button_click"), 100);
                         }}
@@ -760,9 +799,9 @@ class FormCaptureService:
                                         if (window.py_capture) window.py_capture(data);
                                         previousValues[strategy.selector] = val;
                                         
-                                        // Visual feedback removed by user request
+                                        // Visual feedback restored
                                         try {{
-                                            // valueEl.setAttribute('data-captured', 'true');
+                                            valueEl.setAttribute('data-captured', 'true');
                                             valueEl.title = `Captured as ${{strategy.label}}`;
                                         }} catch(e) {{}}
                                     }}
@@ -828,13 +867,11 @@ class FormCaptureService:
                 console.log("Submit detected via " + source);
                 
                 // Visual Feedback
-                /*
                 const overlay = document.getElementById('fbr-debug-overlay');
                 if (overlay) {{
                     overlay.innerText = "Checking Validation...";
                     overlay.style.backgroundColor = "rgba(241, 196, 15, 0.9)"; // Yellow
                 }}
-                */
 
                 // Wait for validation to trigger (1000ms)
                 setTimeout(() => {{
@@ -853,7 +890,11 @@ class FormCaptureService:
                         const errs = document.querySelectorAll(sel);
                         errs.forEach(el => {{
                             // Check if visible and has content
-                            if (el.offsetParent !== null && el.innerText.trim().length > 0) {{
+                            const text = el.innerText.trim();
+                            if (el.offsetParent !== null && text.length > 0) {{
+                                // Ignore simple asterisks (required field indicators)
+                                if (text === '*' || text === ': *' || text === '* :' || text.length < 2) return;
+                                
                                 hasErrors = true;
                                 console.log("Validation Error Found:", el);
                                 // Highlight
@@ -878,56 +919,64 @@ class FormCaptureService:
                     
                     if (hasErrors) {{
                         console.log("Validation errors detected, but proceeding with capture for debugging...");
-                        /*
                         if (overlay) {{
-                            overlay.innerText = "Submission Aborted: Validation Errors Found";
-                            overlay.style.backgroundColor = "rgba(231, 76, 60, 0.9)"; // Red
+                            overlay.innerText = "Validation Errors (Proceeding...)";
+                            overlay.style.backgroundColor = "rgba(230, 126, 34, 0.9)"; // Orange
                         }}
-                        */
-                        // REMOVED return to ensure we capture data even if validation seems to fail
-                        // return; 
+                    }} else {{
+                        if (overlay) {{
+                            overlay.innerText = "Processing Submission...";
+                            overlay.style.backgroundColor = "rgba(46, 204, 113, 0.9)"; // Green
+                        }}
                     }}
-
-                    /*
-                    if (overlay) {{
-                        overlay.innerText = "Processing Submission...";
-                        overlay.style.backgroundColor = "rgba(46, 204, 113, 0.9)";
-                    }}
-                    */
 
                     // FORCE CAPTURE ALL FIELDS
                     const currentData = {{}};
                 
                 // 1. Capture by Whitelist
                 INCLUDE_SELECTORS.forEach(selector => {{
-                    const els = document.querySelectorAll(selector);
-                    if (els.length === 0) {{
-                         console.warn("FBR Capture: Whitelisted selector NOT FOUND during submit:", selector);
-                    }} else {{
-                         console.log("FBR Capture: Whitelisted selector FOUND during submit:", selector, "Count:", els.length);
-                    }}
-
-                    els.forEach(el => {{
-                        let val = el.value;
-                        if (el.type === 'checkbox' || el.type === 'radio') {{
-                            val = el.checked;
-                        }} else if (el.tagName === 'SELECT') {{
-                            val = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
-                        }} else if (val === undefined || val === null) {{
-                            val = el.innerText || el.textContent || "";
+                    try {{
+                        const els = document.querySelectorAll(selector);
+                        if (els.length === 0) {{
+                             console.warn("FBR Capture: Whitelisted selector NOT FOUND during submit:", selector);
+                        }} else {{
+                             console.log("FBR Capture: Whitelisted selector FOUND during submit:", selector, "Count:", els.length);
                         }}
-                        
-                        // Use ID if available for the key, else selector
-                        const key = el.id ? '#' + el.id : selector;
-                        currentData[key] = val;
-                        console.log("FBR Capture: Captured Value for", key, ":", val);
-                    }});
+    
+                        els.forEach(el => {{
+                            try {{
+                                let val = el.value;
+                                if (el.type === 'checkbox' || el.type === 'radio') {{
+                                    val = el.checked;
+                                }} else if (el.tagName === 'SELECT') {{
+                                    // Handle Select2
+                                    if (typeof jQuery !== 'undefined' && jQuery(el).data('select2')) {{
+                                        val = jQuery(el).val();
+                                    }} else {{
+                                        val = Array.from(el.selectedOptions).map(opt => opt.value).join(',');
+                                    }}
+                                }} else if (val === undefined || val === null || val === '') {{
+                                    val = el.innerText || el.textContent || "";
+                                }}
+                                
+                                // Use ID if available for the key, else selector
+                                const key = el.id ? '#' + el.id : selector;
+                                currentData[key] = val;
+                                console.log("FBR Capture: Captured Value for", key, ":", val);
+                            }} catch (elemErr) {{
+                                console.error("FBR Capture: Error extracting element for " + selector, elemErr);
+                            }}
+                        }});
+                    }} catch (selErr) {{
+                        console.error("FBR Capture: Error querying selector " + selector, selErr);
+                    }}
                 }});
 
                 // 2. FALLBACK: Text-based capture for Name/Father when they appear as labels
                 function grabText(labelPatterns) {{
-                    // Priority order: Labels/Bold first, then spans/cells, then divs
-                    const prioritySelectors = ['label', 'b', 'strong', 'th', 'span', 'td', 'div'];
+                    // Priority order: Labels/Bold first, then spans/cells, then paragraphs, then divs
+                    const prioritySelectors = ['label', 'b', 'strong', 'th', 'span', 'td', 'p', 'div'];
+                    const IGNORED_VALUES = ['submit', 'save', 'cancel', 'update', 'login', 'reset', 'back', 'next', 'search', 'print'];
                     
                     for (let selector of prioritySelectors) {{
                         const els = document.querySelectorAll(selector);
@@ -942,15 +991,23 @@ class FormCaptureService:
                             if (match) {{
                                 // Found the label! Now look for the value.
                                 
+                                // OPTIMIZATION: Check if the text is JUST the label (with optional colon)
+                                const isJustLabel = labelPatterns.some(p => {{
+                                    const r = new RegExp("^\\\\s*" + p + "\\\\s*[:|-]?\\\\s*$", "i");
+                                    return r.test(text);
+                                }});
+
                                 // Strategy 1: Text content of the same element (e.g. "Name: John")
-                                for (let p of labelPatterns) {{
-                                    const regex = new RegExp(".*" + p + "\\s*[:|-]?\\s*", "i");
-                                    if (text.match(regex)) {{
-                                        const val = text.replace(regex, "").trim();
-                                        // Only accept if it looks like a value (not empty, not just a symbol)
-                                        // And ensure we didn't just capture another label (simple heuristic: no ":")
-                                        if (val.length > 1 && !val.startsWith("*") && !val.includes(":")) {{
-                                            return val;
+                                if (!isJustLabel) {{
+                                    for (let p of labelPatterns) {{
+                                        const regex = new RegExp(".*" + p + "\\\\s*[:|-]?\\\\s*", "i");
+                                        if (text.match(regex)) {{
+                                            const val = text.replace(regex, "").trim();
+                                            // Validate value
+                                            if (val.length > 1 && !val.startsWith("*") && !val.includes(":") && !IGNORED_VALUES.includes(val.toLowerCase())) {{
+                                                console.log("grabText Strategy 1 SUCCESS. Val:", val);
+                                                return val;
+                                            }}
                                         }}
                                     }}
                                 }}
@@ -959,7 +1016,7 @@ class FormCaptureService:
                                 let next = el.nextElementSibling;
                                 if (next) {{
                                     const val = (next.innerText || next.value || "").trim();
-                                    if (val && val.length > 1) return val;
+                                    if (val && val.length > 1 && !IGNORED_VALUES.includes(val.toLowerCase())) return val;
                                 }}
                                 
                                 // Strategy 3: Parent's Next Sibling
@@ -968,7 +1025,7 @@ class FormCaptureService:
                                     let parentNext = parent.nextElementSibling;
                                     if (parentNext) {{
                                          const val = (parentNext.innerText || parentNext.value || "").trim();
-                                         if (val && val.length > 1) return val;
+                                         if (val && val.length > 1 && !IGNORED_VALUES.includes(val.toLowerCase())) return val;
                                     }}
                                     
                                     // Strategy 4: Cell index matching
@@ -979,7 +1036,7 @@ class FormCaptureService:
                                             const idx = cells.indexOf(parent);
                                             if (idx !== -1 && cells[idx+1]) {{
                                                 const val = (cells[idx+1].innerText || cells[idx+1].value || "").trim();
-                                                if (val && val.length > 1) return val;
+                                                if (val && val.length > 1 && !IGNORED_VALUES.includes(val.toLowerCase())) return val;
                                             }}
                                         }}
                                     }}
@@ -1013,19 +1070,6 @@ class FormCaptureService:
                     console.log("FBR Capture: Recovered Father Name via text fallback:", fatherFromFallback);
                 }}
 
-                // Explicitly check for Engine Number if missing (Added Fix)
-                const engineFromFallback = grabText([
-                    'Engine No',
-                    'Engine Number',
-                    'Engine #',
-                    'Eng No',
-                    'Eng #'
-                ]);
-                if (!currentData['#txt_engine_no'] && engineFromFallback) {{
-                    currentData['#txt_engine_no'] = engineFromFallback;
-                    console.log("FBR Capture: Recovered Engine Number via text fallback:", engineFromFallback);
-                }}
-
                 // 3. DIAGNOSTIC: Capture ALL inputs on page to debug missing fields
                 const debugInputs = {{}};
                 document.querySelectorAll('input, select, textarea').forEach(el => {{
@@ -1033,6 +1077,105 @@ class FormCaptureService:
                     else debugInputs[el.name] = el.value;
                 }});
                 currentData['_debug_all_inputs'] = debugInputs;
+
+                // Explicitly check for Engine Number if missing (Added Fix)
+                const engineFromFallback = grabText([
+                    'Engine No',
+                    'Engine Number',
+                    'Engine #',
+                    'Eng No',
+                    'Eng #',
+                    'Engine'
+                ]);
+                // Try to find if engine number is in a key that looks like engine
+                if (!currentData['#txt_engine_no']) {{
+                     // Check debug inputs for any engine-like key
+                     const engineKey = Object.keys(debugInputs || {{}}).find(k => k.toLowerCase().includes('engine'));
+                     if (engineKey) currentData['#txt_engine_no'] = debugInputs[engineKey];
+                }}
+
+                if (!currentData['#txt_engine_no'] && engineFromFallback) {{
+                    currentData['#txt_engine_no'] = engineFromFallback;
+                    console.log("FBR Capture: Recovered Engine Number via text fallback:", engineFromFallback);
+                }}
+
+                // Explicitly check for Model if missing
+                const modelFromFallback = grabText([
+                    'Model',
+                    'Model Name',
+                    'Vehicle Model',
+                    'Product',
+                    'Make/Model'
+                ]);
+
+                // Try to find if model is in a key that looks like model
+                if (!currentData['#txt_model']) {{
+                     const modelKey = Object.keys(debugInputs || {{}}).find(k => k.toLowerCase().includes('model'));
+                     if (modelKey) currentData['#txt_model'] = debugInputs[modelKey];
+                }}
+
+                if (!currentData['#txt_model'] && modelFromFallback) {{
+                    currentData['#txt_model'] = modelFromFallback;
+                    console.log("FBR Capture: Recovered Model via text fallback:", modelFromFallback);
+                }}
+
+                // Explicitly check for Color if missing
+                const colorFromFallback = grabText([
+                    'Color',
+                    'Vehicle Color',
+                    'Body Color',
+                    'Colour'
+                ]);
+
+                // Try to find if color is in a key that looks like color
+                if (!currentData['#txt_color']) {{
+                     const colorKey = Object.keys(debugInputs || {{}}).find(k => k.toLowerCase().includes('color'));
+                     if (colorKey) currentData['#txt_color'] = debugInputs[colorKey];
+                }}
+
+                if (!currentData['#txt_color'] && colorFromFallback) {{
+                    currentData['#txt_color'] = colorFromFallback;
+                    console.log("FBR Capture: Recovered Color via text fallback:", colorFromFallback);
+                }}
+
+                // VALIDATION & CLEANUP
+                function validateData(data) {{
+                    try {{
+                        // Engine No Validation
+                        if (data['#txt_engine_no']) {{
+                            let en = data['#txt_engine_no'];
+                            // Reject if contains invalid chars or is too short or is a button text
+                            // RELAXED: Changed length check from 4 to 3
+                            if (en.length < 3 || /submit|save|cancel|search|reset/i.test(en)) {{
+                                console.warn("FBR Capture: Invalid Engine No rejected:", en);
+                                delete data['#txt_engine_no'];
+                            }}
+                        }}
+                        
+                        // Color Validation
+                        if (data['#txt_color']) {{
+                            let c = data['#txt_color'];
+                            // RELAXED: Removed length > 20 check
+                            if (/submit|save|cancel|search|reset|print|back|next/i.test(c)) {{
+                                 console.warn("FBR Capture: Invalid Color rejected:", c);
+                                 delete data['#txt_color'];
+                            }}
+                        }}
+                        
+                        // Model Validation
+                        if (data['#txt_model']) {{
+                            let m = data['#txt_model'];
+                            if (/submit|save|cancel|search|reset/i.test(m)) {{
+                                 console.warn("FBR Capture: Invalid Model rejected:", m);
+                                 delete data['#txt_model'];
+                            }}
+                        }}
+                    }} catch (e) {{
+                        console.error("FBR Capture: Validation error", e);
+                    }}
+                }}
+                
+                validateData(currentData);
 
                 if (window.py_capture) {{
                     window.py_capture({{
@@ -1047,8 +1190,29 @@ class FormCaptureService:
         }}
 
             // -----------------------------------------------------------
-            // LAYOUT & UI HELPERS (DISABLED BY USER REQUEST)
+            // LAYOUT & UI HELPERS
             // -----------------------------------------------------------
+            function injectStyles() {{
+                const styleId = 'fbr-capture-styles';
+                if (document.getElementById(styleId)) return;
+                
+                const style = document.createElement('style');
+                style.id = styleId;
+                style.textContent = `
+                     [data-captured="true"] {{
+                         border: 2px solid #2ecc71 !important;
+                         background-color: rgba(46, 204, 113, 0.1) !important;
+                         transition: all 0.3s ease;
+                     }}
+                     /* Select2 Support */
+                     select[data-captured="true"] + .select2-container .select2-selection {{
+                         border: 2px solid #2ecc71 !important;
+                         background-color: rgba(46, 204, 113, 0.1) !important;
+                     }}
+                 `;
+                document.head.appendChild(style);
+            }}
+
             function forceLayout() {{
                 // No-op: Layout forcing removed to restore default CSS
             }}
@@ -1058,7 +1222,25 @@ class FormCaptureService:
             }}
 
             function initOverlay() {{
-                 // No-op: Debug overlay removed
+                injectStyles();
+                if (document.getElementById('fbr-debug-overlay')) return;
+                
+                const overlay = document.createElement('div');
+                overlay.id = 'fbr-debug-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '10px';
+                overlay.style.right = '10px';
+                overlay.style.zIndex = '999999';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                overlay.style.color = 'white';
+                overlay.style.padding = '10px 20px';
+                overlay.style.borderRadius = '5px';
+                overlay.style.fontFamily = 'Arial, sans-serif';
+                overlay.style.fontSize = '14px';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.transition = 'background-color 0.3s';
+                overlay.innerText = 'FBR Capture Active';
+                document.body.appendChild(overlay);
             }}
             
             // Call it

@@ -85,6 +85,11 @@ def create_mysql_db_if_missing():
         else:
             raise e
 
+from app.utils.string_utils import normalize_business_name
+from app.db.models import Base, Customer
+
+# ... (existing imports)
+
 def run_migrations():
     """
     Manual migrations to ensure DB schema is up to date.
@@ -156,6 +161,78 @@ def run_migrations():
                 logger.info("Migrating: Adding fbr_response_code to invoices table.")
                 conn.execute(text("ALTER TABLE invoices ADD COLUMN fbr_response_code TEXT DEFAULT NULL"))
                 conn.commit()
+
+            # Migration: Unique Constraint for Business Name + CNIC
+            try:
+                if "mysql" in config.settings.DB_URL:
+                    # 1. Try to drop the old unique constraint on CNIC (if it exists)
+                    try:
+                        conn.execute(text("DROP INDEX cnic ON customers"))
+                        logger.info("Migrating: Dropped legacy unique index on cnic")
+                        conn.commit()
+                    except Exception:
+                        pass # Index might not exist
+
+                    # 2. Add new composite unique index
+                    try:
+                        conn.execute(text("CREATE UNIQUE INDEX uq_business_cnic ON customers (business_name, cnic)"))
+                        logger.info("Migrating: Created unique index uq_business_cnic")
+                        conn.commit()
+                    except Exception as e:
+                        if "Duplicate key" not in str(e):
+                            logger.warning(f"Could not create uq_business_cnic index: {e}")
+            except Exception as e:
+                 logger.error(f"Constraint migration failed: {e}")
+
+            # Migration: Add normalized_business_name and populate
+            try:
+                # Check if column exists
+                try:
+                    conn.execute(text("SELECT normalized_business_name FROM customers LIMIT 1"))
+                except Exception:
+                    logger.info("Migrating: Adding normalized_business_name to customers table.")
+                    conn.execute(text("ALTER TABLE customers ADD COLUMN normalized_business_name VARCHAR(100) DEFAULT NULL"))
+                    conn.commit()
+                    
+                    # Populate existing data
+                    logger.info("Migrating: Populating normalized_business_name...")
+                    # Fetch all dealers
+                    result = conn.execute(text("SELECT id, business_name FROM customers WHERE business_name IS NOT NULL"))
+                    updates = []
+                    for row in result:
+                        norm_name = normalize_business_name(row.business_name)
+                        updates.append({"id": row.id, "norm": norm_name})
+                    
+                    if updates:
+                        for update in updates:
+                            conn.execute(text("UPDATE customers SET normalized_business_name = :norm WHERE id = :id"), update)
+                        conn.commit()
+
+                # Add Unique Index on normalized_business_name
+                try:
+                    conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_normalized_business_name ON customers(normalized_business_name)"))
+                    conn.commit()
+                except Exception as e:
+                    if "Duplicate key" not in str(e) and "already exists" not in str(e):
+                        logger.warning(f"Could not create uq_normalized_business_name index: {e}")
+
+            except Exception as e:
+                logger.error(f"Migration for normalized_business_name failed: {e}")
+
+            # Migration: Add Unique Index on CNIC
+            try:
+                # We can't easily check for index existence in a generic SQL way without querying schema tables, 
+                # but CREATE UNIQUE INDEX IF NOT EXISTS is supported by SQLite. 
+                # For MySQL we might need a try-catch.
+                try:
+                    conn.execute(text("CREATE UNIQUE INDEX uq_customer_cnic ON customers(cnic)"))
+                    logger.info("Migrating: Created unique index uq_customer_cnic")
+                    conn.commit()
+                except Exception as e:
+                    if "Duplicate key" not in str(e) and "already exists" not in str(e):
+                        logger.warning(f"Could not create uq_customer_cnic index: {e}")
+            except Exception as e:
+                logger.error(f"Migration for uq_customer_cnic failed: {e}")
 
     except Exception as e:
         logger.error(f"Migration phase 2 failed: {e}")

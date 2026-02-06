@@ -7,8 +7,19 @@ class CustomerService:
     def __init__(self):
         self.db: Session = SessionLocal()
 
+    def check_duplicate_cnic(self, cnic: str, exclude_id: int = None) -> bool:
+        if not cnic:
+            return False
+        query = self.db.query(Customer).filter(Customer.cnic == cnic)
+        if exclude_id:
+            query = query.filter(Customer.id != exclude_id)
+        return query.first() is not None
+
     def create_customer(self, cnic: str, name: str, father_name: str, phone: str, address: str, ntn: str = None, business_name: str = None, customer_type: str = CustomerType.INDIVIDUAL) -> Customer:
         """Create a new customer."""
+        if self.check_duplicate_cnic(cnic):
+            raise ValueError(f"CNIC '{cnic}' already exists.")
+
         try:
             customer = Customer(
                 cnic=cnic,
@@ -26,6 +37,9 @@ class CustomerService:
             return customer
         except Exception as e:
             self.db.rollback()
+            if "UNIQUE constraint failed" in str(e) or "Duplicate entry" in str(e):
+                if "cnic" in str(e).lower():
+                    raise ValueError(f"CNIC '{cnic}' already exists.")
             raise e
 
     def get_customer_by_cnic(self, cnic: str) -> Optional[Customer]:
@@ -52,6 +66,9 @@ class CustomerService:
 
     def update_customer(self, customer_id: int, cnic: str, name: str, father_name: str, phone: str, address: str, ntn: str = None, business_name: str = None, customer_type: str = CustomerType.INDIVIDUAL) -> Optional[Customer]:
         """Update an existing customer."""
+        if self.check_duplicate_cnic(cnic, exclude_id=customer_id):
+            raise ValueError(f"CNIC '{cnic}' already exists.")
+
         customer = self.get_customer_by_id(customer_id)
         if customer:
             try:
@@ -68,6 +85,9 @@ class CustomerService:
                 return customer
             except Exception as e:
                 self.db.rollback()
+                if "UNIQUE constraint failed" in str(e) or "Duplicate entry" in str(e):
+                    if "cnic" in str(e).lower():
+                        raise ValueError(f"CNIC '{cnic}' already exists.")
                 raise e
         return None
 

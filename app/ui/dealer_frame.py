@@ -32,6 +32,11 @@ class DealerFrame(ctk.CTkFrame):
         ctk.CTkLabel(self.form_frame, text="CNIC *").grid(row=1, column=0, padx=10, pady=5, sticky="e")
         self.cnic_var = ctk.StringVar()
         self.cnic_var.trace_add("write", self.validate_cnic)
+        
+        # Real-time CNIC validation
+        self.cnic_var.trace_add("write", self.on_cnic_change)
+        self._cnic_check_job = None
+        
         self.cnic_entry = ctk.CTkEntry(self.form_frame, textvariable=self.cnic_var, placeholder_text="33302-1234567-1")
         self.cnic_entry.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
 
@@ -60,6 +65,10 @@ class DealerFrame(ctk.CTkFrame):
         ctk.CTkLabel(self.form_frame, text="Phone *").grid(row=5, column=0, padx=10, pady=5, sticky="e")
         self.phone_var = ctk.StringVar()
         self.phone_var.trace_add("write", self.validate_phone)
+        
+        # Real-time business name validation (debounced)
+        self.business_name_var.trace_add("write", self.on_business_name_change)
+        self._biz_check_job = None
         self.phone_entry = ctk.CTkEntry(self.form_frame, textvariable=self.phone_var, placeholder_text="03007288190")
         self.phone_entry.grid(row=5, column=1, padx=10, pady=5, sticky="ew")
 
@@ -159,6 +168,50 @@ class DealerFrame(ctk.CTkFrame):
         if val != val.upper():
             var.set(val.upper())
 
+    def on_business_name_change(self, *args):
+        if self._biz_check_job:
+            self.after_cancel(self._biz_check_job)
+        self._biz_check_job = self.after(500, self.check_business_name_uniqueness)
+
+    def check_business_name_uniqueness(self):
+        name = self.business_name_var.get().strip()
+        if not name:
+            self.business_name_entry.configure(border_color=["#979DA2", "#565B5E"]) # Default
+            return
+            
+        # Check duplicate via service
+        try:
+            # check_duplicate_dealer returns error message if duplicate, None otherwise
+            error_msg = dealer_service.check_duplicate_dealer(name, "", exclude_id=self.selected_dealer_id)
+            if error_msg and "Business Name" in error_msg:
+                self.business_name_entry.configure(border_color="red")
+            else:
+                self.business_name_entry.configure(border_color="green")
+        except Exception:
+            pass
+
+    def on_cnic_change(self, *args):
+        if self._cnic_check_job:
+            self.after_cancel(self._cnic_check_job)
+        self._cnic_check_job = self.after(500, self.check_cnic_uniqueness)
+
+    def check_cnic_uniqueness(self):
+        cnic = self.cnic_var.get().strip()
+        # Only check if full CNIC is entered (15 chars with dashes)
+        if len(cnic) < 15:
+             self.cnic_entry.configure(border_color=["#979DA2", "#565B5E"])
+             return
+
+        try:
+             # Check duplicate via service
+             error_msg = dealer_service.check_duplicate_dealer("", cnic, exclude_id=self.selected_dealer_id)
+             if error_msg and "CNIC" in error_msg:
+                 self.cnic_entry.configure(border_color="red")
+             else:
+                 self.cnic_entry.configure(border_color="green")
+        except Exception:
+             pass
+
     def validate_cnic(self, *args):
         value = self.cnic_var.get()
         
@@ -254,6 +307,8 @@ class DealerFrame(ctk.CTkFrame):
             
             self.clear_form()
             self.load_dealers()
+        except ValueError as ve:
+             messagebox.showwarning("Validation Error", str(ve))
         except Exception as e:
             messagebox.showerror("Error", f"Could not save dealer: {str(e)}")
 

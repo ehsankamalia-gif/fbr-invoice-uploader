@@ -29,6 +29,7 @@ from app.services.update_service import UpdateService
 from app.services.sync_service import sync_service
 from app.ui.captured_data_frame import CapturedDataFrame
 from app.ui.welcome_frame import WelcomeFrame
+from app.ui.autocomplete_entry import AutocompleteEntry
 from app.excise.ui.excise_frame import ExciseFrame
 
 from app.utils.price_data import price_manager
@@ -679,7 +680,14 @@ class App(ctk.CTk):
 
     def show_field_error(self, widget, message):
         """Highlights a field with error and shows a tooltip."""
-        widget.configure(border_color="red")
+        try:
+            widget.configure(border_color="red")
+        except ValueError:
+            # Fallback for widgets that don't support border_color (like OptionMenu sometimes)
+            try:
+                 widget.configure(fg_color="#C0392B") # Dark Red
+            except:
+                pass
         
         # Remove existing tooltip if any
         if hasattr(widget, "_error_tooltip"):
@@ -696,7 +704,15 @@ class App(ctk.CTk):
     def clear_field_error(self, widget):
         """Clears error highlight and tooltip."""
         # Reset to default border color (approximate for System theme)
-        widget.configure(border_color=["#979DA2", "#565B5E"])
+        try:
+            widget.configure(border_color=["#979DA2", "#565B5E"])
+        except ValueError:
+             try:
+                 # Restore OptionMenu default color (approximate)
+                 if isinstance(widget, ctk.CTkOptionMenu):
+                     widget.configure(fg_color=["#3B8ED0", "#1F6AA5"]) # Standard Blue theme
+             except:
+                 pass
         
         if hasattr(widget, "_error_tooltip"):
             widget._error_tooltip.hidetip()
@@ -712,7 +728,11 @@ class App(ctk.CTk):
         self.label_invoice = ctk.CTkLabel(self.invoice_frame, text="New Invoice", font=ctk.CTkFont(size=24, weight="bold"))
         self.label_invoice.grid(row=0, column=0, padx=20, pady=20, sticky="w")
         
-        self.form_frame = ctk.CTkScrollableFrame(self.invoice_frame, label_text="Invoice Details")
+        self.form_frame = ctk.CTkScrollableFrame(
+            self.invoice_frame, 
+            label_text="Invoice Details",
+            label_font=ctk.CTkFont(size=18, weight="bold")
+        )
         self.form_frame.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
         self.form_frame.grid_columnconfigure(1, weight=1)
 
@@ -776,7 +796,12 @@ class App(ctk.CTk):
         ctk.CTkLabel(self.form_frame, text="Buyer Name").grid(row=3, column=0, padx=10, pady=5, sticky="e")
         self.buyer_name_var = ctk.StringVar()
         self.buyer_name_var.trace_add("write", self.validate_buyer_name)
-        self.buyer_name_entry = ctk.CTkEntry(self.form_frame, textvariable=self.buyer_name_var)
+        self.buyer_name_entry = AutocompleteEntry(
+            self.form_frame, 
+            textvariable=self.buyer_name_var,
+            fetch_suggestions=self._fetch_dealer_suggestions,
+            on_select=self._on_dealer_selected
+        )
         self.buyer_name_entry.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
 
         # 3. Father
@@ -1220,6 +1245,21 @@ class App(ctk.CTk):
         if price:
             self.update_entry_value(self.amount_excl_entry, str(price.base_price))
             self.calculate_totals()
+
+    def _fetch_dealer_suggestions(self, query):
+        """Fetch dealer suggestions for autocomplete."""
+        return dealer_service.search_dealers_by_business_name(query, limit=5)
+
+    def _on_dealer_selected(self, dealer):
+        """Handle dealer selection from autocomplete."""
+        if not dealer:
+            return
+            
+        # Populate fields
+        self.buyer_cnic_var.set(dealer.cnic)
+        self.father_name_var.set(dealer.father_name)
+        self.buyer_cell_var.set(dealer.phone)
+        self.buyer_address_var.set(dealer.address)
 
     def validate_buyer_name(self, *args):
         self._validate_name(self.buyer_name_var)
@@ -2186,6 +2226,14 @@ class App(ctk.CTk):
                     else:
                         self.chassis_feedback_label.configure(text="Not In Stock", text_color="red")
             else:
+                # Check if this chassis has been previously posted (Historical Duplicate Check)
+                if invoice_service.is_chassis_used_in_posted_invoice(db, chassis):
+                    logger.warning(f"Duplicate chassis attempt detected in auto-fill: {chassis}")
+                    messagebox.showerror("Duplicate Invoice", f"Invoice with chassis number {chassis} has already been posted")
+                    self.chassis_feedback_label.configure(text="Duplicate", text_color="red")
+                    self.chassis_var.set("") # Clear to prevent usage
+                    return
+
                 if bypass_verification:
                     self.chassis_feedback_label.configure(text="⚠️ Not Found", text_color="orange")
                 else:
@@ -2266,6 +2314,12 @@ class App(ctk.CTk):
         self.clear_field_error(self.chassis_entry)
         self.clear_field_error(self.qty_entry)
         self.clear_field_error(self.amount_excl_entry)
+        self.clear_field_error(self.buyer_father_entry)
+        self.clear_field_error(self.buyer_address_entry)
+        self.clear_field_error(self.engine_entry)
+        self.clear_field_error(self.model_combo)
+        self.clear_field_error(self.color_combo)
+        self.clear_field_error(self.payment_mode_combo)
 
         inv_num = self.inv_num_entry.get()
         buyer_cnic = self.buyer_cnic_entry.get()
@@ -2310,6 +2364,44 @@ class App(ctk.CTk):
             self.show_field_error(self.buyer_name_entry, "Buyer Name is required")
             has_error = True
 
+        if not buyer_father:
+            self.show_field_error(self.buyer_father_entry, "Father Name is required")
+            has_error = True
+
+        if not buyer_cnic:
+            self.show_field_error(self.buyer_cnic_entry, "CNIC is required")
+            has_error = True
+
+        if not buyer_cell:
+            self.show_field_error(self.buyer_cell_entry, "Cell Number is required")
+            has_error = True
+
+        if not buyer_address:
+            self.show_field_error(self.buyer_address_entry, "Address is required")
+            has_error = True
+
+        if not chassis:
+            self.show_field_error(self.chassis_entry, "Chassis Number is required")
+            has_error = True
+
+        if not engine:
+            self.show_field_error(self.engine_entry, "Engine Number is required")
+            has_error = True
+
+        model_val = self.model_combo.get()
+        if not model_val:
+            self.show_field_error(self.model_combo, "Model is required")
+            has_error = True
+
+        color_val = self.color_combo.get()
+        if not color_val:
+            self.show_field_error(self.color_combo, "Color is required")
+            has_error = True
+            
+        if not payment_mode:
+             self.show_field_error(self.payment_mode_combo, "Payment Mode is required")
+             has_error = True
+
         # 4. Validate Formats
         if buyer_cnic and not re.match(r"^\d{5}-\d{7}-\d{1}$", buyer_cnic):
             self.show_field_error(self.buyer_cnic_entry, "Invalid CNIC Format (33302-1234567-0)")
@@ -2328,6 +2420,13 @@ class App(ctk.CTk):
             bypass_verification = self.verify_chassis_var.get()
             db_check = SessionLocal()
             try:
+                # Historical Duplicate Check (Critical for preventing double invoicing)
+                if invoice_service.is_chassis_used_in_posted_invoice(db_check, chassis):
+                    logger.warning(f"Submission blocked: Chassis {chassis} already invoiced")
+                    self.show_field_error(self.chassis_entry, "Chassis already invoiced")
+                    messagebox.showerror("Duplicate Invoice", f"Invoice with chassis number {chassis} has already been posted")
+                    has_error = True
+                
                 bike = db_check.query(Motorcycle).filter(Motorcycle.chassis_number == chassis).first()
                 if not bypass_verification:
                     if not bike:
