@@ -210,10 +210,14 @@ def run_migrations():
 
                 # Add Unique Index on normalized_business_name
                 try:
-                    conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_normalized_business_name ON customers(normalized_business_name)"))
+                    conn.execute(text("CREATE UNIQUE INDEX uq_normalized_business_name ON customers(normalized_business_name)"))
                     conn.commit()
                 except Exception as e:
-                    if "Duplicate key" not in str(e) and "already exists" not in str(e):
+                    # MySQL Error 1061: Duplicate key name
+                    err_msg = str(e).lower()
+                    if "duplicate key" in err_msg or "already exists" in err_msg or "1061" in err_msg:
+                        pass # Index already exists
+                    else:
                         logger.warning(f"Could not create uq_normalized_business_name index: {e}")
 
             except Exception as e:

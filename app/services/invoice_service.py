@@ -136,6 +136,8 @@ class InvoiceService:
             if invoice_in.buyer_ntn: customer.ntn = (invoice_in.buyer_ntn or "").upper()
             if invoice_in.buyer_phone: customer.phone = invoice_in.buyer_phone
             if invoice_in.buyer_address: customer.address = invoice_in.buyer_address.upper()
+            # Reactivate if they were deleted
+            customer.is_deleted = False
         else:
             # Create new
             customer = Customer(

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Toggle Menu Demo</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <!-- Overlay Backdrop -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true"></div>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="side-menu">
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+        <h1>Dashboard</h1>
+    </header>
+
+    <!-- Side Menu -->
+    <nav id="side-menu" class="side-menu" aria-hidden="true">
+        <div class="menu-header">
+            <h2>FBR Uploader</h2>
+            <button id="menu-close" class="menu-close" aria-label="Close Menu">
+                &times;
+            </button>
+        </div>
+        <ul class="menu-items">
+            <li><a href="#" class="menu-link">Home</a></li>
+            <li><a href="#" class="menu-link">Invoices</a></li>
+            <li><a href="#" class="menu-link">Customers</a></li>
+            <li><a href="#" class="menu-link">Inventory</a></li>
+            <li><a href="#" class="menu-link">Reports</a></li>
+            <li><a href="#" class="menu-link">Settings</a></li>
+        </ul>
+        <div class="menu-footer">
+            <p>&copy; 2026 FBR Uploader</p>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <div class="content-wrapper">
+            <h2>Welcome to the Dashboard</h2>
+            <p>This demo illustrates a fully accessible, responsive side menu.</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Recent Activity</h3>
+                    <p>No recent activity to show.</p>
+                </div>
+                <div class="card">
+                    <h3>Stats</h3>
+                    <p>System Status: Online</p>
+                </div>
+                <div class="card">
+                    <h3>Notifications</h3>
+                    <p>You have 0 new messages.</p>
+                </div>
+            </div>
+            <p>Resize the window to test responsive behavior. On desktop (>768px), the menu becomes a persistent sidebar.</p>
+            <p>Use <strong>Tab</strong> to navigate and <strong>Escape</strong> to close the menu on mobile.</p>
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

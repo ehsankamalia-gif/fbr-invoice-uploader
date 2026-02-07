@@ -25,6 +25,7 @@ class Customer(Base):
     phone = Column(String(20), nullable=True)
     address = Column(String(255), nullable=True)
     type = Column(String(20), default=CustomerType.INDIVIDUAL)
+    is_deleted = Column(Boolean, default=False)
     
     created_at = Column(DateTime, default=dt.datetime.utcnow)
     
@@ -114,6 +115,7 @@ class CapturedData(Base):
     color = Column(String(30), nullable=True)
     model = Column(String(50), nullable=True)
     
+    is_deleted = Column(Boolean, default=False)
     created_at = Column(DateTime, default=dt.datetime.utcnow)
 
 class Motorcycle(Base):

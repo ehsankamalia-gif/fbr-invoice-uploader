@@ -70,7 +70,7 @@ class CapturedDataService:
         # Commit ensures the current transaction (if any) is closed and next query starts a new one
         self.db.commit()
 
-        query = self.db.query(CapturedData)
+        query = self.db.query(CapturedData).filter(CapturedData.is_deleted == False)
 
         if search_query:
             search = f"%{search_query}%"
@@ -101,6 +101,57 @@ class CapturedDataService:
             "current_page": page,
             "per_page": per_page
         }
+
+    def delete_records(self, record_ids: List[int], soft_delete: bool = True) -> Tuple[bool, str]:
+        """
+        Delete captured data records.
+        
+        Args:
+            record_ids: List of IDs to delete
+            soft_delete: If True, mark as deleted instead of removing from DB
+            
+        Returns:
+            Tuple[bool, str]: (Success status, Message)
+        """
+        logger.info(f"delete_records called with IDs={record_ids}, soft_delete={soft_delete}")
+        if not record_ids:
+            return False, "No records specified for deletion."
+            
+        try:
+            if soft_delete:
+                # Soft Delete
+                # Verify CapturedData has is_deleted attribute
+                if not hasattr(CapturedData, 'is_deleted'):
+                    logger.error("CapturedData model missing is_deleted attribute")
+                    return False, "Database model missing deletion support. Restart application."
+
+                result = self.db.query(CapturedData).filter(
+                    CapturedData.id.in_(record_ids)
+                ).update(
+                    {CapturedData.is_deleted: True}, 
+                    synchronize_session=False
+                )
+                
+                self.db.commit()
+                msg = f"Successfully soft deleted {result} record(s)."
+                logger.info(f"AUDIT: {msg} IDs: {record_ids}")
+                return True, msg
+            else:
+                # Hard Delete (Admin only usually)
+                result = self.db.query(CapturedData).filter(
+                    CapturedData.id.in_(record_ids)
+                ).delete(synchronize_session=False)
+                
+                self.db.commit()
+                msg = f"Successfully permanently deleted {result} record(s)."
+                logger.info(f"AUDIT: {msg} IDs: {record_ids}")
+                return True, msg
+                
+        except Exception as e:
+            self.db.rollback()
+            err_msg = f"Error deleting records: {str(e)}"
+            logger.error(err_msg, exc_info=True)
+            return False, err_msg
 
     def close(self):
         self.db.close()

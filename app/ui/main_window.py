@@ -111,7 +111,11 @@ class App(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
+        # Sidebar Configuration
+        self.sidebar_width = 240 
+
         self.create_sidebar()
+        
         self.create_home_frame()
         self.create_inventory_frame()
         self.create_invoice_frame()
@@ -140,6 +144,12 @@ class App(ctk.CTk):
         
         # Handle Window Close
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
+        # Keyboard Shortcuts
+        self.bind("<Escape>", self.on_escape)
+
+    def on_escape(self, event=None):
+        pass # Sidebar toggle removed
 
     def on_closing(self):
         """Clean up resources before closing"""
@@ -196,37 +206,41 @@ class App(ctk.CTk):
             print(f"Migration warning: {e}")
 
     def create_sidebar(self):
-        # Increased width for better look, distinct background color
-        self.sidebar_frame = ctk.CTkFrame(self, width=200, corner_radius=0, fg_color=("gray95", "gray15"))
-        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        # Sidebar Frame (Fixed Grid Layout)
+        self.sidebar_frame = ctk.CTkFrame(self, width=self.sidebar_width, corner_radius=0, fg_color=("gray95", "gray15"))
+        self.sidebar_frame.grid(row=0, column=0, sticky="nsew", rowspan=4)
+        self.sidebar_frame.grid_rowconfigure(4, weight=1)
 
         # Logo / Brand
         self.brand_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.brand_frame.grid(row=0, column=0, sticky="ew", pady=(30, 10))
+        self.brand_frame.grid(row=0, column=0, sticky="ew", pady=(20, 10))
         
         # Main Title "HONDA"
         self.logo_label = ctk.CTkLabel(self.brand_frame, text="HONDA", 
                                      font=ctk.CTkFont(family="Arial", size=28, weight="bold"),
                                      text_color=("#C0392B", "#E74C3C"))
-        self.logo_label.pack(anchor="w", padx=25)
+        self.logo_label.pack(side="left", padx=(20, 10))
         
         # Subtitle "FBR SYSTEM"
         self.sub_label = ctk.CTkLabel(self.brand_frame, text="FBR INTEGRATION", 
                                      font=ctk.CTkFont(size=11, weight="bold"),
                                      text_color=("gray40", "gray60"))
-        self.sub_label.pack(anchor="w", padx=27, pady=(0, 8))
+        self.sub_label.pack(side="left", padx=0, pady=(12, 0)) # Align with bottom of logo
 
-        # Environment badge (Styled)
-        self.env_badge = ctk.CTkLabel(self.brand_frame, text="",
+        # Environment badge (Styled) - Repacked below
+        self.env_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
+        self.env_frame.grid(row=1, column=0, sticky="ew", padx=20)
+        
+        self.env_badge = ctk.CTkLabel(self.env_frame, text="",
                                       font=ctk.CTkFont(size=10, weight="bold"),
                                       text_color="white",
                                       corner_radius=4)
-        self.env_badge.pack(anchor="w", padx=25, pady=5)
+        self.env_badge.pack(anchor="w", pady=5)
         self.update_env_badge()
         
         # Sync Status Section
-        self.status_frame = ctk.CTkFrame(self.brand_frame, fg_color="transparent")
-        self.status_frame.pack(anchor="w", padx=25, pady=(0, 2))
+        self.status_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
+        self.status_frame.grid(row=2, column=0, sticky="ew", padx=20)
         
         self.sync_status_dot = ctk.CTkLabel(self.status_frame, text="●", font=("Arial", 16), text_color="gray")
         self.sync_status_dot.pack(side="left", padx=(0, 5))
@@ -241,12 +255,12 @@ class App(ctk.CTk):
         self.sync_now_btn.pack(side="left", padx=(10, 0))
         
         # Pending Count
-        self.pending_label = ctk.CTkLabel(self.brand_frame, text="", font=("Arial", 10, "bold"), text_color="#E67E22")
-        self.pending_label.pack(anchor="w", padx=25, pady=(0, 10))
+        self.pending_label = ctk.CTkLabel(self.sidebar_frame, text="", font=("Arial", 10, "bold"), text_color="#E67E22")
+        self.pending_label.grid(row=3, column=0, sticky="w", padx=25, pady=(0, 10))
         
         # Separator Line
         self.separator = ctk.CTkFrame(self.sidebar_frame, height=2, fg_color=("gray85", "gray25"))
-        self.separator.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 10))
+        self.separator.grid(row=4, column=0, sticky="ew", padx=20, pady=(0, 10))
         
         self.create_nav_buttons()
 
@@ -264,9 +278,8 @@ class App(ctk.CTk):
     def create_nav_buttons(self):
         # Container for navigation items (using pack for hierarchical layout)
         self.nav_container = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.nav_container.grid(row=2, column=0, sticky="nsew", padx=0, pady=0)
-        self.sidebar_frame.grid_rowconfigure(2, weight=1) # Main nav area expands
-        self.sidebar_frame.grid_rowconfigure(13, weight=0) # Remove weight from spacer
+        self.nav_container.grid(row=5, column=0, sticky="nsew", padx=0, pady=0)
+        self.sidebar_frame.grid_rowconfigure(5, weight=1) # Main nav area expands
         
         self.menu_groups = {}
         self.nav_buttons = {}
@@ -336,7 +349,7 @@ class App(ctk.CTk):
                                             fg_color="#C0392B", 
                                             hover_color="#E74C3C",
                                             text_color="white")
-        self.exit_button.grid(row=3, column=0, sticky="ew", padx=10, pady=20)
+        self.exit_button.grid(row=6, column=0, sticky="ew", padx=10, pady=20)
 
     def create_single_nav_item(self, text, name, command, icon=""):
         btn = ctk.CTkButton(self.nav_container, text=f"  {icon}  {text}", 
@@ -470,7 +483,7 @@ class App(ctk.CTk):
 
         # Header Section
         header_frame = ctk.CTkFrame(self.home_frame, fg_color="transparent")
-        header_frame.grid(row=0, column=0, padx=20, pady=(20, 10), sticky="ew")
+        header_frame.grid(row=0, column=0, padx=(60, 20), pady=(20, 10), sticky="ew")
         
         self.label_home = ctk.CTkLabel(header_frame, text="Dashboard Overview", 
                                      font=ctk.CTkFont(family="Arial", size=28, weight="bold"),
@@ -726,7 +739,7 @@ class App(ctk.CTk):
         self.current_price_obj = None
 
         self.label_invoice = ctk.CTkLabel(self.invoice_frame, text="New Invoice", font=ctk.CTkFont(size=24, weight="bold"))
-        self.label_invoice.grid(row=0, column=0, padx=20, pady=20, sticky="w")
+        self.label_invoice.grid(row=0, column=0, padx=60, pady=20, sticky="w")
         
         self.form_frame = ctk.CTkScrollableFrame(
             self.invoice_frame, 
@@ -759,6 +772,14 @@ class App(ctk.CTk):
         ctk.CTkLabel(self.fbr_stat_frame, text="FBR Submitted", font=ctk.CTkFont(size=11, weight="bold"), text_color="white").pack(pady=(5,0))
         self.fbr_stat_value = ctk.CTkLabel(self.fbr_stat_frame, text="0", font=ctk.CTkFont(size=20, weight="bold"), text_color="white")
         self.fbr_stat_value.pack(pady=(0,5))
+
+        # Create empty image for clearing QR code safely
+        # Use a 1x1 transparent image to avoid layout shifts or None-state bugs
+        self.empty_qr_image = ctk.CTkImage(
+            light_image=Image.new("RGBA", (1, 1), (0, 0, 0, 0)),
+            dark_image=Image.new("RGBA", (1, 1), (0, 0, 0, 0)),
+            size=(1, 1)
+        )
 
         # QR Code Display Area (Placeholder for Success)
         self.qr_code_label = ctk.CTkLabel(self.form_frame, text="", width=120, height=120)
@@ -803,6 +824,19 @@ class App(ctk.CTk):
             on_select=self._on_dealer_selected
         )
         self.buyer_name_entry.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+
+        # Checkbox to preserve buyer details
+        self.preserve_buyer_details_var = ctk.BooleanVar(value=False)
+        self.preserve_buyer_details_chk = ctk.CTkCheckBox(
+            self.form_frame, 
+            text="Preserve",
+            variable=self.preserve_buyer_details_var,
+            font=ctk.CTkFont(size=12),
+            checkbox_width=20,
+            checkbox_height=20,
+            width=80
+        )
+        self.preserve_buyer_details_chk.grid(row=3, column=2, padx=5, sticky="w")
 
         # 3. Father
         ctk.CTkLabel(self.form_frame, text="Father Name").grid(row=4, column=0, padx=10, pady=5, sticky="e")
@@ -1557,7 +1591,9 @@ class App(ctk.CTk):
             db.close()
 
     def display_qr_code(self, data):
+        logging.info(f"Displaying QR Code for data: {data}")
         if not data:
+            logging.warning("No data for QR Code")
             return
         
         try:
@@ -1575,7 +1611,9 @@ class App(ctk.CTk):
             
             self.qr_code_label.configure(image=self.qr_image, text="")
             self.fbr_inv_label.configure(text=data)
+            logging.info("QR Code displayed successfully")
         except Exception as e:
+            logging.error(f"QR Code Error: {e}", exc_info=True)
             print(f"QR Code Error: {e}")
 
     def confirm_and_reset(self):
@@ -1589,9 +1627,11 @@ class App(ctk.CTk):
             if not messagebox.askyesno("Confirm Reset", "Are you sure you want to reset the form?\nAll entered data will be lost."):
                 return
         
-        self.reset_form()
+        # Reset everything unconditionally when manually clicked
+        self.reset_form(clear_qr=True, force_reset=True)
 
-    def reset_form(self, clear_qr=True):
+    def reset_form(self, clear_qr=True, qr_data=None, force_reset=False):
+        logging.info(f"Resetting form. clear_qr={clear_qr}, qr_data={qr_data}, force_reset={force_reset}, preserve_buyer={self.preserve_buyer_details_var.get()}")
         self.generate_invoice_number() # Auto-generate next number
         
         # Clear Errors
@@ -1604,10 +1644,35 @@ class App(ctk.CTk):
         
         # Clear fields (inv_num_entry excluded as it is readonly and set via generate_invoice_number)
         # Note: qty_entry is handled separately below due to state toggle
-        for entry in [self.buyer_ntn_entry, self.buyer_cnic_entry, self.buyer_name_entry, self.buyer_father_entry,
-                     self.buyer_cell_entry, self.buyer_address_entry, self.chassis_entry,
-                     self.engine_entry, self.amount_excl_entry,
-                     self.tax_entry, self.further_tax_entry, self.total_price_entry]:
+        
+        # Fields that are ALWAYS cleared
+        fields_to_clear = [
+            self.buyer_ntn_entry, 
+            self.chassis_entry,
+            self.engine_entry, 
+            self.amount_excl_entry,
+            self.tax_entry, 
+            self.further_tax_entry, 
+            self.total_price_entry
+        ]
+
+        # Fields to conditionally clear based on "Preserve" checkbox
+        buyer_fields = [
+            self.buyer_cnic_entry, 
+            self.buyer_name_entry, 
+            self.buyer_father_entry,
+            self.buyer_cell_entry, 
+            self.buyer_address_entry
+        ]
+
+        # If force_reset is True, clear the preserve checkbox and add buyer fields to clear list
+        if force_reset:
+             self.preserve_buyer_details_var.set(False)
+             fields_to_clear.extend(buyer_fields)
+        elif not self.preserve_buyer_details_var.get():
+            fields_to_clear.extend(buyer_fields)
+
+        for entry in fields_to_clear:
             self.update_entry_value(entry, "")
 
         # Reset Quantity Logic
@@ -1645,11 +1710,20 @@ class App(ctk.CTk):
         self.current_levy = 0
         self.current_price_obj = None
         
-        # Clear QR Code if requested
-        if clear_qr:
-             self.qr_code_label.configure(image=None, text="")
-             self.qr_image = None
+        # QR Code Handling
+        if qr_data:
+             logging.info(f"Scheduling QR Code display for data: {qr_data}")
+             # Use short delay to ensure UI is settled (avoid race with focus_set)
+             self.after(200, lambda d=qr_data: self.display_qr_code(d))
+        elif clear_qr:
+             logging.info("Clearing QR Code")
+             # Use empty image instead of None to avoid potential CTk bug where widget state breaks
+             self.qr_code_label.configure(image=self.empty_qr_image, text="")
+             self.qr_image = self.empty_qr_image # Keep reference
              self.fbr_inv_label.configure(text="")
+        else:
+             logging.info("Skipping QR Code clear")
+
         # Do not auto-select default model, so fields remain empty
         
         # Focus on ID Card field after reset
@@ -2516,10 +2590,13 @@ class App(ctk.CTk):
             logger.info(f"Invoice {inv_num} created successfully. FBR ID: {fbr_id}")
             messagebox.showinfo("Success", f"Invoice Created and Queued for Sync\nFBR ID: {fbr_id}")
             
-            self.reset_form(clear_qr=False)
+            # Pass fbr_id to reset_form directly to ensure it is displayed
+            # This handles both resetting the form AND showing the QR code in one consistent step
+            logging.info(f"Calling reset_form with qr_data={invoice.fbr_invoice_number}")
+            self.reset_form(clear_qr=False, qr_data=invoice.fbr_invoice_number)
             
-            if invoice.fbr_invoice_number:
-                self.display_qr_code(invoice.fbr_invoice_number)
+            if not invoice.fbr_invoice_number:
+                logging.warning("No FBR invoice number to display QR code")
             
             # Stay on the same screen (reset done above)
         except RetryError as e:

@@ -1,13 +1,25 @@
 from fastapi import FastAPI, HTTPException, Depends, Query
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from typing import List, Optional
 from datetime import datetime
 from sqlalchemy.orm import Session
+import os
 
 from app.db.session import SessionLocal
 from app.services.price_service import price_service
 from app.api.schemas import PriceResponse, PriceCreate
 
 app = FastAPI(title="FBR Invoice Uploader API", version="1.0.0")
+
+# Mount static files
+static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+@app.get("/demo", include_in_schema=False)
+async def read_demo():
+    return FileResponse(os.path.join(static_dir, "index.html"))
 
 # Dependency
 def get_db():

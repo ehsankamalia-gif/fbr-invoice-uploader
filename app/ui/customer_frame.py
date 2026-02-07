@@ -1,8 +1,11 @@
 import customtkinter as ctk
 from tkinter import messagebox, ttk
 import re
+import logging
 from app.services.customer_service import customer_service
 from app.db.models import CustomerType
+
+logger = logging.getLogger(__name__)
 
 class CustomerFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -10,6 +13,7 @@ class CustomerFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.selected_customer_id = None
+        self.prev_selection = set()
 
         # Header
         self.header_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -28,6 +32,28 @@ class CustomerFrame(ctk.CTkFrame):
         self.search_var.trace_add("write", self.on_search)
         self.search_entry = ctk.CTkEntry(self.header_frame, textvariable=self.search_var, placeholder_text="Search Name, CNIC, Phone...", width=250)
         self.search_entry.pack(side="right", padx=10)
+
+        # Delete Selected Button
+        self.delete_selected_btn = ctk.CTkButton(
+            self.header_frame, 
+            text="Delete Selected", 
+            fg_color="#d32f2f", 
+            hover_color="#b71c1c",
+            width=120,
+            command=self.delete_selected_customers
+        )
+        self.delete_selected_btn.pack(side="right", padx=5)
+
+        # Select All Checkbox
+        self.select_all_var = ctk.BooleanVar(value=False)
+        self.select_all_chk = ctk.CTkCheckBox(
+            self.header_frame,
+            text="Select All",
+            variable=self.select_all_var,
+            command=self.toggle_select_all,
+            width=80
+        )
+        self.select_all_chk.pack(side="right", padx=10)
 
         # Main Content Area (Split into Form and List)
         self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -211,8 +237,12 @@ class CustomerFrame(ctk.CTkFrame):
         self.list_frame.grid_rowconfigure(1, weight=1)
 
         # Treeview
-        columns = ("id", "name", "cnic", "phone", "type", "address")
+        columns = ("check", "id", "name", "cnic", "phone", "type", "address")
         self.tree = ttk.Treeview(self.list_frame, columns=columns, show="headings")
+        
+        self.tree.heading("check", text="✔")
+        self.tree.column("check", width=30, anchor="center")
+        
         self.tree.heading("id", text="ID")
         self.tree.heading("name", text="Name")
         self.tree.heading("cnic", text="CNIC")
@@ -234,13 +264,17 @@ class CustomerFrame(ctk.CTkFrame):
         scrollbar.grid(row=1, column=1, sticky="ns")
         self.tree.configure(yscrollcommand=scrollbar.set)
 
-        # Bind select event
+        # Bind events
+        self.tree.bind("<Button-1>", self.on_tree_click)
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
     def load_customers(self):
         # Clear existing
         for item in self.tree.get_children():
             self.tree.delete(item)
+            
+        # Reset Select All
+        self.select_all_var.set(False)
             
         # Fetch
         query = self.search_var.get().strip()
@@ -250,24 +284,92 @@ class CustomerFrame(ctk.CTkFrame):
             customers = customer_service.get_all_customers()
             
         for c in customers:
-            self.tree.insert("", "end", values=(c.id, c.name, c.cnic, c.phone, c.type.value if hasattr(c.type, 'value') else c.type, c.address))
+            self.tree.insert("", "end", values=("☐", c.id, c.name, c.cnic, c.phone, c.type.value if hasattr(c.type, 'value') else c.type, c.address))
 
     def on_search(self, *args):
         self.load_customers()
 
+    def on_tree_click(self, event):
+        """Handle click on checkbox column."""
+        region = self.tree.identify_region(event.x, event.y)
+        if region == "cell":
+            column = self.tree.identify_column(event.x)
+            if column == "#1":  # Checkbox column
+                item = self.tree.identify_row(event.y)
+                if item:
+                    # Toggle selection state
+                    if item in self.tree.selection():
+                        self.tree.selection_remove(item)
+                    else:
+                        self.tree.selection_add(item)
+                    return "break"  # Prevent default selection behavior
+
+    def toggle_select_all(self):
+        """Select or deselect all items."""
+        if self.select_all_var.get():
+            # Select all
+            children = self.tree.get_children()
+            self.tree.selection_set(children)
+        else:
+            # Deselect all
+            self.tree.selection_remove(self.tree.selection())
+
+    def delete_selected_customers(self):
+        """Delete all selected customers."""
+        selected_items = self.tree.selection()
+        if not selected_items:
+            messagebox.showwarning("Warning", "No customers selected.")
+            return
+
+        count = len(selected_items)
+        if not messagebox.askyesno("Confirm Delete", f"Are you sure you want to delete {count} selected customer(s)?\nThis cannot be undone."):
+            return
+
+        ids_to_delete = []
+        for item_id in selected_items:
+            values = self.tree.item(item_id, "values")
+            if values and len(values) > 1:
+                ids_to_delete.append(int(values[1])) # ID is at index 1
+
+        success, message = customer_service.delete_customers(ids_to_delete)
+        
+        if success:
+            messagebox.showinfo("Success", message)
+            self.load_customers()
+            self.clear_form()
+        else:
+            messagebox.showerror("Error", message)
+
     def on_select(self, event):
-        selected = self.tree.selection()
-        if not selected:
+        selected_items = self.tree.selection()
+        
+        # Update checkbox symbols
+        for item_id in self.tree.get_children():
+            values = list(self.tree.item(item_id, "values"))
+            if item_id in selected_items:
+                values[0] = "☑"
+            else:
+                values[0] = "☐"
+            self.tree.item(item_id, values=values)
+
+        # Update Select All checkbox state
+        all_items = self.tree.get_children()
+        if len(all_items) > 0 and len(selected_items) == len(all_items):
+            self.select_all_var.set(True)
+        else:
+            self.select_all_var.set(False)
+
+        if not selected_items:
             return
             
-        item = self.tree.item(selected[0])
+        item = self.tree.item(selected_items[0])
         values = item["values"]
         
         if not values:
             return
             
         # Load into form
-        self.selected_customer_id = values[0]
+        self.selected_customer_id = values[1] # ID is now at index 1
         customer = customer_service.get_customer_by_id(self.selected_customer_id)
         
         if customer:
