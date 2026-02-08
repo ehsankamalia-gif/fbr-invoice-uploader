@@ -1,0 +1,175 @@
+[33mcommit e8d2eca3610980ec9e26c04b7bfe49b1ca5e49a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Waseem <ehsan.kamalia@gmail.com>
+Date:   Sun Feb 8 00:52:48 2026 +0500
+
+    feat: Add Preserve Buyer Checkbox, Fix QR Code display, and Soft Delete
+
+ create mode 100644 app/static/css/styles.css
+ create mode 100644 app/static/index.html
+ create mode 100644 app/static/js/script.js
+ create mode 100644 scripts/add_is_deleted_column.py
+ create mode 100644 scripts/add_is_deleted_to_customers.py
+ create mode 100644 scripts/debug_schema.py
+ create mode 100644 scripts/test_deletion.py
+ create mode 100644 tests/test_manual_deletion.py
+[33mcommit e8d2eca3610980ec9e26c04b7bfe49b1ca5e49a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Waseem <ehsan.kamalia@gmail.com>
+Date:   Sun Feb 8 00:52:48 2026 +0500
+
+    feat: Add Preserve Buyer Checkbox, Fix QR Code display, and Soft Delete
+
+[1mdiff --git a/app/api/server.py b/app/api/server.py[m
+[1mindex 1e3b2f5..a406834 100644[m
+[1m--- a/app/api/server.py[m
+[1m+++ b/app/api/server.py[m
+[36m@@ -1,7 +1,10 @@[m
+ from fastapi import FastAPI, HTTPException, Depends, Query[m
+[32m+[m[32mfrom fastapi.staticfiles import StaticFiles[m
+[32m+[m[32mfrom fastapi.responses import FileResponse[m
+ from typing import List, Optional[m
+ from datetime import datetime[m
+ from sqlalchemy.orm import Session[m
+[32m+[m[32mimport os[m
+ [m
+ from app.db.session import SessionLocal[m
+ from app.services.price_service import price_service[m
+[36m@@ -9,6 +12,15 @@[m [mfrom app.api.schemas import PriceResponse, PriceCreate[m
+ [m
+ app = FastAPI(title="FBR Invoice Uploader API", version="1.0.0")[m
+ [m
+[32m+[m[32m# Mount static files[m
+[32m+[m[32mstatic_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")[m
+[32m+[m[32mif os.path.exists(static_dir):[m
+[32m+[m[32m    app.mount("/static", StaticFiles(directory=static_dir), name="static")[m
+[32m+[m
+[32m+[m[32m@app.get("/demo", include_in_schema=False)[m
+[32m+[m[32masync def read_demo():[m
+[32m+[m[32m    return FileResponse(os.path.join(static_dir, "index.html"))[m
+[32m+[m
+ # Dependency[m
+ def get_db():[m
+     db = SessionLocal()[m
+[1mdiff --git a/app/db/models.py b/app/db/models.py[m
+[1mindex da5cdb3..ad622f5 100644[m
+[1m--- a/app/db/models.py[m
+[1m+++ b/app/db/models.py[m
+[36m@@ -25,6 +25,7 @@[m [mclass Customer(Base):[m
+     phone = Column(String(20), nullable=True)[m
+     address = Column(String(255), nullable=True)[m
+     type = Column(String(20), default=CustomerType.INDIVIDUAL)[m
+[32m+[m[32m    is_deleted = Column(Boolean, default=False)[m
+     [m
+     created_at = Column(DateTime, default=dt.datetime.utcnow)[m
+     [m
+[36m@@ -114,6 +115,7 @@[m [mclass CapturedData(Base):[m
+     color = Column(String(30), nullable=True)[m
+     model = Column(String(50), nullable=True)[m
+     [m
+[32m+[m[32m    is_deleted = Column(Boolean, default=False)[m
+     created_at = Column(DateTime, default=dt.datetime.utcnow)[m
+ [m
+ class Motorcycle(Base):[m
+[1mdiff --git a/app/db/session.py b/app/db/session.py[m
+[1mindex 8d86d35..d513afc 100644[m
+[1m--- a/app/db/session.py[m
+[1m+++ b/app/db/session.py[m
+[36m@@ -210,10 +210,14 @@[m [mdef run_migrations():[m
+ [m
+                 # Add Unique Index on normalized_business_name[m
+                 try:[m
+[31m-                    conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_normalized_business_name ON customers(normalized_business_name)"))[m
+[32m+[m[32m                    conn.execute(text("CREATE UNIQUE INDEX uq_normalized_business_name ON customers(normalized_business_name)"))[m
+                     conn.commit()[m
+                 except Exception as e:[m
+[31m-                    if "Duplicate key" not in str(e) and "already exists" not in str(e):[m
+[32m+[m[32m                    # MySQL Error 1061: Duplicate key name[m
+[32m+[m[32m                    err_msg = str(e).lower()[m
+[32m+[m[32m                    if "duplicate key" in err_msg or "already exists" in err_msg or "1061" in err_msg:[m
+[32m+[m[32m                        pass # Index already exists[m
+[32m+[m[32m                    else:[m
+                         logger.warning(f"Could not create uq_normalized_business_name index: {e}")[m
+ [m
+             except Exception as e:[m
+[1mdiff --git a/app/services/captured_data_service.py b/app/services/captured_data_service.py[m
+[1mindex b1d1902..0115159 100644[m
+[1m--- a/app/services/captured_data_service.py[m
+[1m+++ b/app/services/captured_data_service.py[m
+[36m@@ -70,7 +70,7 @@[m [mclass CapturedDataService:[m
+         # Commit ensures the current transaction (if any) is closed and next query starts a new one[m
+         self.db.commit()[m
+ [m
+[31m-        query = self.db.query(CapturedData)[m
+[32m+[m[32m        query = self.db.query(CapturedData).filter(CapturedData.is_deleted == False)[m
+ [m
+         if search_query:[m
+             search = f"%{search_query}%"[m
+[36m@@ -102,6 +102,57 @@[m [mclass CapturedDataService:[m
+             "per_page": per_page[m
+         }[m
+ [m
+[32m+[m[32m    def delete_records(self, record_ids: List[int], soft_delete: bool = True) -> Tuple[bool, str]:[m
+[32m+[m[32m        """[m
+[32m+[m[32m        Delete captured data records.[m
+[32m+[m[41m        [m
+[32m+[m[32m        Args:[m
+[32m+[m[32m            record_ids: List of IDs to delete[m
+[32m+[m[32m            soft_delete: If True, mark as deleted instead of removing from DB[m
+[32m+[m[41m            [m
+[32m+[m[32m        Returns:[m
+[32m+[m[32m            Tuple[bool, str]: (Success status, Message)[m
+[32m+[m[32m        """[m
+[32m+[m[32m        logger.info(f"delete_records called with IDs={record_ids}, soft_delete={soft_delete}")[m
+[32m+[m[32m        if not record_ids:[m
+[32m+[m[32m            return False, "No records specified for deletion."[m
+[32m+[m[41m            [m
+[32m+[m[32m        try:[m
+[32m+[m[32m            if soft_delete:[m
+[32m+[m[32m                # Soft Delete[m
+[32m+[m[32m                # Verify CapturedData has is_deleted attribute[m
+[32m+[m[32m                if not hasattr(CapturedData, 'is_deleted'):[m
+[32m+[m[32m                    logger.error("CapturedData model missing is_deleted attribute")[m
+[32m+[m[32m                    return False, "Database model missing deletion support. Restart application."[m
+[32m+[m
+[32m+[m[32m                result = self.db.query(CapturedData).filter([m
+[32m+[m[32m                    CapturedData.id.in_(record_ids)[m
+[32m+[m[32m                ).update([m
+[32m+[m[32m                    {CapturedData.is_deleted: True},[m[41m [m
+[32m+[m[32m                    synchronize_session=False[m
+[32m+[m[32m                )[m
+[32m+[m[41m                [m
+[32m+[m[32m                self.db.commit()[m
+[32m+[m[32m                msg = f"Successfully soft deleted {result} record(s)."[m
+[32m+[m[32m                logger.info(f"AUDIT: {msg} IDs: {record_ids}")[m
+[32m+[m[32m                return True, msg[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                # Hard Delete (Admin only usually)[m
+[32m+[m[32m                result = self.db.query(CapturedData).filter([m
+[32m+[m[32m                    CapturedData.id.in_(record_ids)[m
+[32m+[m[32m                ).delete(synchronize_session=False)[m
+[32m+[m[41m                [m
+[32m+[m[32m                self.db.commit()[m
+[32m+[m[32m                msg = f"Successfully permanently deleted {result} record(s)."[m
+[32m+[m[32m                logger.info(f"AUDIT: {msg} IDs: {record_ids}")[m
+[32m+[m[32m                return True, msg[m
+[32m+[m[41m                [m
+[32m+[m[32m        except Exception as e:[m
+[32m+[m[32m            self.db.rollback()[m
+[32m+[m[32m            err_msg = f"Error deleting records: {str(e)}"[m
+[32m+[m[32m            logger.error(err_msg, exc_info=True)[m
+[32m+[m[32m            return False, err_msg[m
+[32m+[m
+     def close(self):[m
+         self.db.close()[m
+ [m
+[1mdiff --git a/app/services/customer_service.py b/app/services/customer_service.py[m
+[1mindex ce8ca38..c580f6e 100644[m
+[1m--- a/app/services/customer_service.py[m
+[1m+++ b/app/services/customer_service.py[m
+[36m@@ -44,20 +44,21 @@[m [mclass CustomerService:[m
+ [m
+     def get_customer_by_cnic(self, cnic: str) -> Optional[Customer]:[m
+         """Get a customer by CNIC."""[m
+[31m-        return self.db.query(Customer).filter(Customer.cnic == cnic).first()[m
+[32m+[m[32m        return self.db.query(Customer).filter(Customer.cnic == cnic, Customer.is_deleted == False).first()[m
+ [m
+     d
