@@ -16,8 +16,14 @@ if not exist venv (
     call setup.bat
 )
 
-:: Activate venv and run
+:: Activate venv
 call venv\Scripts\activate
+
+:: Check for dependency updates
+echo Checking for dependency updates...
+pip install -r requirements.txt --quiet
+
+:: Run Application
 venv\Scripts\python -m app.main
 
 if %errorlevel% neq 0 (

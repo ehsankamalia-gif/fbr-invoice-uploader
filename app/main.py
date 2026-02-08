@@ -66,11 +66,11 @@ def show_splash():
     progress.start()
     
     splash_root.update()
-    return splash_root, lbl_loading
+    return splash_root, lbl_loading, progress
 
 def main():
     # 1. Show Splash Screen
-    splash, status_lbl = show_splash()
+    splash, status_lbl, progress = show_splash()
     
     # 2. Perform Imports (Simulation of work)
     try:
@@ -132,7 +132,25 @@ def main():
         splash.update()
         time.sleep(0.5) # Small delay to let user see "Starting"
         
-        splash.destroy()
+        # Stop animation to prevent Tkinter errors
+        progress.stop()
+        
+        # Withdraw first to hide from user
+        splash.withdraw()
+        
+        # Cancel all pending 'after' callbacks to prevent "invalid command name" errors
+        try:
+            for after_id in splash.tk.call('after', 'info'):
+                splash.after_cancel(after_id)
+        except Exception:
+            pass
+            
+        splash.update_idletasks() # Finish pending tasks
+        
+        try:
+            splash.destroy()
+        except Exception:
+            pass # Ignore errors during destruction
         
         app = App()
         app.mainloop()
