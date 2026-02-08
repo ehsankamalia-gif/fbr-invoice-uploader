@@ -259,11 +259,15 @@ class DealerFrame(ctk.CTkFrame):
             def set_cursor():
                 try:
                     self.cnic_entry.icursor(new_cursor)
+                    # Also scroll to cursor to ensure visibility
+                    # CTkEntry doesn't support xview_moveto directly on self, need to access internal entry if needed
+                    # but usually cursor move handles it.
                 except:
                     pass
                 self._cnic_cursor_job = None
 
-            self._cnic_cursor_job = self.after(1, set_cursor)
+            # Use after_idle to ensure this runs after Tkinter's internal variable update events
+            self._cnic_cursor_job = self.after_idle(set_cursor)
 
     def validate_phone(self, *args):
         val = self.phone_var.get()
