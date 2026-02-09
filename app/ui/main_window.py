@@ -30,6 +30,7 @@ from app.services.sync_service import sync_service
 from app.ui.captured_data_frame import CapturedDataFrame
 from app.ui.welcome_frame import WelcomeFrame
 from app.ui.autocomplete_entry import AutocompleteEntry
+from app.ui.stock_summary_frame import StockSummaryFrame
 from app.excise.ui.excise_frame import ExciseFrame
 
 from app.utils.price_data import price_manager
@@ -535,6 +536,10 @@ class App(ctk.CTk):
                                                 icon="⏳", row=2, col=1, color="#E67E22",
                                                 command=self.show_pending_details) # Orange
 
+        # Stock Summary Dashboard Component
+        self.stock_summary = StockSummaryFrame(self.home_frame)
+        self.stock_summary.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
+
         self.auto_refresh_stats()
 
     def auto_refresh_stats(self):
@@ -685,6 +690,10 @@ class App(ctk.CTk):
             # Pending Uploads
             pending_count = db.query(Invoice).filter(Invoice.sync_status == "PENDING").count()
             self.card_pending.configure(text=f"{pending_count}")
+            
+            # Refresh Stock Summary
+            if hasattr(self, 'stock_summary'):
+                self.stock_summary.load_data()
             
         except Exception as e:
             print(f"Error refreshing stats: {e}")
