@@ -109,13 +109,16 @@ class App(ctk.CTk):
         # Migrate prices if needed
         self.migrate_prices()
 
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        # Grid Configuration for Top-Bar Layout
+        self.grid_columnconfigure(0, weight=1) # Full width content
+        self.grid_rowconfigure(0, weight=0)    # Header (Top Bar)
+        self.grid_rowconfigure(1, weight=1)    # Main Content Area
 
-        # Sidebar Configuration
-        self.sidebar_width = 240 
+        # Define Menu Structure
+        self.setup_navigation_structure()
 
-        self.create_sidebar()
+        # Create Navigation Bars
+        self.create_menu_bar()
         
         self.create_home_frame()
         self.create_inventory_frame()
@@ -206,64 +209,219 @@ class App(ctk.CTk):
         except Exception as e:
             print(f"Migration warning: {e}")
 
-    def create_sidebar(self):
-        # Sidebar Frame (Fixed Grid Layout)
-        self.sidebar_frame = ctk.CTkFrame(self, width=self.sidebar_width, corner_radius=0, fg_color=("gray95", "gray15"))
-        self.sidebar_frame.grid(row=0, column=0, sticky="nsew", rowspan=4)
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
+    def setup_navigation_structure(self):
+        """Defines the hierarchical menu structure."""
+        self.menu_structure = {
+            "dashboard": {
+                "label": "Dashboard", 
+                "command": lambda: self.select_frame_by_name("home"),
+                "subitems": [] 
+            },
+            "invoice": {
+                "label": "Invoices",
+                "command": None,
+                "subitems": [
+                    ("New Invoice", "invoice", self.invoice_button_event),
+                    ("Print Invoice", "print_invoice", self.print_invoice_button_event),
+                    ("Reports", "reports", self.reports_button_event)
+                ]
+            },
+            "inventory": {
+                "label": "Inventory",
+                "command": None,
+                "subitems": [
+                    ("Inventory Stock", "inventory", self.inventory_button_event),
+                    ("Customers", "customer", self.customer_button_event),
+                    ("Dealers", "dealer", self.dealer_button_event),
+                    ("Price List", "pricelist", self.open_price_list)
+                ]
+            },
+            "capture": {
+                "label": "Capture",
+                "command": None,
+                "subitems": [
+                    ("Live Form Capture", "capture_live", self.form_capture_button_event),
+                    ("View Captured Data", "captured_data", self.captured_data_button_event)
+                ]
+            },
+            "excise": {
+                "label": "Excise",
+                "command": None,
+                "subitems": [
+                    ("Excise Dashboard", "excise", self.excise_button_event)
+                ]
+            },
+            "system": {
+                "label": "System",
+                "command": None,
+                "subitems": [
+                    ("Backup & Restore", "backup", self.backup_button_event),
+                    ("FBR Settings", "settings", self.open_fbr_settings),
+                    ("DB Settings", "db_settings", self.open_db_settings),
+                    ("Spare Ledger", "spare_ledger", self.spare_ledger_button_event),
+                    ("Check Updates", "update", self.check_updates)
+                ]
+            }
+        }
+        
+        self.top_nav_buttons = {}
+        self.active_menu_frame = None
+        self.active_menu_key = None
 
-        # Logo / Brand
-        self.brand_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.brand_frame.grid(row=0, column=0, sticky="ew", pady=(20, 10))
+    def create_menu_bar(self):
+        """Creates the main horizontal menu bar."""
+        # Main Header Frame
+        self.header_frame = ctk.CTkFrame(self, height=40, corner_radius=0, fg_color=("gray95", "gray10"))
+        self.header_frame.grid(row=0, column=0, sticky="ew")
+        self.header_frame.grid_columnconfigure(2, weight=1) # Spacer 
         
-        # Main Title "HONDA"
-        self.logo_label = ctk.CTkLabel(self.brand_frame, text="HONDA", 
-                                     font=ctk.CTkFont(family="Arial", size=28, weight="bold"),
-                                     text_color=("#C0392B", "#E74C3C"))
-        self.logo_label.pack(side="left", padx=(20, 10))
+        # 1. Logo / Brand (Left)
+        brand_frame = ctk.CTkFrame(self.header_frame, fg_color="transparent")
+        brand_frame.grid(row=0, column=0, padx=(10, 20), sticky="w")
         
-        # Subtitle "FBR SYSTEM"
-        self.sub_label = ctk.CTkLabel(self.brand_frame, text="FBR INTEGRATION", 
-                                     font=ctk.CTkFont(size=11, weight="bold"),
-                                     text_color=("gray40", "gray60"))
-        self.sub_label.pack(side="left", padx=0, pady=(12, 0)) # Align with bottom of logo
+        ctk.CTkLabel(brand_frame, text="HONDA", 
+                     font=ctk.CTkFont(family="Arial", size=16, weight="bold"),
+                     text_color=("#C0392B", "#E74C3C")).pack(side="left")
+        
+        ctk.CTkLabel(brand_frame, text="| FBR", 
+                     font=ctk.CTkFont(size=12, weight="bold"),
+                     text_color="gray").pack(side="left", padx=5)
 
-        # Environment badge (Styled) - Repacked below
-        self.env_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.env_frame.grid(row=1, column=0, sticky="ew", padx=20)
+        # 2. Menu Items (Next to logo)
+        self.nav_bar_frame = ctk.CTkFrame(self.header_frame, fg_color="transparent")
+        self.nav_bar_frame.grid(row=0, column=1, sticky="w")
         
-        self.env_badge = ctk.CTkLabel(self.env_frame, text="",
+        for key, data in self.menu_structure.items():
+            cmd = data['command']
+            if not cmd:
+                # Use default arguments to capture loop variable
+                cmd = lambda k=key: self.toggle_menu(k)
+                
+            btn = ctk.CTkButton(self.nav_bar_frame, 
+                                text=data['label'],
+                                command=cmd,
+                                width=30, height=30,
+                                corner_radius=4,
+                                font=ctk.CTkFont(size=13),
+                                fg_color="transparent",
+                                text_color=("gray10", "gray90"),
+                                hover_color=("gray80", "gray25"))
+            btn.pack(side="left", padx=2)
+            
+            # Bind hover event for auto-opening
+            btn.bind("<Enter>", lambda e, k=key: self.on_menu_hover(k))
+            
+            self.top_nav_buttons[key] = btn
+
+        # 3. Right Side Utilities
+        right_frame = ctk.CTkFrame(self.header_frame, fg_color="transparent")
+        right_frame.grid(row=0, column=3, padx=10, sticky="e")
+
+        # Environment Badge
+        self.env_badge = ctk.CTkLabel(right_frame, text="ENV", 
                                       font=ctk.CTkFont(size=10, weight="bold"),
-                                      text_color="white",
-                                      corner_radius=4)
-        self.env_badge.pack(anchor="w", pady=5)
+                                      text_color="white", corner_radius=4)
+        self.env_badge.pack(side="left", padx=10)
         self.update_env_badge()
+
+        # Sync Status
+        self.sync_status_dot = ctk.CTkLabel(right_frame, text="●", font=("Arial", 14), text_color="gray")
+        self.sync_status_dot.pack(side="left")
+        self.sync_status_label = ctk.CTkLabel(right_frame, text="Checking...", font=("Arial", 11))
+        self.sync_status_label.pack(side="left", padx=5)
         
-        # Sync Status Section
-        self.status_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.status_frame.grid(row=2, column=0, sticky="ew", padx=20)
+        # Sync Button
+        ctk.CTkButton(right_frame, text="↻", width=25, height=25,
+                      command=lambda: sync_service.trigger_sync_now()).pack(side="left", padx=5)
         
-        self.sync_status_dot = ctk.CTkLabel(self.status_frame, text="●", font=("Arial", 16), text_color="gray")
-        self.sync_status_dot.pack(side="left", padx=(0, 5))
+        # Exit Button
+        ctk.CTkButton(right_frame, text="Exit", width=50, height=25,
+                      fg_color="#C0392B", hover_color="#E74C3C",
+                      command=self.on_closing).pack(side="left", padx=10)
+
+    def on_menu_hover(self, key):
+        """Opens the menu on hover if it's not already open."""
+        if self.active_menu_key != key:
+            self.toggle_menu(key)
+
+    def toggle_menu(self, key):
+        """Toggles the dropdown menu for the given key."""
+        if self.active_menu_frame:
+            # If clicking same button, close and return
+            if self.active_menu_key == key:
+                self.close_menu()
+                return
+            self.close_menu()
+
+        self.active_menu_key = key
+        btn = self.top_nav_buttons[key]
+        btn.configure(fg_color=("gray80", "gray25"))
         
-        self.sync_status_label = ctk.CTkLabel(self.status_frame, text="Checking...", font=("Arial", 10), text_color="gray")
-        self.sync_status_label.pack(side="left")
+        # Create Dropdown Frame
+        self.active_menu_frame = ctk.CTkFrame(self, corner_radius=4, border_width=1, border_color="gray50", fg_color=("white", "gray20"))
         
-        # Sync Now Button (Small)
-        self.sync_now_btn = ctk.CTkButton(self.status_frame, text="Sync", width=50, height=20, 
-                                        font=("Arial", 10), fg_color="#555555", hover_color="#666666",
-                                        command=lambda: sync_service.trigger_sync_now())
-        self.sync_now_btn.pack(side="left", padx=(10, 0))
+        # Calculate position: x = button x absolute position
+        x = btn.winfo_x() + self.nav_bar_frame.winfo_x() + self.header_frame.winfo_x() + 10 
+        y = 40 # Header height
         
-        # Pending Count
-        self.pending_label = ctk.CTkLabel(self.sidebar_frame, text="", font=("Arial", 10, "bold"), text_color="#E67E22")
-        self.pending_label.grid(row=3, column=0, sticky="w", padx=25, pady=(0, 10))
+        # Populate
+        data = self.menu_structure[key]
+        for text, name, command in data['subitems']:
+            sub_btn = ctk.CTkButton(self.active_menu_frame, text=text, anchor="w",
+                                  command=lambda c=command: self._menu_item_click(c),
+                                  width=160, height=28,
+                                  fg_color="transparent",
+                                  text_color=("black", "white"),
+                                  hover_color=("gray90", "gray30"))
+            sub_btn.pack(fill="x", padx=1, pady=1)
+            
+        self.active_menu_frame.place(x=x, y=y)
+        self.active_menu_frame.lift()
         
-        # Separator Line
-        self.separator = ctk.CTkFrame(self.sidebar_frame, height=2, fg_color=("gray85", "gray25"))
-        self.separator.grid(row=4, column=0, sticky="ew", padx=20, pady=(0, 10))
+        # Bind global click to close menu
+        self.after(100, lambda: self.bind_all("<Button-1>", self.check_menu_close, add="+"))
         
-        self.create_nav_buttons()
+    def _menu_item_click(self, command):
+        self.close_menu()
+        command()
+
+    def check_menu_close(self, event):
+        if not self.active_menu_frame:
+            self.unbind_all("<Button-1>")
+            return
+
+        # Check if clicked widget is inside menu
+        widget = event.widget
+        try:
+            # Check if widget is menu or child of menu
+            if widget == self.active_menu_frame or str(widget).startswith(str(self.active_menu_frame)): 
+                return
+            
+            # Check if clicked on a top nav button (let toggle_menu handle it)
+            for btn in self.top_nav_buttons.values():
+                if widget == btn or str(widget).startswith(str(btn)): 
+                    return
+        except Exception:
+            pass
+            
+        self.close_menu()
+
+    def close_menu(self, event=None):
+        if self.active_menu_frame:
+            self.active_menu_frame.destroy()
+            self.active_menu_frame = None
+        
+        # Reset highlights
+        for k, btn in self.top_nav_buttons.items():
+            btn.configure(fg_color="transparent")
+        
+        self.active_menu_key = None
+        self.unbind_all("<Button-1>")
+
+    def update_sub_navigation(self, category_key):
+        pass # Deprecated
+
+
 
     def update_env_badge(self):
         # Use settings_service to get the true active environment directly from file
@@ -276,179 +434,6 @@ class App(ctk.CTk):
         
         self.env_badge.configure(text=env_text, fg_color=env_color)
 
-    def create_nav_buttons(self):
-        # Container for navigation items (using pack for hierarchical layout)
-        self.nav_container = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        self.nav_container.grid(row=5, column=0, sticky="nsew", padx=0, pady=0)
-        self.sidebar_frame.grid_rowconfigure(5, weight=1) # Main nav area expands
-        
-        self.menu_groups = {}
-        self.nav_buttons = {}
-
-        # 1. Dashboard (Single Item)
-        self.create_single_nav_item("Dashboard", "home", self.home_button_event, "📊")
-
-        # 2. Invoice Management
-        self.create_menu_group("Invoice Management", "invoice_grp", "📄", [
-            ("New Invoice", "invoice", self.invoice_button_event),
-            ("Print Invoice", "print_invoice", self.print_invoice_button_event),
-            ("Reports", "reports", self.reports_button_event)
-        ])
-
-        # 3. Inventory & CRM
-        self.create_menu_group("Inventory & CRM", "inventory_grp", "📦", [
-            ("Inventory", "inventory", self.inventory_button_event),
-            ("Customers", "customer", self.customer_button_event),
-            ("Dealers", "dealer", self.dealer_button_event),
-            ("Price List", "pricelist", self.open_price_list)
-        ])
-
-        # 4. System Management
-        self.create_menu_group("System Management", "system_grp", "⚙️", [
-            ("Backup & Restore", "backup", self.backup_button_event),
-            ("FBR Settings", "settings", self.open_fbr_settings),
-            ("Database Connection", "db_settings", self.open_db_settings),
-            ("Spare Ledger", "spare_ledger", self.spare_ledger_button_event),
-            ("Check for Updates", "update", self.check_updates)
-        ])
-
-        # 5. Form Capture
-        self.create_menu_group("Form Capture", "capture_grp", "📷", [
-            ("Live Form Capture", "capture_live", self.form_capture_button_event),
-            ("View Captured Data", "captured_data", self.captured_data_button_event)
-        ])
-
-        # 6. Excise & Taxation (Independent Module)
-        self.create_menu_group("Excise & Taxation", "excise_grp", "🚔", [
-            ("Excise Dashboard", "excise", self.excise_button_event)
-        ])
-
-        # Map legacy button attributes for compatibility
-        self.home_button = self.nav_buttons.get("home")
-        self.invoice_button = self.nav_buttons.get("invoice")
-        self.print_inv_button = self.nav_buttons.get("print_invoice")
-        self.reports_button = self.nav_buttons.get("reports")
-        self.inventory_button = self.nav_buttons.get("inventory")
-        self.customer_button = self.nav_buttons.get("customer")
-        self.dealer_button = self.nav_buttons.get("dealer")
-        self.backup_button = self.nav_buttons.get("backup")
-        self.captured_data_button = self.nav_buttons.get("captured_data")
-        self.settings_button = self.nav_buttons.get("settings")
-        self.spare_ledger_button = self.nav_buttons.get("spare_ledger")
-        self.price_list_button = self.nav_buttons.get("pricelist")
-        self.capture_button = self.nav_buttons.get("capture_live")
-        self.excise_button = self.nav_buttons.get("excise")
-
-        # Exit Button (Red/Professional Look)
-        self.exit_button = ctk.CTkButton(self.sidebar_frame, text="Exit", 
-                                            command=self.on_closing,
-                                            font=ctk.CTkFont(size=15, weight="bold"),
-                                            corner_radius=6, 
-                                            height=45, 
-                                            border_spacing=10, 
-                                            anchor="center", 
-                                            fg_color="#C0392B", 
-                                            hover_color="#E74C3C",
-                                            text_color="white")
-        self.exit_button.grid(row=6, column=0, sticky="ew", padx=10, pady=20)
-
-    def create_single_nav_item(self, text, name, command, icon=""):
-        btn = ctk.CTkButton(self.nav_container, text=f"  {icon}  {text}", 
-                            command=command,
-                            font=ctk.CTkFont(size=14, weight="bold"),
-                            corner_radius=6, 
-                            height=40, 
-                            anchor="w", 
-                            fg_color="transparent", 
-                            text_color=("gray10", "gray90"), 
-                            hover_color=("gray70", "gray30"))
-        btn.pack(fill="x", padx=10, pady=2)
-        self.nav_buttons[name] = btn
-        return btn
-
-    def create_menu_group(self, title, group_id, icon, items):
-        # Parent Button Frame
-        group_frame = ctk.CTkFrame(self.nav_container, fg_color="transparent")
-        group_frame.pack(fill="x", padx=0, pady=2)
-        
-        # Parent Button
-        parent_btn = ctk.CTkButton(group_frame, text=f"  {icon}  {title}", 
-                                   command=lambda: self.toggle_menu(group_id),
-                                   font=ctk.CTkFont(size=14, weight="bold"),
-                                   corner_radius=6, 
-                                   height=40, 
-                                   anchor="w", 
-                                   fg_color="transparent", 
-                                   text_color=("gray10", "gray90"), 
-                                   hover_color=("gray70", "gray30"))
-        parent_btn.pack(fill="x", padx=10)
-        
-        # Indicator (Chevron)
-        indicator = ctk.CTkLabel(parent_btn, text="▶", font=ctk.CTkFont(size=12), text_color="gray50")
-        indicator.place(relx=0.9, rely=0.5, anchor="center")
-        
-        # Submenu Container
-        submenu_frame = ctk.CTkFrame(group_frame, fg_color="transparent")
-        # Initially hidden
-        
-        # Create Sub-items
-        for text, name, command in items:
-            sub_btn = ctk.CTkButton(submenu_frame, text=f"      {text}", 
-                                    command=command,
-                                    font=ctk.CTkFont(size=13),
-                                    corner_radius=6, 
-                                    height=35, 
-                                    anchor="w", 
-                                    fg_color="transparent", 
-                                    text_color=("gray40", "gray60"), 
-                                    hover_color=("gray80", "gray25"))
-            sub_btn.pack(fill="x", padx=10, pady=1)
-            self.nav_buttons[name] = sub_btn
-
-        self.menu_groups[group_id] = {
-            "frame": submenu_frame,
-            "indicator": indicator,
-            "expanded": False,
-            "buttons": [name for _, name, _ in items]
-        }
-
-    def toggle_menu(self, group_id):
-        group = self.menu_groups[group_id]
-        is_expanded = group["expanded"]
-
-        # 1. Automatically collapse any currently expanded menu (Accordion behavior)
-        self.collapse_all_menus(except_id=group_id)
-
-        # 2. Toggle the clicked menu
-        if is_expanded:
-            group["frame"].pack_forget()
-            group["indicator"].configure(text="▶")
-            group["expanded"] = False
-        else:
-            # Smooth transition (simulated by layout manager)
-            group["frame"].pack(fill="x", pady=(0, 5))
-            group["indicator"].configure(text="▼")
-            group["expanded"] = True
-
-    def collapse_all_menus(self, except_id=None):
-        """Helper to collapse all menus except the specified one."""
-        for g_id, group in self.menu_groups.items():
-            if g_id != except_id and group["expanded"]:
-                group["frame"].pack_forget()
-                group["indicator"].configure(text="▶")
-                group["expanded"] = False
-
-    def expand_menu_containing(self, name):
-        """Auto-expand the menu group containing the named button."""
-        for group_id, group in self.menu_groups.items():
-            if name in group["buttons"]:
-                # Ensure this is the only one expanded
-                if not group["expanded"]:
-                    self.toggle_menu(group_id)
-                else:
-                    # If already expanded, just ensure others are closed
-                    self.collapse_all_menus(except_id=group_id)
-                return
 
     def check_updates(self):
         """Checks for software updates from git."""
@@ -546,9 +531,12 @@ class App(ctk.CTk):
         """Refreshes stats and schedules the next refresh."""
         try:
             if self.winfo_exists():
-                self.refresh_stats()
-                # Schedule next refresh in 2000ms (2 seconds)
-                self.after(2000, self.auto_refresh_stats)
+                # Only refresh if on dashboard and window is visible
+                if getattr(self, "current_frame_name", "home") == "home" and self.winfo_viewable():
+                    self.refresh_stats()
+                
+                # Schedule next refresh in 5000ms (5 seconds) to reduce load/flickering
+                self.after(5000, self.auto_refresh_stats)
         except Exception as e:
             print(f"Auto refresh error: {e}")
 
@@ -653,52 +641,76 @@ class App(ctk.CTk):
         return val_label  # Return the value label to update it later
 
     def refresh_stats(self):
+        """Starts background thread to fetch stats."""
+        threading.Thread(target=self._refresh_stats_thread, daemon=True).start()
+
+    def _refresh_stats_thread(self):
         db = SessionLocal()
         try:
+            data = {}
             # Count Motorcycles (In Stock)
-            bike_count = db.query(Motorcycle).filter(Motorcycle.status == "IN_STOCK").count()
-            self.card_stock.configure(text=f"{bike_count}")
+            data['stock'] = db.query(Motorcycle).filter(Motorcycle.status == "IN_STOCK").count()
             
             # Count Sold Motorcycles
-            sold_count = db.query(Motorcycle).filter(Motorcycle.status == "SOLD").count()
-            self.card_sold.configure(text=f"{sold_count}")
+            data['sold'] = db.query(Motorcycle).filter(Motorcycle.status == "SOLD").count()
             
             # Sum Invoices
             invoices = db.query(Invoice).all()
-            total_sales = sum(inv.total_amount for inv in invoices)
-            self.card_sales.configure(text=f"PKR {total_sales:,.0f}")
+            data['sales'] = sum(inv.total_amount for inv in invoices)
             
             # FBR Success
-            fbr_success = db.query(Invoice).filter(Invoice.fbr_invoice_number != None).count()
-            self.card_fbr_success.configure(text=f"{fbr_success}")
+            data['fbr_success'] = db.query(Invoice).filter(Invoice.fbr_invoice_number != None).count()
 
             # FBR Failed
-            fbr_failed = db.query(Invoice).filter(Invoice.sync_status == "FAILED").count()
-            self.card_fbr_failed.configure(text=f"{fbr_failed}")
-            # Update the stat in invoice form too if it exists
-            if hasattr(self, 'fbr_stat_value'):
-                self.fbr_stat_value.configure(text=f"{fbr_success}")
+            data['fbr_failed'] = db.query(Invoice).filter(Invoice.sync_status == "FAILED").count()
 
             # Customers (Excluding Dealers)
-            cust_count = db.query(Customer).filter(Customer.type != CustomerType.DEALER).count()
-            self.card_customers.configure(text=f"{cust_count}")
+            data['customers'] = db.query(Customer).filter(Customer.type != CustomerType.DEALER).count()
 
             # Dealers
-            dealer_count = db.query(Customer).filter(Customer.type == CustomerType.DEALER).count()
-            self.card_dealers.configure(text=f"{dealer_count}")
+            data['dealers'] = db.query(Customer).filter(Customer.type == CustomerType.DEALER).count()
             
             # Pending Uploads
-            pending_count = db.query(Invoice).filter(Invoice.sync_status == "PENDING").count()
-            self.card_pending.configure(text=f"{pending_count}")
+            data['pending'] = db.query(Invoice).filter(Invoice.sync_status == "PENDING").count()
             
-            # Refresh Stock Summary
-            if hasattr(self, 'stock_summary'):
-                self.stock_summary.load_data()
+            if self.winfo_exists():
+                self.after(0, lambda: self._update_stats_ui(data))
             
         except Exception as e:
             print(f"Error refreshing stats: {e}")
         finally:
             db.close()
+
+    def _update_stats_ui(self, data):
+        """Updates UI with fetched data on main thread."""
+        try:
+            # Helper to update label only if changed to prevent flickering
+            def update_label(label, new_text):
+                try:
+                    if label.cget("text") != str(new_text):
+                        label.configure(text=str(new_text))
+                except Exception:
+                    pass
+
+            update_label(self.card_stock, data['stock'])
+            update_label(self.card_sold, data['sold'])
+            update_label(self.card_sales, f"PKR {data['sales']:,.0f}")
+            update_label(self.card_fbr_success, data['fbr_success'])
+            update_label(self.card_fbr_failed, data['fbr_failed'])
+            
+            if hasattr(self, 'fbr_stat_value'):
+                update_label(self.fbr_stat_value, data['fbr_success'])
+
+            update_label(self.card_customers, data['customers'])
+            update_label(self.card_dealers, data['dealers'])
+            update_label(self.card_pending, data['pending'])
+            
+            # Refresh Stock Summary
+            if hasattr(self, 'stock_summary'):
+                self.stock_summary.load_data()
+                
+        except Exception as e:
+            print(f"Error updating stats UI: {e}")
 
     def show_field_error(self, widget, message):
         """Highlights a field with error and shows a tooltip."""
@@ -1782,90 +1794,75 @@ class App(ctk.CTk):
             del self.welcome_frame
 
     def select_frame_by_name(self, name):
-        # Auto-expand menu if the selected item is inside a group
-        self.expand_menu_containing(name)
+        self.current_frame_name = name
+        # Close any open menu first
+        self.close_menu()
 
-        # set button color for selected button
-        if self.home_button: self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
-        if self.inventory_button: self.inventory_button.configure(fg_color=("gray75", "gray25") if name == "inventory" else "transparent")
-        if self.customer_button: self.customer_button.configure(fg_color=("gray75", "gray25") if name == "customer" else "transparent")
-        if self.invoice_button: self.invoice_button.configure(fg_color=("gray75", "gray25") if name == "invoice" else "transparent")
-        if self.reports_button: self.reports_button.configure(fg_color=("gray75", "gray25") if name == "reports" else "transparent")
-        if self.dealer_button: self.dealer_button.configure(fg_color=("gray75", "gray25") if name == "dealer" else "transparent")
-        if self.backup_button: self.backup_button.configure(fg_color=("gray75", "gray25") if name == "backup" else "transparent")
-        if self.print_inv_button: self.print_inv_button.configure(fg_color=("gray75", "gray25") if name == "print_invoice" else "transparent")
-        if self.captured_data_button: self.captured_data_button.configure(fg_color=("gray75", "gray25") if name == "captured_data" else "transparent")
-        if hasattr(self, "spare_ledger_button") and self.spare_ledger_button:
-            self.spare_ledger_button.configure(fg_color=("gray75", "gray25") if name == "spare_ledger" else "transparent")
-        if hasattr(self, "excise_button"):
-            self.excise_button.configure(fg_color=("gray75", "gray25") if name == "excise" else "transparent")
+        # Define Frame Mapping: Name -> (Frame Instance, Refresh Callback)
+        frames = {
+            "home": (getattr(self, "home_frame", None), None),
+            "inventory": (getattr(self, "inventory_frame", None), lambda: self.inventory_frame.refresh_inventory()),
+            "invoice": (getattr(self, "invoice_frame", None), self._setup_invoice_frame),
+            "reports": (getattr(self, "reports_frame", None), lambda: self.reports_frame.load_data()),
+            "dealer": (getattr(self, "dealer_frame", None), lambda: self.dealer_frame.load_dealers()),
+            "customer": (getattr(self, "customer_frame", None), lambda: self.customer_frame.load_customers()),
+            "backup": (getattr(self, "backup_frame", None), lambda: self.backup_frame.refresh_history()),
+            "print_invoice": (getattr(self, "print_invoice_frame", None), None),
+            "captured_data": (getattr(self, "captured_data_frame", None), lambda: self.captured_data_frame.load_data()),
+            "spare_ledger": (getattr(self, "spare_ledger_frame", None), lambda: self.spare_ledger_frame.refresh()),
+            "excise": (getattr(self, "excise_frame", None), None),
+        }
 
-        # show selected frame
-        if name == "home":
-            self.home_frame.grid(row=0, column=1, sticky="nsew")
-        else:
-            self.home_frame.grid_forget()
+        # Get target frame info
+        target_info = frames.get(name)
+        if not target_info:
+            print(f"Frame not found: {name}")
+            return
             
-        if name == "inventory":
-            self.inventory_frame.grid(row=0, column=1, sticky="nsew")
-            self.inventory_frame.refresh_inventory()
-        else:
-            self.inventory_frame.grid_forget()
+        target_frame, refresh_action = target_info
+        
+        if not target_frame:
+             print(f"Frame instance missing for: {name}")
+             return
 
-        if name == "invoice":
-            self.invoice_frame.grid(row=0, column=1, sticky="nsew")
-            self.generate_invoice_number() # Auto-generate Invoice No
-            # Focus on ID Card field when frame is shown
+        # Optimization: Prevent flickering by only switching if different
+        if hasattr(self, "_visible_frame") and self._visible_frame == target_frame:
+            # Run refresh action even if frame is same (e.g. clicking menu item again)
+            if refresh_action:
+                try:
+                    refresh_action()
+                except Exception as e:
+                    print(f"Error refreshing frame {name}: {e}")
+            return
+
+        # 1. Show New Frame (Overlay on top first to prevent white flash)
+        target_frame.grid(row=1, column=0, sticky="nsew")
+        target_frame.lift() # Ensure it's on top
+        
+        # 2. Hide Old Frame
+        if hasattr(self, "_visible_frame") and self._visible_frame and self._visible_frame != target_frame:
+            self._visible_frame.grid_forget()
+        else:
+            # Fallback: Hide all others to be safe (e.g. first run)
+            for key, (frame, _) in frames.items():
+                if frame and frame != target_frame:
+                    frame.grid_forget()
+        
+        # 3. Update Tracking
+        self._visible_frame = target_frame
+        
+        # 4. Run Refresh Action
+        if refresh_action:
+            try:
+                self.after(10, refresh_action)
+            except Exception as e:
+                print(f"Error refreshing frame {name}: {e}")
+
+    def _setup_invoice_frame(self):
+        self.generate_invoice_number() # Auto-generate Invoice No
+        # Focus on ID Card field when frame is shown
+        if hasattr(self, 'buyer_cnic_entry'):
             self.after(100, lambda: self.buyer_cnic_entry.focus_set())
-        else:
-            self.invoice_frame.grid_forget()
-
-        if name == "reports":
-            self.reports_frame.grid(row=0, column=1, sticky="nsew")
-            self.reports_frame.load_data()
-        else:
-            self.reports_frame.grid_forget()
-
-        if name == "dealer":
-            self.dealer_frame.grid(row=0, column=1, sticky="nsew")
-            self.dealer_frame.load_dealers()
-        else:
-            self.dealer_frame.grid_forget()
-
-        if name == "customer":
-            self.customer_frame.grid(row=0, column=1, sticky="nsew")
-            self.customer_frame.load_customers()
-        else:
-            self.customer_frame.grid_forget()
-
-        if name == "backup":
-            self.backup_frame.grid(row=0, column=1, sticky="nsew")
-            self.backup_frame.refresh_history()
-        else:
-            self.backup_frame.grid_forget()
-
-        if name == "print_invoice":
-            self.print_invoice_frame.grid(row=0, column=1, sticky="nsew")
-        else:
-            self.print_invoice_frame.grid_forget()
-
-        if name == "captured_data":
-            self.captured_data_frame.grid(row=0, column=1, sticky="nsew")
-            self.captured_data_frame.load_data()
-        else:
-            self.captured_data_frame.grid_forget()
-
-        if name == "spare_ledger":
-            self.spare_ledger_frame.grid(row=0, column=1, sticky="nsew")
-            self.spare_ledger_frame.refresh()
-        else:
-            self.spare_ledger_frame.grid_forget()
-
-        if name == "excise":
-            self.excise_frame.grid(row=0, column=1, sticky="nsew")
-            # self.excise_frame.refresh_data() # called in __init__
-        else:
-            self.excise_frame.grid_forget()
 
     def generate_invoice_number(self):
         """Fetches the next auto-incremented invoice number."""

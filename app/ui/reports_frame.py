@@ -130,7 +130,7 @@ class ReportsFrame(ctk.CTkFrame):
         v_scroll.config(command=self.sales_tree.yview)
         
         # Configure Tags for Status
-        self.sales_tree.tag_configure("synced", foreground="green")
+        self.sales_tree.tag_configure("synced", foreground="white")
         self.sales_tree.tag_configure("pending", foreground="#E67E22") # Orange
         self.sales_tree.tag_configure("failed", foreground="red")
         
@@ -331,11 +331,15 @@ class ReportsFrame(ctk.CTkFrame):
 
     def _auto_refresh_loop(self):
         try:
-            if self.tabview.get() == "Sales Report":
-                self.update_sales_status()
+            # Only update if frame is visible to prevent background flickering/load
+            if self.winfo_exists() and self.winfo_viewable():
+                if self.tabview.get() == "Sales Report":
+                    self.update_sales_status()
         except Exception:
             pass # Ignore GUI errors if tabview destroyed
-        self.after(5000, self._auto_refresh_loop)
+            
+        if self.winfo_exists():
+            self.after(5000, self._auto_refresh_loop)
 
     def update_sales_status(self):
         items = self.sales_tree.get_children()
@@ -556,6 +560,7 @@ class ReportsFrame(ctk.CTkFrame):
             
             fields = [
                 ("Name:", inv.customer.name),
+                ("Father Name:", inv.customer.father_name),
                 ("CNIC:", inv.customer.cnic),
                 ("Phone:", inv.customer.phone),
                 ("NTN:", inv.customer.ntn),

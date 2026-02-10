@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import threading
 from app.db.session import SessionLocal
 from app.db.models import Motorcycle, ProductModel
 from sqlalchemy import func
@@ -63,6 +64,10 @@ class StockSummaryFrame(ctk.CTkFrame):
         # State for caching to prevent flickering
         self._last_data_hash = None
         
+        # UI Cache
+        self.data_rows = [] # List of [lbl_s, lbl_model, lbl_qty]
+        self.total_widgets = None # Will hold (sep, lbl_empty, lbl_title, lbl_val)
+        
         # Load Data
         self.load_data()
 
@@ -72,6 +77,10 @@ class StockSummaryFrame(ctk.CTkFrame):
         self.load_data()
 
     def load_data(self):
+        """Starts background thread to load data."""
+        threading.Thread(target=self._load_data_thread, daemon=True).start()
+
+    def _load_data_thread(self):
         session = SessionLocal()
         try:
             # Query to get stock count per model
@@ -89,46 +98,94 @@ class StockSummaryFrame(ctk.CTkFrame):
             
             # Check if data has changed to avoid unnecessary UI rebuilds (prevents flickering)
             current_data_hash = hash(tuple(results))
+            
+            # Optimization: Check hash here to avoid scheduling UI update if not needed
             if self._last_data_hash == current_data_hash:
                 return
             
-            self._last_data_hash = current_data_hash
-            
-            # Clear existing rows (skip header row 0)
-            for widget in self.table_frame.grid_slaves():
-                if int(widget.grid_info()["row"]) > 0:
-                    widget.destroy()
-
-            total_qty = 0
-            row_idx = 1
-            
-            for i, (model_name, qty) in enumerate(results, 1):
-                # S#
-                self.create_cell(row_idx, 0, str(i))
-                
-                # Model
-                self.create_cell(row_idx, 1, model_name, anchor="w")
-                
-                # Qty
-                self.create_cell(row_idx, 2, str(qty))
-                
-                total_qty += qty
-                row_idx += 1
-                
-            # Total Row
-            # Add a separator or just a distinct row
-            sep = ctk.CTkFrame(self.table_frame, height=2, fg_color="black")
-            sep.grid(row=row_idx, column=0, columnspan=3, sticky="ew", pady=(5, 5))
-            row_idx += 1
-            
-            self.create_cell(row_idx, 0, "")
-            self.create_cell(row_idx, 1, "Total", font=("Arial", 14, "bold"))
-            self.create_cell(row_idx, 2, str(total_qty), font=("Arial", 14, "bold"))
+            if self.winfo_exists():
+                self.after(0, lambda: self._update_ui(results, current_data_hash))
             
         except Exception as e:
             print(f"Error loading stock summary: {e}")
         finally:
             session.close()
+
+    def _update_ui(self, results, current_data_hash):
+        """Updates the table UI on main thread with widget reuse to prevent flickering."""
+        if not self.winfo_exists(): return
+        
+        # Double check hash in case it changed in between
+        if self._last_data_hash == current_data_hash:
+            return
+            
+        self._last_data_hash = current_data_hash
+        
+        total_qty = 0
+        
+        # Iterate through data and update/create rows
+        for i, (model_name, qty) in enumerate(results):
+            row_idx = i
+            grid_row = row_idx + 1 # Header is 0
+            
+            # Check if we have widgets for this row
+            if row_idx < len(self.data_rows):
+                # Update existing widgets
+                widgets = self.data_rows[row_idx]
+                
+                # Update text only if changed
+                if widgets[0].cget("text") != str(i + 1):
+                    widgets[0].configure(text=str(i + 1))
+                
+                if widgets[1].cget("text") != str(model_name):
+                    widgets[1].configure(text=str(model_name))
+                    
+                if widgets[2].cget("text") != str(qty):
+                    widgets[2].configure(text=str(qty))
+                    
+                # Ensure they are visible and in correct position
+                if not widgets[0].winfo_viewable() or int(widgets[0].grid_info().get("row", -1)) != grid_row:
+                    widgets[0].grid(row=grid_row, column=0, padx=1, pady=1, sticky="ew")
+                    widgets[1].grid(row=grid_row, column=1, padx=1, pady=1, sticky="ew")
+                    widgets[2].grid(row=grid_row, column=2, padx=1, pady=1, sticky="ew")
+            else:
+                # Create new widgets
+                lbl_s = self.create_cell(grid_row, 0, str(i + 1))
+                lbl_model = self.create_cell(grid_row, 1, str(model_name), anchor="w")
+                lbl_qty = self.create_cell(grid_row, 2, str(qty))
+                self.data_rows.append([lbl_s, lbl_model, lbl_qty])
+            
+            total_qty += qty
+
+        # Hide excess rows
+        for j in range(len(results), len(self.data_rows)):
+            widgets = self.data_rows[j]
+            for w in widgets:
+                w.grid_forget()
+
+        # Update Total Row
+        total_row_idx = len(results) + 1
+        
+        if self.total_widgets is None:
+            # Create total widgets once
+            sep = ctk.CTkFrame(self.table_frame, height=2, fg_color="black")
+            lbl_empty = self.create_cell(total_row_idx + 1, 0, "") # Temp row
+            lbl_title = self.create_cell(total_row_idx + 1, 1, "Total", font=("Arial", 14, "bold"))
+            lbl_val = self.create_cell(total_row_idx + 1, 2, str(total_qty), font=("Arial", 14, "bold"))
+            self.total_widgets = (sep, lbl_empty, lbl_title, lbl_val)
+        
+        # Unpack
+        sep, lbl_empty, lbl_title, lbl_val = self.total_widgets
+        
+        # Update Total Value
+        if lbl_val.cget("text") != str(total_qty):
+            lbl_val.configure(text=str(total_qty))
+            
+        # Place Total Row
+        sep.grid(row=total_row_idx, column=0, columnspan=3, sticky="ew", pady=(5, 5))
+        lbl_empty.grid(row=total_row_idx + 1, column=0, padx=1, pady=1, sticky="ew")
+        lbl_title.grid(row=total_row_idx + 1, column=1, padx=1, pady=1, sticky="ew")
+        lbl_val.grid(row=total_row_idx + 1, column=2, padx=1, pady=1, sticky="ew")
 
     def create_cell(self, row, col, text, font=("Arial", 12), anchor="center"):
         label = ctk.CTkLabel(
