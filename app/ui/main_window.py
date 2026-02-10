@@ -240,7 +240,7 @@ class App(ctk.CTk):
                 "label": "Capture",
                 "command": None,
                 "subitems": [
-                    ("Live Form Capture", "capture_live", self.form_capture_button_event),
+                    ("Launch Browser", "capture_live", self.form_capture_button_event),
                     ("View Captured Data", "captured_data", self.captured_data_button_event)
                 ]
             },
@@ -1918,28 +1918,19 @@ class App(ctk.CTk):
         DatabaseSettingsDialog(self)
 
     def form_capture_button_event(self):
-        """Launch the Live Form Capture browser"""
+        """Launch the Browser for Import / Capture"""
         if form_capture_service.is_running:
-             messagebox.showinfo("Capture Running", "Form capture is already running.")
+             messagebox.showinfo("Browser Running", "The browser is already running.\nYou can use 'Import' or 'Capture' features now.")
              return
 
-        # Default to Atlas Honda Portal as per user request
-        target_url = "https://dealers.ahlportal.com/dealersv2/dealers/customer_profile"
-        
-        # Override if config has specific domains, but prioritize the requested one if empty or default
-        if form_capture_service.config.get("target_domains"):
-             # Construct URL from domain (assuming https)
-             domain = form_capture_service.config["target_domains"][0]
-             if not domain.startswith("http"):
-                 target_url = f"https://{domain}"
-             else:
-                 target_url = domain
+        # Default to Atlas Honda Portal base URL
+        target_url = "https://dealers.ahlportal.com"
         
         try:
             form_capture_service.start_capture_session(target_url)
-            messagebox.showinfo("Started", "Recording Browser Launched.\n\nInteract with the website as usual.\nData is saved automatically to captured_forms.json.")
+            messagebox.showinfo("Browser Launched", "Browser launched successfully.\nYou can now use 'Import' or 'Capture' features.")
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to start capture: {e}")
+            messagebox.showerror("Error", f"Failed to launch browser: {e}")
 
     def _populate_bike_details(self, bike):
         """Helper to populate form fields from bike object"""

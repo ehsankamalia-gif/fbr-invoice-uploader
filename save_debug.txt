@@ -21349,3 +21349,57 @@ RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timest
 2026-02-06 13:41:17.923788: Attempting save (try 1). Pages: 2
 RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770367277.683}
 2026-02-06 13:41:17.940859: Attempting save (try 1). Pages: 2
+RAW DATA: {'type': 'form_submission', 'source': 'form_submit_event', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770750369.236, 'forced_capture': {'_debug_all_inputs': {'_token': 'G90IK4tB97bmWEp7AklOqLqTidpo64BUlFiUgxgV', 'user_name': '101296', 'password': '95858260', 'captcha_code': '34956'}}}
+2026-02-11 00:06:09.254850: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-11 00:06:09.271486 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': 'G90IK4tB97bmWEp7AklOqLqTidpo64BUlFiUgxgV', 'user_name': '101296', 'password': '95858260', 'captcha_code': '34956'}}
+Mapped Data: {}
+RAW DATA: {'type': 'form_submission', 'source': 'button_click', 'url': 'https://dealers.ahlportal.com/dealersv2/dealers/login', 'timestamp': 1770750369.339, 'forced_capture': {'_debug_all_inputs': {'_token': 'G90IK4tB97bmWEp7AklOqLqTidpo64BUlFiUgxgV', 'user_name': '101296', 'password': '95858260', 'captcha_code': '34956'}}}
+2026-02-11 00:06:09.350488: Attempting save (try 1). Pages: 1
+
+--- SUBMISSION START 2026-02-11 00:06:09.366021 ---
+Flat Data Keys: ['_debug_all_inputs']
+Flat Data Content: {'_debug_all_inputs': {'_token': 'G90IK4tB97bmWEp7AklOqLqTidpo64BUlFiUgxgV', 'user_name': '101296', 'password': '95858260', 'captcha_code': '34956'}}
+Mapped Data: {}
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.099}
+2026-02-11 00:06:18.113654: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.1}
+2026-02-11 00:06:18.145899: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.101}
+2026-02-11 00:06:18.172083: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_engine_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.102}
+2026-02-11 00:06:18.201402: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_color', 'value': '', 'type': 'text', 'timestamp': 1770750378.104}
+2026-02-11 00:06:18.230115: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_model', 'value': '', 'type': 'text', 'timestamp': 1770750378.104}
+2026-02-11 00:06:18.255511: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#nic1', 'value': '', 'type': 'text', 'timestamp': 1770750378.105}
+2026-02-11 00:06:18.280534: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#nic2', 'value': '', 'type': 'text', 'timestamp': 1770750378.106}
+2026-02-11 00:06:18.303001: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#nic3', 'value': '', 'type': 'text', 'timestamp': 1770750378.108}
+2026-02-11 00:06:18.327963: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_address', 'value': '', 'type': 'text', 'timestamp': 1770750378.109}
+2026-02-11 00:06:18.352090: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_cell_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.11}
+2026-02-11 00:06:18.375645: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'span#select2-cmb_city-container', 'value': 'Search or Select City', 'type': 'span', 'timestamp': 1770750378.113}
+2026-02-11 00:06:18.397742: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': '', 'type': 'text', 'timestamp': 1770750378.716}
+2026-02-11 00:06:18.724721: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'h', 'type': 'text', 'timestamp': 1770750380.885}
+2026-02-11 00:06:20.891925: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb', 'type': 'text', 'timestamp': 1770750381.114}
+2026-02-11 00:06:21.123588: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb', 'type': 'text', 'timestamp': 1770750381.418}
+2026-02-11 00:06:21.424213: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb25', 'type': 'text', 'timestamp': 1770750384.11}
+2026-02-11 00:06:24.118585: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb2533', 'type': 'text', 'timestamp': 1770750384.735}
+2026-02-11 00:06:24.742465: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb253322', 'type': 'text', 'timestamp': 1770750385.095}
+2026-02-11 00:06:25.103468: Attempting save (try 1). Pages: 2
+RAW DATA: {'selector': 'input#txt_chassis_no', 'value': 'hb253322', 'type': 'text', 'timestamp': 1770750385.33}
+2026-02-11 00:06:25.338560: Attempting save (try 1). Pages: 2

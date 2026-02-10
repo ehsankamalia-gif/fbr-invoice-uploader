@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import threading
 from tkinter import messagebox, ttk, filedialog, Menu
 from app.db.session import SessionLocal
 from app.db.models import Motorcycle, Supplier, ProductModel
@@ -426,7 +427,16 @@ class WebImportDialog(ctk.CTkToplevel):
         self.save_btn = ctk.CTkButton(self, text="💾", width=40, command=self.open_save_dialog, fg_color="gray", hover_color="gray30")
         self.save_btn.grid(row=0, column=2, padx=(5, 5), pady=10)
         
-        self.launch_btn = ctk.CTkButton(self, text="1. Launch Browser", command=self.launch_browser)
+        # Check if browser is already running
+        btn_text = "1. Launch Browser"
+        state = "normal"
+        fg_color = None # Default
+        
+        if self.scraper.capture_service.is_running:
+            btn_text = "1. Connect & Login"
+            fg_color = "#2980B9" # Blue
+            
+        self.launch_btn = ctk.CTkButton(self, text=btn_text, command=self.launch_browser, state=state, fg_color=fg_color)
         self.launch_btn.grid(row=0, column=3, padx=20, pady=10)
 
         # 1.5 Credentials (New)
@@ -555,32 +565,48 @@ class WebImportDialog(ctk.CTkToplevel):
             except Exception as e:
                 print(f"Failed to auto-save credentials: {e}")
 
-        try:
-            self.scraper.login(url, username=username, password=password)
-            self.scrape_btn.configure(state="normal")
-            # Also open bookmark dialog to be helpful? No, user just asked for login.
-        except Exception as e:
-            msg = str(e)
-            if "ERR_NAME_NOT_RESOLVED" in msg:
-                messagebox.showerror("Connection Error", "Could not connect to the portal.\n\nPlease check:\n1. Your internet connection\n2. The URL (should be https://dealers.ahlportal.com)")
-            else:
-                messagebox.showerror("Error", f"Failed to launch browser: {e}")
+        self.scrape_btn.configure(text="Launching...", state="disabled")
+        self.launch_btn.configure(state="disabled")
+        
+        def login_worker():
+            try:
+                self.scraper.login(url, username=username, password=password)
+                self.after(0, lambda: self.scrape_btn.configure(state="normal", text="2. Scrape Page"))
+                self.after(0, lambda: self.launch_btn.configure(state="normal", text="1. Connect & Login", fg_color="#2980B9"))
+            except Exception as e:
+                msg = str(e)
+                def show_error():
+                    if "ERR_NAME_NOT_RESOLVED" in msg:
+                        messagebox.showerror("Connection Error", "Could not connect to the portal.\n\nPlease check:\n1. Your internet connection\n2. The URL (should be https://dealers.ahlportal.com)")
+                    else:
+                        messagebox.showerror("Error", f"Failed to launch browser: {e}")
+                    self.scrape_btn.configure(state="normal", text="2. Scrape Page")
+                    self.launch_btn.configure(state="normal", text="1. Launch Browser")
+                self.after(0, show_error)
+
+        threading.Thread(target=login_worker, daemon=True).start()
 
     def start_scrape(self):
         self.scrape_btn.configure(state="disabled", text="Scraping...")
-        self.update()
         
         def update_status(msg):
-            self.scrape_btn.configure(text=msg)
-            self.update()
+            self.after(0, lambda: self.scrape_btn.configure(text=msg))
 
+        def scrape_worker():
+            try:
+                if self.pagination_var.get():
+                    new_data = self.scraper.scrape_all_pages(max_pages=1000, status_callback=update_status)
+                else:
+                    new_data = self.scraper.scrape_current_page()
+                
+                self.after(0, lambda: self._on_scrape_complete(new_data))
+            except Exception as e:
+                self.after(0, lambda: self._on_scrape_error(e))
+
+        threading.Thread(target=scrape_worker, daemon=True).start()
+
+    def _on_scrape_complete(self, new_data):
         try:
-            if self.pagination_var.get():
-                # Scrape up to 1000 pages (effectively all for most tables)
-                new_data = self.scraper.scrape_all_pages(max_pages=1000, status_callback=update_status)
-            else:
-                new_data = self.scraper.scrape_current_page()
-            
             # Initialize if empty
             if not self.scraped_data:
                 self.scraped_data = []
@@ -613,8 +639,11 @@ class WebImportDialog(ctk.CTkToplevel):
             self.scrape_btn.configure(state="normal", text="2. Scrape Page (Append)")
             
         except Exception as e:
-            messagebox.showerror("Error", f"Scraping failed: {e}")
-            self.scrape_btn.configure(state="normal", text="2. Scrape Page")
+            self._on_scrape_error(e)
+
+    def _on_scrape_error(self, error):
+        messagebox.showerror("Error", f"Scraping failed: {error}")
+        self.scrape_btn.configure(state="normal", text="2. Scrape Page")
 
     def import_data(self):
         if not self.scraped_data:

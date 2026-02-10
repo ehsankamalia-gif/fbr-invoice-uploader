@@ -3,6 +3,7 @@ import time
 import threading
 import os
 import logging
+import queue
 from pathlib import Path
 from datetime import datetime
 from playwright.sync_api import sync_playwright, Page
@@ -41,6 +42,7 @@ class FormCaptureService:
         self.session_data = {}
         self.pending_action = None # For thread-safe navigation
         self.pending_url = None
+        self.task_queue = queue.Queue()
         
         self.load_config()
         self.processor = CapturedFormProcessor(self.config)
@@ -134,6 +136,25 @@ class FormCaptureService:
             self._save_data()
             logging.info("Session data cleared by user request.")
 
+    def execute_task(self, callback):
+        """
+        Executes a callback in the browser thread.
+        Callback receives (page) as argument.
+        Returns the result of the callback.
+        """
+        if not self.is_running:
+            self.start_capture_session()
+            # Allow some time for thread start
+            time.sleep(1)
+            
+        result_queue = queue.Queue()
+        self.task_queue.put((callback, result_queue))
+        
+        result = result_queue.get()
+        if isinstance(result, Exception):
+            raise result
+        return result
+
     def _run_browser(self, start_url):
         self.start_url = start_url
         try:
@@ -206,6 +227,18 @@ class FormCaptureService:
                 # Keep the browser open until stopped
                 while self.is_running:
                     try:
+                        # Process Task Queue
+                        try:
+                            while not self.task_queue.empty():
+                                task, result_q = self.task_queue.get_nowait()
+                                try:
+                                    res = task(self.page)
+                                    result_q.put(res)
+                                except Exception as task_ex:
+                                    result_q.put(task_ex)
+                        except queue.Empty:
+                            pass
+
                         # Check pending actions
                         if self.pending_action:
                             try:
@@ -226,10 +259,11 @@ class FormCaptureService:
                         if len(pages) > 0:
                             try:
                                 # Use the last page (active) to pump the event loop
-                                pages[-1].wait_for_timeout(1000)
+                                # Reduced timeout for better task responsiveness
+                                pages[-1].wait_for_timeout(100) 
                             except Exception:
                                 # If page closes during wait, fallback to short sleep
-                                time.sleep(0.5)
+                                time.sleep(0.1)
                         else:
                             logging.info("All pages closed, stopping session.")
                             break
