@@ -164,8 +164,8 @@ class HondaScraper:
 
                 item = {
                     "purchase_order": p_order,
-                    "model_code": model,
-                    "color_code": color,
+                    "model": model,
+                    "color": color,
                     "engine_number": engine,
                     "chassis_number": chassis,
                     "status": status,
